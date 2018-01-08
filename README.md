@@ -20,3 +20,12 @@ ddflow base on layui
 > images ----图片
 
 
+### 三、项目如何运行
+1. git clone https://github.com/snjatf/DDFlow.View.git
+2. 项目根目录执行(前提已经安装过nodejs、npm)：
+- npm install --global gulp
+- npm install
+
+
+
+

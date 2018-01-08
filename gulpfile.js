@@ -58,7 +58,7 @@ gulp.task('clean', function(callback) {
 
 gulp.task('watch',['browserSync'],function(){   //我们可以在watch任务之前告知Gulp，先把browserSync和Sass任务执行了再说。
   // gulp.watch('app/scss/**/*.scss', ['sass']);
-  gulp.watch('src/*.html', browserSync.reload);
+  gulp.watch('src/**/*.html', browserSync.reload);
   gulp.watch('src/js/**/*.js', browserSync.reload);
   // Other watchers
 });
