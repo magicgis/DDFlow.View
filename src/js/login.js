@@ -1,22 +1,28 @@
-//一般直接写在一个js文件中
+/*
+登录页面js
+*/
 layui.use(['layer', 'form'], function () {
   var layer = layui.layer
-    , form = layui.form;
+    , form = layui.form
+    , $ = layui.$;
 
-  layer.msg($.getConfig().apis.process);
   //监听提交
   form.on('submit(btn_login)', function (data) {
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })
+    $.ajax({
+      url: $.getConfig().apis.process + "/test",
+      data: JSON.stringify(data.field),
+      success: function (d) {
+        console.log(d);
+        layui.data('application', {
+          key: 'ticket'
+          ,value: '1qaz7410'
+        });
+      }
+    });
+
+    // layer.alert(JSON.stringify(data.field), {
+    //   title: '最终的提交信息'
+    // })
     return false;
   });
 });
-
-// $.ajaxEx(
-//   'http://www.baidu.com',
-//   'get',
-//   "",
-//   function (d) { console.log(d) },
-//   function (d) { console.log(d) },
-// );
