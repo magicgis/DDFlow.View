@@ -26,7 +26,7 @@ function ajaxExtension(layer){
         beforeSend: function (e, xhr, o) {
             var ticket = (xhr.headers && xhr.headers.ticket);
             if (!ticket) {
-                //window.location.href = "../login.html";
+                window.location.href = "../../login.html";
             }
             load_index = layer.load(2); 
         },

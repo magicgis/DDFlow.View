@@ -11,13 +11,13 @@ ddflow base on layui
 
 
 ### 二、项目结构
-> dist ----打包后的文件夹
-> src ----源代码文件夹
-> plugins -----插件文件夹
-> css ----自定义样式文件
-> js ----自定义js文件
-> pages ----html页面
-> images ----图片
+>- dist ----打包后的文件夹
+>- src ----源代码文件夹
+>- plugins -----插件文件夹
+>- css ----自定义样式文件
+>- js ----自定义js文件
+>- pages ----html页面
+>- images ----图片
 
 
 ### 三、项目如何运行
