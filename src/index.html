@@ -23,7 +23,7 @@
                     <a href="javascript:;">流程管理</a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="">新建流程</a>
+                            <a data-href="/pages/processInit/InitProcess.html">新建流程</a>
                         </dd>
                         <dd>
                             <a href="">我发起的流程</a>
@@ -70,6 +70,7 @@
                     <a><cite>新建流程</cite></a>
                   </span>
             </div>
+            <iframe id="frame-content" src="" height="100%" width="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
         </div>
 
         <div class="layui-footer" style="text-align:center">
@@ -84,7 +85,14 @@
     <script>
         //JavaScript代码区域
         layui.use('element', function () {
-            var element = layui.element;
+            var element = layui.element,$=layui.$;
+            $("li.layui-nav-item dl a").on("click",function(e){
+                var that=$(this);
+                var href=that.attr("data-href");
+                var frame=$("#frame-content");
+                href && frame && frame.attr("src",href);
+                console.log(that.attr("data-href"));
+            });
 
         });
     </script>

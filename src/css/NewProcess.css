@@ -1,0 +1,102 @@
+/*
+审批路径确认
+*/
+/*发起弹框内容*/
+#confirm-initiate{
+    position:absolute;
+}
+.initiate-branch{
+   padding-left: 120px;
+}
+.branch-step{
+   height: auto;
+}
+.branch-l{
+   position: absolute;
+   width: 50px;
+   border-left: 2px solid #ddd;
+   height: 100%;
+   left: -30px;
+}
+.branch-r{
+   width: 450px;
+   position: relative;
+
+}
+.circle{
+   background: #fff;
+   padding: 5px;
+   position: absolute;
+   left: -15px;
+   top:50%;
+   margin-top:-15px;
+}
+.circle-cont{
+   background: #eee;
+   border:1px solid #ccc;
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   display: block;
+}
+.circle-triangle{
+   width: 0;
+   height: 0;
+   border-left: 3px solid transparent;
+   border-right: 3px solid transparent;
+   border-top: 5px solid #ddd;
+   position: absolute;
+   top:-3px;
+   left: 11px;
+}
+.branch-l .branch-name{
+   position: absolute;
+   right: 30px;
+   width: 130px;
+   text-align: right;
+}
+.branch-cont{
+   padding:10px 0;
+}
+.branch-cont-txt{
+   padding: 15px;
+   background: #eee;
+}
+.branch-start .circle-cont{
+   background: rgb(244,173,29);
+   border:1px solid rgb(244,173,89);
+}
+.branch-start .branch-cont-txt{
+  background: rgb(255,246,229);
+   border:1px solid #fdc864;
+}
+.branch-submit{
+
+
+   width: 100%;
+   border-top:1px solid #ddd;
+   padding: 8px 0 8px 200px;
+}
+
+.branch-list ul{
+   padding-left: 15px;
+}
+.status-list{
+   padding: 15px 0;
+}
+
+.error{
+   border:1px solid red;
+}
+label.error{
+   position:absolute;
+   color:red;
+   border:0px;
+   top:105px;
+   left:0px;
+}
+
+label
+{
+   width:100%;
+}
