@@ -2,6 +2,7 @@
  功能：工作流业务公用js
  */
 var wfutil = {
+    // 收集表单数据 --start
     getformjson: function (editDomain) {
         var editArray, formJson, inputContr, selectContr, radioContr, htmlContrs = new Array();
         if (editDomain) {
@@ -14,6 +15,9 @@ var wfutil = {
         $.map(inputContr, function (item, n) {
             var inputType = $(item).attr("type");
             var domainId=$(item).attr("id");
+            if($(item).attr("disabled")){
+                return false;
+            }
             if (inputType === "text") {
                 htmlContrs.push({
                     name: domainId,
@@ -24,6 +28,9 @@ var wfutil = {
             }
         });
         $.map(selectContr, function (item, n) {
+            if($(item).attr("disabled")){
+                return false;
+            }
             htmlContrs.push({
                 name: $(item).attr("id"),
                 value: $(item).find("option:selected").val()
@@ -31,6 +38,7 @@ var wfutil = {
         });
         return htmlContrs;
     },
+    // 收集表单数据 --end
     // 表单区域初始化 --start
     formInit: function (processGuid, bizGuid, editDomain) {
         $.ajax({
@@ -48,6 +56,6 @@ var wfutil = {
                 console.log(errorThrown);
             },
         });
-    }
+    },
     // 表单区域初始化 --end
 };

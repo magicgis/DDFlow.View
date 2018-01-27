@@ -34,7 +34,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
         var processModelGuid = $.GetUrlParam("processGuid");
         var bizGuid = $.GetUrlParam("bizGuid");
         $.ajax({
-            url: $.getConfig().apis.process + '/Process/InitProcess/'+processModelGuid,
+            url: $.getConfig().apis.process + '/Process/InitProcess/' + processModelGuid,
             method: 'post',
             data: JSON.stringify({
                 processGuid: processModelGuid,
@@ -44,6 +44,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
                 InitPageDataInfo = data.data;
                 $("input[name=processName]").val(InitPageDataInfo.processName);
                 formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, InitPageDataInfo.stepInfo.editDomain);
+                processRecordInit(InitPageDataInfo.processGuid);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -103,7 +104,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
     //注册事件和必填验证
     function initEvent() {
         validate();
-        $(".stepClick").on("click",function(){
+        $(".stepClick").on("click", function () {
             NextStep(this);
         });
         var $btnSubmitStep = $("#btnSubmitStep");
@@ -336,4 +337,50 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             },
         });
     }
+    //审批记录 --start
+    function processRecordInit(processGuid) {
+        if ($("div#div-process-status").attr("isReady")) {
+            return;
+        }
+        $.ajax({
+            url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
+            method: 'get',
+            data: {
+                processGuid: processGuid
+            },
+            success: function (data) {
+                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
+                    $("div#div-process-status").html(html);
+                    $("div#div-process-status").attr("isReady", true);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            },
+        });
+    }
+    //审批记录 --end
+    //审批记录 --start
+    function processRecordInit(processGuid) {
+        if ($("div#div-process-status").attr("isReady")) {
+            return;
+        }
+        $.ajax({
+            url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
+            method: 'get',
+            data: {
+                processGuid: processGuid
+            },
+            success: function (data) {
+                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
+                    $("div#div-process-status").html(html);
+                    $("div#div-process-status").attr("isReady", true);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            },
+        });
+    }
+    //审批记录 --end
 });

@@ -41,9 +41,9 @@
 				<li data-name="process-source">相关资源</li>
 			</ul>
 			<div class="layui-tab-content">
-				<div id="div-form"></div>
-				<div id="div-step-map" style="display:none">步骤定义</div>
-				<div id="div-process-status" style="display:none">流程状态</div>
+				<div id="div-form">加载中...</div>
+				<div id="div-step-map" style="display:none">加载中...</div>
+				<div id="div-process-status" style="display:none">加载中...</div>
 				<div></div>
 			</div>
 		</div>
@@ -69,6 +69,8 @@
 <script type="text/javascript" src="../../js/common/config.js"></script>
 <script type="text/javascript" src="../../js/common/wf.util.js"></script>
 <script type="text/javascript" src="../../js/processInit/NewProcess.js"></script>
+<script type="text/javascript" src="../../js/tpl/processHandle.js"></script>
+
 <script id="div_stepPathInfo" type="text/html">
 	<div id="confirm-initiate">
 			<div class="initiate-branch" id='dataStep_processGuid' data-id={{d.processGuid}}>

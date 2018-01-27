@@ -41,10 +41,10 @@
                 <li data-name="process-source">相关资源</li>
             </ul>
             <div class="layui-tab-content">
-                <div id="div-form"></div>
-                <div id="div-step-map" style="display:none">步骤定义</div>
-                <div id="div-process-status" style="display:none">流程状态</div>
-                <div></div>
+                <div id="div-form">加载中...</div>
+                <div id="div-step-map" style="display:none">加载中...</div>
+                <div id="div-process-status" style="display:none">加载中...</div>
+                <div id="div-process-source" style="display:none">加载中...</div>
             </div>
         </div>
         <!-- 意见 区域 start-->
@@ -75,6 +75,30 @@
                 <button class="layui-btn layui-btn-normal" data-name="btn-{{ item.id}}" data-oprType="{{ item.id}}">{{ item.name}}</button>
               {{#  }); }}
             </div>
+    </script>
+<script id="tpl_processRecord" type="text/html">
+    {{# layui.each(d,function(index,item){ }}
+    <li class="layui-timeline-item">
+            {{# if(item.status==0){ }}
+                <i class="layui-icon layui-timeline-axis layui-bg-gray"></i>
+            {{# } else if(item.status==1){ }}
+                <i class="layui-icon layui-timeline-axis layui-bg-orange"></i>
+                {{# }else{ }}
+                <i class="layui-icon layui-timeline-axis layui-bg-green"></i>
+            {{#} }}
+            <div class="layui-timeline-content layui-text">
+                <div class="record-r">
+                <h3 class="layui-timeline-title">{{item.displayName}}</h3>
+                <div class="record-handleInfo" style="height:{{item.children.length*30}}px">
+                        {{# layui.each(item.children,function(n_index,node){ }}
+                        <p class="record-auditor">{{node.displayName}} : {{node.handleText}}</p>
+                        <p class="record-time"> {{node.beginDateTime}}</p>
+                        {{#  }); }}
+                </div>
+            </div>
+            </div>
+        </li>
+        {{#  }); }}
     </script>
 
 </html>

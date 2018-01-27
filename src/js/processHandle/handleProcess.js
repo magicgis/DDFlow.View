@@ -22,7 +22,10 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
 
     //tab-content切换--start
     function showTabContent(allTab, tabName) {
-        $("div.layui-tab-content div").hide();
+        $("div.layui-tab-content>div").hide();
+        if (tabName == "process-status") {
+            processRecordInit(HandlePageDataInfo.processGuid);
+        }
         $("#div-" + tabName).show();
     }
 
@@ -90,7 +93,8 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
                     data: JSON.stringify({
                         ProcessGuid: HandlePageDataInfo.processGuid,
                         nodeGuid: HandlePageDataInfo.nodeInfo.nodeGuid,
-                        handleText: $("div[name=handle-text]").val()
+                        handleText: $("div[name=handle-text]").val(),
+                        domainJson: wfutil.getformjson(),
                     }),
                     success: function (data) {
                         if (data.code == 0)
@@ -104,4 +108,27 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             }
         });
     }
+    //审批记录 --start
+    function processRecordInit(processGuid) {
+        if($("div#div-process-status").attr("isReady")){
+            return;
+        }
+        $.ajax({
+            url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
+            method: 'get',
+            data: {
+                processGuid: processGuid
+            },
+            success: function (data) {
+                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
+                    $("div#div-process-status").html(html);
+                    $("div#div-process-status").attr("isReady",true);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            },
+        });
+    }
+    //审批记录 --end
 });

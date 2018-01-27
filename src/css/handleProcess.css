@@ -1,0 +1,31 @@
+#div-process-status{
+    margin: 15px;
+    padding: 15px;
+}
+.layui-timeline-title{
+    font-size: 16px;
+    font-weight: bold
+}
+.record-r{
+    border-bottom: 1px solid rgb(230, 230, 230);
+    padding: 5px;
+    padding-top: 0;
+}
+.record-r .record-handleInfo{
+    display: block;
+    width: 100%;
+}
+.record-handleInfo p{
+    display:inline-block; 
+    *display:inline; 
+    *zoom:1; 
+}
+.record-r .record-auditor{
+    width: 69%;
+    float: left;
+}
+.record-r .record-time{
+    text-align: right;
+    width: 30%;
+    float: right;
+}
