@@ -2,7 +2,13 @@
 全局通用js
 */
 layui.use(['layer'], function () {
+    var $ = layui.$;
     ajaxExtension(layui);
+    var authorization = $.GetUrlParam("Authorization");
+    authorization && (layui.data('application', {
+        key: 'ticket'
+        , value: authorization
+    }));
 });
 /*
 功能：ajax全局设置
@@ -21,19 +27,25 @@ function ajaxExtension(layui) {
         contentType: 'application/json;charset=UTF-8',
         cache: false,
         headers: {
-            ticket: token,
+            // ticket: token,
             device: JSON.stringify(layui.device()),
-            Authorization: access_token
+            Authorization: token
         },
         beforeSend: function (e, xhr, o) {
-            // var ticket = (xhr.headers && xhr.headers.ticket);
-            // if (!ticket) {
-            //     window.location.href = "../../login.html";
-            // }
+            var authorization = (xhr.headers && xhr.headers.Authorization);
+            if (!authorization) {
+                window.location.href = "../../login.html";
+                return;
+            }
             load_index = layer.load(2);
         },
         complete: function (e, xhr, o) {
             layer.close(load_index);
+            if (e.status != 200) {
+                layer.msg('接口异常，请联系管理员。', { icon: 2 }, function () {
+                    console.log(e);
+                });
+            }
         }
     });
     /*

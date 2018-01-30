@@ -29,7 +29,7 @@ gulp.task('js',function() {
 });
 
 gulp.task('css', function () {
-    gulp.src('src/css/*.css')
+    gulp.src('src/**/*.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('dist/css'))
 })

@@ -10,28 +10,41 @@
 	<link rel="stylesheet" type="text/css" href="../../css/login.css">
 	<link rel="stylesheet" href="../../plugins/jstree/themes/default/style.min.css" />
 	<link rel="stylesheet" type="text/css" href="../../css/processCommon.css">
+	<link rel="stylesheet" type="text/css" href="../../css/initProcess.css">
 </head>
 
 <body class="layui-body">
 	<div class="layui-container">
-		<div class="layui-row">
+		<div class="layui-row layui-col-space8">
 			<div class="layui-col-md3">
-					<!-- <blockquote class="layui-elem-quote">流程分类</blockquote> -->
+				<div class="tree-kind">
+					<blockquote class="layui-elem-quote tree-title">流程分类</blockquote>
 					<div id="tree_processkind"></div>
+				</div>
 			</div>
 			<div class="layui-col-md9">
-				你的内容 9/12
+				<div class="tree-kind">
+					<blockquote class="layui-elem-quote tree-title">流程模版</blockquote>
+					<div class="div_processModel"></div>
+				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- <table id="table-processmodel" lay-filter="test"></table> -->
 </body>
 <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
 <script type="text/javascript" src="../../plugins/jQuery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="../../js/common/global.js"></script>
 <script type="text/javascript" src="../../js/common/config.js"></script>
 <script src="../../plugins/jstree/jstree.min.js"></script>
-<script type="text/javascript" src="../../js/processInit/InitProcess.js"></script>
+<script type="text/javascript" src="../../js/processInit/initProcess.js"></script>
+<script id="tpl_processModel" type="text/html">
+	<ul class="ul-process-card">
+	{{#  layui.each(d, function(index, item){ }}
+	<a href="javascript:void(0);">	
+		<li data-processGuid="{{item.processGuid}}">{{item.processName}}</li>
+	</a>
+	{{#  }); }}
+	</ul>
+</script>
 
 </html>

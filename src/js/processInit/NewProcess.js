@@ -1,10 +1,11 @@
 /*
 功能：发起审批
 */
-layui.use(['layer', 'table', 'element', 'laytpl'], function () {
+layui.use(['layer', 'table', 'element', 'laytpl', 'form'], function () {
     var element = layui.element,
         $ = layui.$, layer = layui.layer,
-        InitPageDataInfo, laytpl = layui.laytpl;
+        InitPageDataInfo, laytpl = layui.laytpl,
+        form = layui.form;
     // tab点击切换事件绑定
     element.on('tab(tab-fromContent)', function (data) {
         var index = data.index;
@@ -12,7 +13,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
         var selectedTab = allTab.find("li")[index];
         var tabName = $(selectedTab).attr("data-name");
         //content显示切换
-        showTabContent(allTab, tabName);
+        wfutil.showTabContent(laytpl, allTab, tabName, InitPageDataInfo.processGuid);
     });
 
     //页面初始化--start
@@ -21,13 +22,6 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
         bindEvent();
     });
     //页面初始化--end
-
-    //tab-content切换--start
-    function showTabContent(allTab, tabName) {
-        $("div.layui-tab-content div").hide();
-        $("#div-" + tabName).show();
-    }
-    //tab-content切换--end
 
     // 页面初始化 --start
     function pageInit() {
@@ -43,8 +37,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             success: function (data) {
                 InitPageDataInfo = data.data;
                 $("input[name=processName]").val(InitPageDataInfo.processName);
-                formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, InitPageDataInfo.stepInfo.editDomain);
-                processRecordInit(InitPageDataInfo.processGuid);
+                wfutil.formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, InitPageDataInfo.stepInfo.editDomain);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -53,16 +46,11 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
     }
     // 页面初始化 --end
 
-    // 表单区域初始化 --start
-    function formInit(processGuid, bizGuid, EditDomain) {
-        wfutil.formInit(processGuid, bizGuid, EditDomain);
-    }
-    // 表单区域初始化 --end
-
     // 按钮组事件绑定
     function bindEvent() {
         $(".layui-btn-group button").on("click", function (e) {
             var btn = $(this);
+            var oprName = btn.attr("data-oprType");
             switch (btn.attr("data-name")) {
                 case "btn-init":
                     oprInit();
@@ -72,7 +60,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
     }
     //发起按钮事件
     function oprInit() {
-        var domain = wfutil.getformjson();
+        //TODO:valid
         getRoute(InitPageDataInfo.processGuid, '00000000-0000-0000-0000-000000000000');
     }
     //获取stepPathInfo
@@ -86,12 +74,17 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
                 domainJson: wfutil.getformjson(),
             }),
             success: function (data) {
-                laytpl(div_stepPathInfo.innerHTML).render(data.data, function (html) {
+                laytpl(tpl_stepPathInfo.innerHTML).render(data.data, function (html) {
+                    $("#div_stepPathInfo").html(html);
                     layer.open({
                         type: 1,
                         title: '请确认流程路径',
-                        area: ['800px', '500px'],
-                        content: html,
+                        area: ['650px', '500px'],
+                        content: $("#div_stepPathInfo"),
+                        btn: ['提交', '取消'],
+                        btn1: function (index, layero) {
+                            CommitStepPath();
+                        }
                     });
                 });
                 initEvent();
@@ -110,84 +103,7 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
         var $btnSubmitStep = $("#btnSubmitStep");
         if ($btnSubmitStep.length <= 0) return;
         $btnSubmitStep.click(function () {
-            var steps = [];
-            var processGuid = $("#dataStep_processGuid").attr("data-id");
-            var processName = $("input[name=processName]").val();//流程标题
-            var handleText = $("input[name=handle-text]").val();//意见
-            var isVailt = true;
-            $(".branch-name").each(function (k, item) {
-                var $that = $(this);
-                var auditors = [];//审批人
-                var stepGuid = $that.attr("data-value");
-                var stepText = $that.text();
-                var id = $that.attr("id");
-                if (stepGuid && stepGuid.length > 0) {
-
-                    //开始找所选的审批人
-                    var $branchcount = $($that).closest(".branch-r");
-                    var filterClass = '.user' + stepGuid;
-                    var $userControl = $branchcount.find(filterClass).first();
-                    var isMulti = $userControl.attr("data-isMulti");//审批人选取方式，单选，多选，不用选
-                    isMulti = isMulti == undefined ? "999" : isMulti;
-                    if (isMulti == "1") {
-                        var checkboxs = $userControl.find("input[type=checkbox]:checked");
-                        if (checkboxs.length == 0) {
-                            isVailt = false;
-                            tipClass(stepText);
-
-                            return false;
-
-                        }
-                        checkboxs.each(function (i, item) {
-                            auditors.push(
-                                {
-                                    auditorGuid: $.trim($(this).attr("data-value")),
-                                    auditorName: $.trim($(this).attr("data-name"))
-                                })
-                        })
-                    } else if (isMulti == "0") {
-                        var $radio = $userControl.find("input[type=radio]:checked");
-                        if ($radio.length == 0) {
-                            tipClass(stepText);
-                            isVailt = false;
-                            return false;
-                        }
-                        //单选了
-                        auditors.push(
-                            {
-                                auditorGuid: $.trim($radio.attr("data-value")),
-                                auditorName: $.trim($radio.attr("data-name"))
-                            })
-                    }
-                    else {
-                        var $label = $($userControl.find("label")[1]);
-                        auditors.push(
-                            {
-                                auditorGuid: $.trim($label.attr("data-value")),
-                                auditorName: $.trim($label.text())
-                            })
-                    }
-                    steps.push({
-                        stepGuid: stepGuid,
-                        auditors: auditors
-                    })
-                } else {
-                    tip(id);
-                    isVailt = false;
-                    return false;
-                }
-            });
-            if (isVailt) {
-                var submitJson =
-                    {
-                        processGuid: processGuid,
-                        processName: processName,
-                        handleText: handleText,
-                        steps: steps,
-                        domainJson: wfutil.getformjson(InitPageDataInfo.stepInfo.editDomain),
-                    };
-                Submit(submitJson);
-            }
+            CommitStepPath();
         })
     }
     //步骤对应选人提示框
@@ -337,50 +253,87 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             },
         });
     }
-    //审批记录 --start
-    function processRecordInit(processGuid) {
-        if ($("div#div-process-status").attr("isReady")) {
-            return;
-        }
-        $.ajax({
-            url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
-            method: 'get',
-            data: {
-                processGuid: processGuid
-            },
-            success: function (data) {
-                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
-                    $("div#div-process-status").html(html);
-                    $("div#div-process-status").attr("isReady", true);
-                });
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(errorThrown);
-            },
-        });
+    //确认路径页面提交按钮事件 ---start
+    function CommitStepPath()
+    {
+        var steps = [];
+            var processGuid = $("#dataStep_processGuid").attr("data-id");
+            var processName = $("input[name=processName]").val();//流程标题
+            var handleText = $("input[name=handle-text]").val();//意见
+            var isVailt = true;
+            $(".branch-name").each(function (k, item) {
+                var $that = $(this);
+                var auditors = [];//审批人
+                var stepGuid = $that.attr("data-value");
+                var stepText = $that.text();
+                var id = $that.attr("id");
+                if (stepGuid && stepGuid.length > 0) {
+
+                    //开始找所选的审批人
+                    var $branchcount = $($that).closest(".branch-r");
+                    var filterClass = '.user' + stepGuid;
+                    var $userControl = $branchcount.find(filterClass).first();
+                    var isMulti = $userControl.attr("data-isMulti");//审批人选取方式，单选，多选，不用选
+                    isMulti = isMulti == undefined ? "999" : isMulti;
+                    if (isMulti == "1") {
+                        var checkboxs = $userControl.find("input[type=checkbox]:checked");
+                        if (checkboxs.length == 0) {
+                            isVailt = false;
+                            tipClass(stepText);
+
+                            return false;
+
+                        }
+                        checkboxs.each(function (i, item) {
+                            auditors.push(
+                                {
+                                    auditorGuid: $.trim($(this).attr("data-value")),
+                                    auditorName: $.trim($(this).attr("data-name"))
+                                })
+                        })
+                    } else if (isMulti == "0") {
+                        var $radio = $userControl.find("input[type=radio]:checked");
+                        if ($radio.length == 0) {
+                            tipClass(stepText);
+                            isVailt = false;
+                            return false;
+                        }
+                        //单选了
+                        auditors.push(
+                            {
+                                auditorGuid: $.trim($radio.attr("data-value")),
+                                auditorName: $.trim($radio.attr("data-name"))
+                            })
+                    }
+                    else {
+                        var $label = $($userControl.find("label")[1]);
+                        auditors.push(
+                            {
+                                auditorGuid: $.trim($label.attr("data-value")),
+                                auditorName: $.trim($label.text())
+                            })
+                    }
+                    steps.push({
+                        stepGuid: stepGuid,
+                        auditors: auditors
+                    })
+                } else {
+                    tip(id);
+                    isVailt = false;
+                    return false;
+                }
+            });
+            if (isVailt) {
+                var submitJson =
+                    {
+                        processGuid: processGuid,
+                        processName: processName,
+                        handleText: handleText,
+                        steps: steps,
+                        domainJson: wfutil.getformjson(InitPageDataInfo.stepInfo.editDomain),
+                    };
+                Submit(submitJson);
+            }
     }
-    //审批记录 --end
-    //审批记录 --start
-    function processRecordInit(processGuid) {
-        if ($("div#div-process-status").attr("isReady")) {
-            return;
-        }
-        $.ajax({
-            url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
-            method: 'get',
-            data: {
-                processGuid: processGuid
-            },
-            success: function (data) {
-                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
-                    $("div#div-process-status").html(html);
-                    $("div#div-process-status").attr("isReady", true);
-                });
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(errorThrown);
-            },
-        });
-    }
-    //审批记录 --end
+    //确认路径页面提交按钮事件 ---end
 });

@@ -3,7 +3,7 @@
 */
 /*发起弹框内容*/
 #confirm-initiate{
-    position:absolute;
+    margin-top: 15px;
 }
 .initiate-branch{
    padding-left: 120px;

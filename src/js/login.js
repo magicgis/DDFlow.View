@@ -9,14 +9,15 @@ layui.use(['layer', 'form'], function () {
   //监听提交
   form.on('submit(btn_login)', function (data) {
     $.ajax({
-      url: $.getConfig().apis.process + "/test",
-      data: JSON.stringify(data.field),
+      method: "get",
+      url: $.getConfig().apis.process + "/User/Login",
+      data: data.field,
       success: function (d) {
-        console.log(d);
         layui.data('application', {
           key: 'ticket'
-          ,value: '1qaz7410'
+          , value: d.data.token_type + " " + d.data.access_token
         });
+        window.location.href="index.html";
       }
     });
 

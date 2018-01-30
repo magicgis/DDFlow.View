@@ -27,3 +27,41 @@ div.div-opinion{
     bottom: 5px;
     width: 95%;
 }
+.tree-kind{
+    border: 1px solid #dedede;
+    min-height: 580px;
+    }
+    .tree-title{
+        padding: 6px;
+        border: none;
+        /* border-bottom: 1px solid #dedede; */
+        margin-bottom: 0px;
+    }
+    .layui-table-view{
+        margin: 0px;
+        border: none;
+    }
+    .div_processList{
+        margin: 0;
+    }
+    div.table-search{
+        margin: 2px;
+    }
+    div.table-search .layui-form-label{
+        padding: 0px;
+        padding-top: 6px;
+        text-align: center;
+    }
+    div.table-search .layui-input-block{
+        margin-left: 80px;
+    }
+    input[name=txt_processName]{
+        width: auto;
+        display: inline-block;
+        width: 260px;
+        height: 30px;       
+        margin-top: 2px;
+    }
+    .float-r{
+        float: right;
+    }

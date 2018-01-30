@@ -1,0 +1,10 @@
+.ul-process-card{
+    margin: 5px;
+}
+ul.ul-process-card li{
+    padding: 15px;
+    margin: 5px;
+    width: 20%;
+    float: left;
+    border: 1px solid #1E9FFF;
+}
