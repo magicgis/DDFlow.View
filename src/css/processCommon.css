@@ -9,14 +9,11 @@ input[name=processName] {
     width: 85%;
 }
 
-.layui-body {
-    /* padding: 15px 0; */
-}
-
 .layui-tab-content #div-form {
     padding-top: 20px;
     width: 98%;
     margin: 0 auto;
+    margin-bottom: 40px;
 }
 
 .btn-group {
@@ -26,12 +23,12 @@ input[name=processName] {
 div.div-opinion {
     position: fixed;
     bottom: 5px;
-    width: 95%;
+    width: 1130px;
     z-index: 9999;
 }
 
 div.div-opinion input[name=handle-text] {
-    width: 86%;
+    width: 99%;
 }
 
 .tree-kind {
@@ -111,32 +108,42 @@ input[name=txt_processName] {
     color: #1E9FFF;
 }
 
-div.layui-form-ex table td {
+div.layui-form-ex {
     font-size: 15px;
 }
 
-div.layui-form-ex table td input {
+div.layui-form-ex .layui-form-item {
+    margin-bottom: 10px;
+}
+
+div.layui-form-ex input {
     height: 27px;
 }
 
-div.layui-form-ex table td .layui-form-radio>i {
+div.layui-form-ex .layui-form-radio>i {
     font-size: 19px;
 }
 
-div.layui-form-ex table td .layui-form-label {
-    padding: 9px 15px;
-    width: 115px;
+div.layui-form-ex .layui-form-label {
+    padding: 9px 2px;
+    width: 100px;
+    padding-top: 4px;
 }
 
-div.layui-form-ex table td .layui-form-select {
+div.layui-form-ex .layui-form-select {
     width: 98%;
     margin: 0 auto;
 }
 
-div.layui-form-ex table td .layui-form-radio>i {
+div.layui-form-ex .layui-form-radio>i {
     margin-right: 4px;
 }
 
-div.layui-form-ex table td .layui-form-radio {
+div.layui-form-ex .layui-form-radio {
     padding-right: 1px;
+    margin-top: 1px;
+}
+
+div.layui-form-ex .layui-field-title legend {
+    font-weight: 400
 }

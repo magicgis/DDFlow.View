@@ -1,25 +1,28 @@
 /**
  功能：流程审批
  */
-layui.use(['layer', 'table', 'element', 'laytpl'], function () {
+layui.use(['layer', 'table', 'element', 'laytpl', 'laydate'], function() {
     var element = layui.element,
-        $ = layui.$, layer = layui.layer,
-        HandlePageDataInfo, laytpl = layui.laytpl;
+        $ = layui.$,
+        layer = layui.layer,
+        HandlePageDataInfo, laytpl = layui.laytpl,
+        form = layui.form,
+        laydate = layui.laydate;;
 
     // tab点击切换事件绑定
-    element.on('tab(tab-fromContent)', function (data) {
+    element.on('tab(tab-fromContent)', function(data) {
         var index = data.index;
         var allTab = $(data.elem);
         var selectedTab = allTab.find("li")[index];
         var tabName = $(selectedTab).attr("data-name");
-        var that=$(this);
-        
+        var that = $(this);
+
         //content显示切换
-        wfutil.showTabContent(that,laytpl,allTab, tabName,HandlePageDataInfo.processGuid);
-        that.attr("isReady",true);
+        wfutil.showTabContent(that, laytpl, allTab, tabName, HandlePageDataInfo.processGuid);
+        that.attr("isReady", true);
     });
     //页面渲染完成后加载
-    $(function () {
+    $(function() {
         PageInit();
     });
 
@@ -33,10 +36,10 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             type: 'get',
             data: {},
             contentType: 'application/json',
-            success: function (data) {
+            success: function(data) {
                 HandlePageDataInfo = data.data;
 
-                if (HandlePageDataInfo.pageStatus == "View") {//如果不是试图，隐藏 意见文本
+                if (HandlePageDataInfo.pageStatus == "View") { //如果不是试图，隐藏 意见文本
                     $("div.div-opinion").hide();
                 } else {
                     $("div.div-opinion").show();
@@ -45,9 +48,15 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
                 $("input[name=processName]").val(HandlePageDataInfo.processName)
                     .attr("readonly", true);
                 // 审批表单
-                wfutil.formInit(HandlePageDataInfo.processGuid, HandlePageDataInfo.bizGuid, HandlePageDataInfo.stepInfo.editDomain);
+                wfutil.formInit(HandlePageDataInfo.processGuid, HandlePageDataInfo.bizGuid, HandlePageDataInfo.stepInfo.editDomain, function() {
+                    form.render(); //更新全部         
+                    laydate.render({
+                        elem: '#成立时间',
+                        value: new Date(),
+                    });
+                });
                 // 渲染按鈕組
-                laytpl(tpl_btngroup.innerHTML).render(HandlePageDataInfo.buttonList, function (html) {
+                laytpl(tpl_btngroup.innerHTML).render(HandlePageDataInfo.buttonList, function(html) {
                     $("div.btn-group").html(html);
                 });
                 //按鈕事件綁定
@@ -65,18 +74,18 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
             url: $.api.domain + '/Process/ProcessReturn',
             method: 'post',
             data: JSON.stringify({ ProcessId: processGuid, NodeGuid: nodeGuid, ToStepId: toStepId, HandleText: opinion, isAgain: isAgain }),
-            success: function (data) {
+            success: function(data) {
                 if (data.code == 0)
                     window.location.href = 'flowcheck.html?processGuid=' + processGuid + "&nodeGuid=" + nodeGuid;
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
     }
     //事件綁定
     function InitEvent() {
-        $("div.layui-btn-group button").on("click", function () {
+        $("div.layui-btn-group button").on("click", function() {
             var that = $(this);
             var oprName = that.attr("data-oprType");
             if (oprName === "approve") {
@@ -90,11 +99,11 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
                         handleText: $("input[name=handle-text]").val(),
                         domainJson: wfutil.getformjson(),
                     }),
-                    success: function (data) {
+                    success: function(data) {
                         if (data.code == 0)
                             window.location.reload();
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(errorThrown);
                     },
                 });
