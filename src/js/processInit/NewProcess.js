@@ -1,13 +1,15 @@
 /*
 功能：发起审批
 */
-layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function () {
+layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function() {
     var element = layui.element,
-        $ = layui.$, layer = layui.layer,
+        $ = layui.$,
+        layer = layui.layer,
         InitPageDataInfo, laytpl = layui.laytpl,
-        form = layui.form, laydate = layui.laydate;
+        form = layui.form,
+        laydate = layui.laydate;
     // tab点击切换事件绑定
-    element.on('tab(tab-fromContent)', function (data) {
+    element.on('tab(tab-fromContent)', function(data) {
         var index = data.index;
         var allTab = $(data.elem);
         var selectedTab = allTab.find("li")[index];
@@ -20,7 +22,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
     });
 
     //页面初始化--start
-    $(function () {
+    $(function() {
         pageInit();
         bindEvent();
     });
@@ -37,18 +39,18 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                 processGuid: processModelGuid,
                 bizGuid: bizGuid
             }),
-            success: function (data) {
+            success: function(data) {
                 InitPageDataInfo = data.data;
                 $("input[name=processName]").val(InitPageDataInfo.processName);
-                wfutil.formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, 'all', function () {
+                wfutil.formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, 'all', function() {
                     form.render(); //更新全部         
                     laydate.render({
                         elem: '#成立时间',
-                        value:new Date(),
-                      });           
+                        value: new Date(),
+                    });
                 });
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -57,7 +59,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
 
     // 按钮组事件绑定
     function bindEvent() {
-        $(".layui-btn-group button").on("click", function (e) {
+        $(".layui-btn-group button").on("click", function(e) {
             var btn = $(this);
             var oprName = btn.attr("data-oprType");
             switch (btn.attr("data-name")) {
@@ -82,8 +84,8 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                 StepId: stepGuid,
                 domainJson: wfutil.getformjson(),
             }),
-            success: function (data) {
-                laytpl(tpl_stepPathInfo.innerHTML).render(data.data, function (html) {
+            success: function(data) {
+                laytpl(tpl_stepPathInfo.innerHTML).render(data.data, function(html) {
                     $("#div_stepPathInfo").html(html);
                     layer.open({
                         type: 1,
@@ -91,14 +93,14 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                         area: ['650px', '500px'],
                         content: $("#div_stepPathInfo"),
                         btn: ['提交', '取消'],
-                        btn1: function (index, layero) {
+                        btn1: function(index, layero) {
                             CommitStepPath();
                         }
                     });
                 });
                 initEvent();
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -106,12 +108,12 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
     //注册事件和必填验证
     function initEvent() {
         validate();
-        $(document).on("click", ".stepClick", function () {
+        $(document).on("click", ".stepClick", function() {
             NextStep(this);
         });
         var $btnSubmitStep = $("#btnSubmitStep");
         if ($btnSubmitStep.length <= 0) return;
-        $btnSubmitStep.click(function () {
+        $btnSubmitStep.click(function() {
             CommitStepPath();
         })
     }
@@ -122,6 +124,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
             anim: 6
         });
     }
+
     function tip(id) {
         layer.tips('请选步骤', '#' + id, {
             tips: 2
@@ -135,10 +138,10 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
     }
     //开启验证
     function validate() {
-        $("input,textarea").filter(function (i, item) {
+        $("input,textarea").filter(function(i, item) {
             var that = this;
             if ($(that).attr("required")) {
-                $(that).blur(function () {
+                $(that).blur(function() {
                     if ($(that).val() != '') {
                         $(that).next("label").remove();
                         $(that).removeClass("error");
@@ -158,7 +161,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
         $(e).closest(".branch-step").nextAll().remove();
 
         var processGuid = $("#dataStep_processGuid").attr("data-id");
-        var val = $(e).val();//当前点击按钮的value
+        var val = $(e).val(); //当前点击按钮的value
         var data_title = $(e).attr("data-title");
         var id = $(e).attr("data-id");
         $("#" + data_title).text(val).attr("data-value", id);
@@ -170,7 +173,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                 StepId: stepId,
                 domainJson: wfutil.getformjson(),
             }),
-            success: function (data) {
+            success: function(data) {
                 result = data.data.steps;
                 //如果只有一条数据，并且relationSteps 没有数据，说明流程结束
                 if (result.length == 1 && result[0].relationSteps.length == 0)
@@ -181,30 +184,30 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
 
                 var nextStepHtml = '';
 
-                $.each(result, function (i, item) {
+                $.each(result, function(i, item) {
                     var title = item.stepRuteNotUnique ? '' : item.stepName;
                     var id = item.stepRuteNotUnique ? '' : item.stepGuid;
                     nextStepHtml += '<div class="branch-step nextStep">\
                         <div class="branch-r">\
                             <div class="branch-l">\
-                                <div class="circle"><div class="branch-name" data-value="'+ id + '"  id="radio' + item.stepGuid + '">' + title + '</div><i class="circle-triangle"></i><span class="circle-cont"></span></div>\
+                                <div class="circle"><div class="branch-name" data-value="' + id + '"  id="radio' + item.stepGuid + '">' + title + '</div><i class="circle-triangle"></i><span class="circle-cont"></span></div>\
                             </div>\
                             <div class="branch-cont">\
                             <div class="branch-cont-txt">';
                     //判断
                     if (item.stepRuteNotUnique) {
                         //说明有下级
-                        $.each(item.relationSteps, function (j, relationSteps) {
+                        $.each(item.relationSteps, function(j, relationSteps) {
                             nextStepHtml += '<div class="branch-list">\
                         <div class="radio">\
                             <label class="fileValue">\
-                                <input type="radio" class="stepClick tip'+ item.stepGuid + '"   data-title="radio' + item.stepGuid + '"   data-name="' + relationSteps.stepName + '" data-type="' + relationSteps.stepType + '" data-id="' + relationSteps.stepGuid + '" name="parent' + item.stepGuid + '"   value="' + relationSteps.stepName + '">\
-                            '+ relationSteps.stepName + '\
+                                <input type="radio" class="stepClick tip' + item.stepGuid + '"   data-title="radio' + item.stepGuid + '"   data-name="' + relationSteps.stepName + '" data-type="' + relationSteps.stepType + '" data-id="' + relationSteps.stepGuid + '" name="parent' + item.stepGuid + '"   value="' + relationSteps.stepName + '">\
+                            ' + relationSteps.stepName + '\
                             </label>\
                          </div>';
                             var isMulti = relationSteps.isMulti == null ? 999 : relationSteps.isMulti
                             nextStepHtml += '<ul data-isMulti="' + isMulti + '" class="user' + relationSteps.stepGuid + '">';
-                            $.each(relationSteps.auditors, function (k, auditors) {
+                            $.each(relationSteps.auditors, function(k, auditors) {
                                 nextStepHtml += '<li><label data-isMulti="' + relationSteps.isMulti + '">';
                                 if (relationSteps.isMulti == "1")
                                     nextStepHtml += ' <input type="checkbox" data-parent="' + relationSteps.stepGuid + '" data-name="' + auditors.auditorName + '" data-value="' + auditors.auditorGuid + '" class="ckb' + relationSteps.stepGuid + '"/>' + auditors.auditorName;
@@ -222,7 +225,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                         var isMulti = item.isMulti == null ? 999 : item.isMulti
                         nextStepHtml += '<div class="user' + item.stepGuid + '"  data-isMulti="' + isMulti + '">';
                         var ismulti = item.isMulti == null ? 999 : item.isMulti;
-                        $.each(item.auditors, function (j, user) {
+                        $.each(item.auditors, function(j, user) {
                             nextStepHtml += '<label data-isMulti="' + ismulti + '">';
                             if (item.isMulti == 1)
                                 nextStepHtml += ' <input type="checkbox" data-name="' + user.auditorName + '" data-value="' + user.auditorGuid + '" class="ckb' + item.stepGuid + '"/>' + user.auditorName;
@@ -241,7 +244,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
 
                 $("#dataStep_processGuid").append($(nextStepHtml));
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -252,12 +255,12 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
             url: $.getConfig().apis.process + '/Process/CreateStepPath',
             method: 'post',
             data: JSON.stringify(data),
-            success: function (result) {
+            success: function(result) {
                 if (result && result.code == 0) {
                     window.location.href = '../processHandle/handleProcess.html?processGuid=' + result.data.processGuid + "&nodeGuid=" + result.data.nodeGuid;
                 }
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -266,12 +269,12 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
     function CommitStepPath() {
         var steps = [];
         var processGuid = $("#dataStep_processGuid").attr("data-id");
-        var processName = $("input[name=processName]").val();//流程标题
-        var handleText = $("input[name=handle-text]").val();//意见
+        var processName = $("input[name=processName]").val(); //流程标题
+        var handleText = $("input[name=handle-text]").val(); //意见
         var isVailt = true;
-        $(".branch-name").each(function (k, item) {
+        $(".branch-name").each(function(k, item) {
             var $that = $(this);
-            var auditors = [];//审批人
+            var auditors = []; //审批人
             var stepGuid = $that.attr("data-value");
             var stepText = $that.text();
             var id = $that.attr("id");
@@ -281,7 +284,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                 var $branchcount = $($that).closest(".branch-r");
                 var filterClass = '.user' + stepGuid;
                 var $userControl = $branchcount.find(filterClass).first();
-                var isMulti = $userControl.attr("data-isMulti");//审批人选取方式，单选，多选，不用选
+                var isMulti = $userControl.attr("data-isMulti"); //审批人选取方式，单选，多选，不用选
                 isMulti = isMulti == undefined ? "999" : isMulti;
                 if (isMulti == "1") {
                     var checkboxs = $userControl.find("input[type=checkbox]:checked");
@@ -292,12 +295,11 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                         return false;
 
                     }
-                    checkboxs.each(function (i, item) {
-                        auditors.push(
-                            {
-                                auditorGuid: $.trim($(this).attr("data-value")),
-                                auditorName: $.trim($(this).attr("data-name"))
-                            })
+                    checkboxs.each(function(i, item) {
+                        auditors.push({
+                            auditorGuid: $.trim($(this).attr("data-value")),
+                            auditorName: $.trim($(this).attr("data-name"))
+                        })
                     })
                 } else if (isMulti == "0") {
                     var $radio = $userControl.find("input[type=radio]:checked");
@@ -307,19 +309,16 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
                         return false;
                     }
                     //单选了
-                    auditors.push(
-                        {
-                            auditorGuid: $.trim($radio.attr("data-value")),
-                            auditorName: $.trim($radio.attr("data-name"))
-                        })
-                }
-                else {
+                    auditors.push({
+                        auditorGuid: $.trim($radio.attr("data-value")),
+                        auditorName: $.trim($radio.attr("data-name"))
+                    })
+                } else {
                     var $label = $($userControl.find("label")[1]);
-                    auditors.push(
-                        {
-                            auditorGuid: $.trim($label.attr("data-value")),
-                            auditorName: $.trim($label.text())
-                        })
+                    auditors.push({
+                        auditorGuid: $.trim($label.attr("data-value")),
+                        auditorName: $.trim($label.text())
+                    })
                 }
                 steps.push({
                     stepGuid: stepGuid,
@@ -332,14 +331,13 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function (
             }
         });
         if (isVailt) {
-            var submitJson =
-                {
-                    processGuid: processGuid,
-                    processName: processName,
-                    handleText: handleText,
-                    steps: steps,
-                    domainJson: wfutil.getformjson(InitPageDataInfo.stepInfo.editDomain),
-                };
+            var submitJson = {
+                processGuid: processGuid,
+                processName: processName,
+                handleText: handleText,
+                steps: steps,
+                domainJson: wfutil.getformjson(InitPageDataInfo.stepInfo.editDomain),
+            };
             Submit(submitJson);
         }
     }

@@ -3,7 +3,7 @@
  */
 var wfutil = {
     // 收集表单数据 --start
-    getformjson: function (editDomain) {
+    getformjson: function(editDomain) {
         var editArray, formJson, inputContr, selectContr, radioContr, htmlContrs = new Array();
         if (editDomain) {
             editArray = editDomain.split(',');
@@ -12,7 +12,7 @@ var wfutil = {
         inputContr = form.find("input[type=text]");
         radioContr = form.find("input[type=radio]");
         selectContr = form.find("select");
-        $.map(inputContr, function (item, n) {
+        $.map(inputContr, function(item, n) {
             var domainId = $(item).attr("id");
             if ($(item).attr("disabled") || !domainId) {
                 return false;
@@ -22,7 +22,7 @@ var wfutil = {
                 value: $(item).val()
             });
         });
-        $.map(radioContr, function (item, n) {
+        $.map(radioContr, function(item, n) {
             var domainId = $(item).attr("name");
             if ($(item).attr("disabled")) {
                 return false;
@@ -32,12 +32,12 @@ var wfutil = {
                 name: domainId,
                 value: checkedRadio.val()
             };
-            var inArray = $.grep(htmlContrs, function (item) { return item.name == domainId });
+            var inArray = $.grep(htmlContrs, function(item) { return item.name == domainId });
             if (checkedRadio && inArray.length == 0)
                 htmlContrs.push(radioData);
         });
-        $.map(selectContr, function (item, n) {
-            var name=$(item).attr("id");
+        $.map(selectContr, function(item, n) {
+            var name = $(item).attr("id");
             if ($(item).attr("disabled")) {
                 return false;
             }
@@ -51,7 +51,7 @@ var wfutil = {
     // 收集表单数据 --end
 
     // 表单区域初始化 --start
-    formInit: function (processGuid, bizGuid, editDomain,callBack) {
+    formInit: function(processGuid, bizGuid, editDomain, callBack) {
         $.ajax({
             url: $.getConfig().apis.form + '/Form/GetFormContent',
             method: 'get',
@@ -60,13 +60,13 @@ var wfutil = {
                 bizGuid: bizGuid,
                 editDomain: '' || editDomain
             },
-            success: function (data) {
+            success: function(data) {
                 $("div#div-form").html(data.data.list);
-                if(typeof(callBack)=="function"){
+                if (typeof(callBack) == "function") {
                     callBack();
                 }
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -74,19 +74,19 @@ var wfutil = {
     // 表单区域初始化 --end
 
     //审批记录 --start
-    processRecordInit: function (laytpl, processGuid) {
+    processRecordInit: function(laytpl, processGuid) {
         $.ajax({
             url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
             method: 'get',
             data: {
                 processGuid: processGuid
             },
-            success: function (data) {
-                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
+            success: function(data) {
+                laytpl(tpl_processRecord.innerHTML).render(data.data.list, function(html) {
                     $("div#div-process-status").html(html);
                 });
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
         });
@@ -94,7 +94,7 @@ var wfutil = {
     //审批记录 --end
 
     //tab-content切换--start
-    showTabContent: function (that, laytpl, allTab, tabName, processGuid) {
+    showTabContent: function(that, laytpl, allTab, tabName, processGuid) {
         $("div.layui-tab-content>div").hide();
         //判斷是否已經加載過
         if (!that.attr("isReady")) {
@@ -109,21 +109,21 @@ var wfutil = {
     //tab-content切换--end
 
     //步骤定义--start
-    stepMapInit: function (processGuid) {
-        $("#div-step-map").html("");
-        var prop = {
-            toolBtns: [],
-            haveHead: false,
-            headLabel: false,
-            haveTool: false,
-            haveDashed: false,
-            haveGroup: false,
-            useOperStack: true
-        };
-        stepMap = $.createGooFlow($("#div-step-map"), prop);
-        stepMap.$editable = false;
-        stepMap.loadDataAjaxEx({ type: "get", url: $.getConfig().apis.process + "/Process/GetProcessMapByProcessId/" + processGuid });
+    stepMapInit: function(processGuid) {
+            $("#div-step-map").html("");
+            var prop = {
+                toolBtns: [],
+                haveHead: false,
+                headLabel: false,
+                haveTool: false,
+                haveDashed: false,
+                haveGroup: false,
+                useOperStack: true
+            };
+            stepMap = $.createGooFlow($("#div-step-map"), prop);
+            stepMap.$editable = false;
+            stepMap.loadDataAjaxEx({ type: "get", url: $.getConfig().apis.process + "/Process/GetProcessMapByProcessId/" + processGuid });
 
-    }
-    //步骤定义--end
+        }
+        //步骤定义--end
 };

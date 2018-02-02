@@ -1,120 +1,142 @@
-html{
-    /* background-color: #f2f2f2; */
-}
-.layui-container{
+.layui-container {
     /* border: 1px solid rgb(230, 230, 230); */
     min-height: 620px;
     overflow-y: auto;
     padding: 15px;
 }
-input[name=processName]{
-    width: 85%; 
+
+input[name=processName] {
+    width: 85%;
 }
-.layui-body{
+
+.layui-body {
     padding: 15px 0;
 }
-.layui-tab-content #div-form{
+
+.layui-tab-content #div-form {
     padding-top: 20px;
     width: 98%;
     margin: 0 auto;
 }
-.btn-group{
+
+.btn-group {
     text-align: right;
 }
-div.div-opinion{
+
+div.div-opinion {
     position: fixed;
     bottom: 5px;
     width: 95%;
     z-index: 9999;
 }
-div.div-opinion input[name=handle-text]{
+
+div.div-opinion input[name=handle-text] {
     width: 86%;
 }
-.tree-kind{
+
+.tree-kind {
     border: 1px solid #dedede;
     min-height: 580px;
-    }
-    .tree-title{
-        padding: 6px;
-        border: none;
-        /* border-bottom: 1px solid #dedede; */
-        margin-bottom: 0px;
-    }
-    .layui-table-view{
-        margin: 0px;
-        border: none;
-    }
-    .div_processList{
-        margin: 0;
-    }
-    div.table-search{
-        margin: 2px;
-    }
-    div.table-search .layui-form-label{
-        padding: 0px;
-        padding-top: 6px;
-        text-align: center;
-    }
-    div.table-search .layui-input-block{
-        margin-left: 80px;
-    }
-    input[name=txt_processName]{
-        width: auto;
-        display: inline-block;
-        width: 260px;
-        height: 30px;       
-        margin-top: 2px;
-    }
-    .float-r{
-        float: right;
-    }
-    .processTitle-label{
-        font-size: 16px;
-        color: #1E9FFF;
-        padding-left: 18px;
-        padding-right: 0;
-    }
-    .processName-div{
-        margin-left: 0;
-    }
-    .processName-div input{
-        border: none;
-        padding-left: 0;
-        line-height: 38px;
-    }
-    #div-step-map{
-        width: 95%;
-        height: 62%;
-    }
-    .layui-tab-content {
-        min-height: 560px;
-    }
-    .wf-label{
-        color: #1E9FFF;
-    }
-    div.layui-form-ex{
+}
 
-    }
-    div.layui-form-ex table td {
-        font-size: 15px;
-    }
-    div.layui-form-ex table td input{
-        height: 27px;
-    }
-    div.layui-form-ex table td .layui-form-radio>i{
-        font-size: 19px;
-    }
-    div.layui-form-ex table td .layui-form-label{
-        padding: 9px 15px; 
-        width: 115px;
-    }
-    div.layui-form-ex table td .layui-form-select{
-        width: 98%;
-        margin: 0 auto;
-    }
-    div.layui-form-ex table td .layui-form-radio>i{
-        margin-right: 4px;
-    }
-    div.layui-form-ex table td .layui-form-radio{
-        padding-right: 1px;
-    }
+.tree-title {
+    padding: 6px;
+    border: none;
+    /* border-bottom: 1px solid #dedede; */
+    margin-bottom: 0px;
+}
+
+.layui-table-view {
+    margin: 0px;
+    border: none;
+}
+
+.div_processList {
+    margin: 0;
+}
+
+div.table-search {
+    margin: 2px;
+}
+
+div.table-search .layui-form-label {
+    padding: 0px;
+    padding-top: 6px;
+    text-align: center;
+}
+
+div.table-search .layui-input-block {
+    margin-left: 80px;
+}
+
+input[name=txt_processName] {
+    width: auto;
+    display: inline-block;
+    width: 260px;
+    height: 30px;
+    margin-top: 2px;
+}
+
+.float-r {
+    float: right;
+}
+
+.processTitle-label {
+    font-size: 16px;
+    color: #1E9FFF;
+    padding-left: 18px;
+    padding-right: 0;
+}
+
+.processName-div {
+    margin-left: 0;
+}
+
+.processName-div input {
+    border: none;
+    padding-left: 0;
+    line-height: 38px;
+}
+
+#div-step-map {
+    width: 95%;
+    height: 62%;
+}
+
+.layui-tab-content {
+    min-height: 560px;
+}
+
+.wf-label {
+    color: #1E9FFF;
+}
+
+div.layui-form-ex table td {
+    font-size: 15px;
+}
+
+div.layui-form-ex table td input {
+    height: 27px;
+}
+
+div.layui-form-ex table td .layui-form-radio>i {
+    font-size: 19px;
+}
+
+div.layui-form-ex table td .layui-form-label {
+    padding: 9px 15px;
+    width: 115px;
+}
+
+div.layui-form-ex table td .layui-form-select {
+    width: 98%;
+    margin: 0 auto;
+}
+
+div.layui-form-ex table td .layui-form-radio>i {
+    margin-right: 4px;
+}
+
+div.layui-form-ex table td .layui-form-radio {
+    padding-right: 1px;
+}

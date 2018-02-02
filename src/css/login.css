@@ -1,8 +1,9 @@
-#form_login{
-	    width: 350px;
+#form_login {
+    width: 350px;
     margin: 20% auto;
 }
-button[name='btn_login']{
-margin: 0 auto;
-width: 300px;
+
+button[name='btn_login'] {
+    margin: 0 auto;
+    width: 300px;
 }
