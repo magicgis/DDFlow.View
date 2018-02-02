@@ -32,7 +32,7 @@ GooFlow.prototype.exportDiagram=function(fileName) {
             //造出临时的IMAGE
             var context = canvas.getContext('2d');//取得画布的2d绘图上下文
             context.save();
-            var strSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="507">'
+            var strSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="'+width+'" height="'+height+'">'
                 +'<defs><style type="text/css">text{font-size:14px;line-height:1.42857143;'
                 +'font-family:"Microsoft Yahei", "Helvetica Neue", Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, Arial, sans-serif;'
                 +'}</style></defs>' + window.$("<svg>").append(window.$("#draw_demo").clone()).html() +'</svg>'; //COPY连线内容

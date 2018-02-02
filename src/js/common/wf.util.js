@@ -8,40 +8,50 @@ var wfutil = {
         if (editDomain) {
             editArray = editDomain.split(',');
         }
-        var from = $("div#div-form");
-        inputContr = from.find("input[type=text]");
-        radioContr = from.find("input[type=radio]");
-        selectContr = from.find("select");
+        var form = $("div#div-form");
+        inputContr = form.find("input[type=text]");
+        radioContr = form.find("input[type=radio]");
+        selectContr = form.find("select");
         $.map(inputContr, function (item, n) {
-            var inputType = $(item).attr("type");
             var domainId = $(item).attr("id");
+            if ($(item).attr("disabled") || !domainId) {
+                return false;
+            }
+            htmlContrs.push({
+                name: domainId,
+                value: $(item).val()
+            });
+        });
+        $.map(radioContr, function (item, n) {
+            var domainId = $(item).attr("name");
             if ($(item).attr("disabled")) {
                 return false;
             }
-            if (inputType === "text") {
-                htmlContrs.push({
-                    name: domainId,
-                    value: $(item).val()
-                });
-            } else if (inputType === "radio") {
-                var checkedRadio = radioContr.find("[name=" + domainId + "]:checked");
-            }
+            var checkedRadio = form.find("input[type=radio][name=" + domainId + "]:checked:first");
+            var radioData = {
+                name: domainId,
+                value: checkedRadio.val()
+            };
+            var inArray = $.grep(htmlContrs, function (item) { return item.name == domainId });
+            if (checkedRadio && inArray.length == 0)
+                htmlContrs.push(radioData);
         });
         $.map(selectContr, function (item, n) {
+            var name=$(item).attr("id");
             if ($(item).attr("disabled")) {
                 return false;
             }
             htmlContrs.push({
-                name: $(item).attr("id"),
+                name: name,
                 value: $(item).find("option:selected").val()
             });
         });
         return htmlContrs;
     },
     // 收集表单数据 --end
-    
+
     // 表单区域初始化 --start
-    formInit: function (processGuid, bizGuid, editDomain) {
+    formInit: function (processGuid, bizGuid, editDomain,callBack) {
         $.ajax({
             url: $.getConfig().apis.form + '/Form/GetFormContent',
             method: 'get',
@@ -52,6 +62,9 @@ var wfutil = {
             },
             success: function (data) {
                 $("div#div-form").html(data.data.list);
+                if(typeof(callBack)=="function"){
+                    callBack();
+                }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -62,9 +75,6 @@ var wfutil = {
 
     //审批记录 --start
     processRecordInit: function (laytpl, processGuid) {
-        if ($("div#div-process-status").attr("isReady")) {
-            return;
-        }
         $.ajax({
             url: $.getConfig().apis.process + '/Process/GetApprovalRecordEx/' + processGuid,
             method: 'get',
@@ -74,7 +84,6 @@ var wfutil = {
             success: function (data) {
                 laytpl(tpl_processRecord.innerHTML).render(data.data.list, function (html) {
                     $("div#div-process-status").html(html);
-                    $("div#div-process-status").attr("isReady", true);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -85,12 +94,36 @@ var wfutil = {
     //审批记录 --end
 
     //tab-content切换--start
-    showTabContent: function (laytpl,allTab, tabName,processGuid) {
+    showTabContent: function (that, laytpl, allTab, tabName, processGuid) {
         $("div.layui-tab-content>div").hide();
-        if (tabName == "process-status") {
-            this.processRecordInit(laytpl, processGuid);
+        //判斷是否已經加載過
+        if (!that.attr("isReady")) {
+            if (tabName == "process-status") {
+                this.processRecordInit(laytpl, processGuid);
+            } else if (tabName == "step-map") {
+                this.stepMapInit(processGuid);
+            }
         }
         $("#div-" + tabName).show();
+    },
+    //tab-content切换--end
+
+    //步骤定义--start
+    stepMapInit: function (processGuid) {
+        $("#div-step-map").html("");
+        var prop = {
+            toolBtns: [],
+            haveHead: false,
+            headLabel: false,
+            haveTool: false,
+            haveDashed: false,
+            haveGroup: false,
+            useOperStack: true
+        };
+        stepMap = $.createGooFlow($("#div-step-map"), prop);
+        stepMap.$editable = false;
+        stepMap.loadDataAjaxEx({ type: "get", url: $.getConfig().apis.process + "/Process/GetProcessMapByProcessId/" + processGuid });
+
     }
-     //tab-content切换--end
+    //步骤定义--end
 };

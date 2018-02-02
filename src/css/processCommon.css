@@ -12,7 +12,6 @@ input[name=processName]{
 }
 .layui-body{
     padding: 15px 0;
-    border: 1px solid rgb(230, 230, 230);
 }
 .layui-tab-content #div-form{
     padding-top: 20px;
@@ -23,9 +22,13 @@ input[name=processName]{
     text-align: right;
 }
 div.div-opinion{
-    position: absolute;
+    position: fixed;
     bottom: 5px;
     width: 95%;
+    z-index: 9999;
+}
+div.div-opinion input[name=handle-text]{
+    width: 86%;
 }
 .tree-kind{
     border: 1px solid #dedede;
@@ -64,4 +67,54 @@ div.div-opinion{
     }
     .float-r{
         float: right;
+    }
+    .processTitle-label{
+        font-size: 16px;
+        color: #1E9FFF;
+        padding-left: 18px;
+        padding-right: 0;
+    }
+    .processName-div{
+        margin-left: 0;
+    }
+    .processName-div input{
+        border: none;
+        padding-left: 0;
+        line-height: 38px;
+    }
+    #div-step-map{
+        width: 95%;
+        height: 62%;
+    }
+    .layui-tab-content {
+        min-height: 560px;
+    }
+    .wf-label{
+        color: #1E9FFF;
+    }
+    div.layui-form-ex{
+
+    }
+    div.layui-form-ex table td {
+        font-size: 15px;
+    }
+    div.layui-form-ex table td input{
+        height: 27px;
+    }
+    div.layui-form-ex table td .layui-form-radio>i{
+        font-size: 19px;
+    }
+    div.layui-form-ex table td .layui-form-label{
+        padding: 9px 15px; 
+        width: 115px;
+    }
+    div.layui-form-ex table td .layui-form-select{
+        width: 98%;
+        margin: 0 auto;
+    }
+    div.layui-form-ex table td .layui-form-radio>i{
+        margin-right: 4px;
+    }
+    div.layui-form-ex table td .layui-form-radio{
+        padding-right: 1px;
     }

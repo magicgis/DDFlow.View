@@ -24,6 +24,13 @@ layui.use(['layer'], function () {
                     object: "http://10.0.0.60:9008/api",
                 }
             },
+            online2: {
+                apis: {
+                    process: "http://10.0.0.194:9009/api",
+                    form: "http://10.0.0.194:9007/api",
+                    object: "http://10.0.0.194:9008/api",
+                }
+            },
         },
         getConfig: function () {
             return $.config[$.config.version];

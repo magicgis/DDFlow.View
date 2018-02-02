@@ -12,8 +12,11 @@ layui.use(['layer', 'table', 'element', 'laytpl'], function () {
         var allTab = $(data.elem);
         var selectedTab = allTab.find("li")[index];
         var tabName = $(selectedTab).attr("data-name");
+        var that=$(this);
+        
         //content显示切换
-        wfutil.showTabContent(laytpl,allTab, tabName,HandlePageDataInfo.processGuid);
+        wfutil.showTabContent(that,laytpl,allTab, tabName,HandlePageDataInfo.processGuid);
+        that.attr("isReady",true);
     });
     //页面渲染完成后加载
     $(function () {

@@ -7,7 +7,7 @@ layui.use(['layer'], function () {
     var authorization = $.GetUrlParam("Authorization");
     authorization && (layui.data('application', {
         key: 'ticket'
-        , value: authorization
+        , value: "bearer " + authorization
     }));
 });
 /*
@@ -20,14 +20,12 @@ function ajaxExtension(layui) {
     var layer = layui.layer, $ = layui.$;
     var load_index;
     var token = layui.data('application') && layui.data('application').ticket;
-    var access_token = "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IkZDOUFCMTNDOEI1MDgxNjJGRUUwRTNDRDc1M0UwODJFIiwiY2xpZW50X2lkIjoiMTAwMDAwMTYiLCJuYW1lIjoiOTAwOSIsIm5pY2tuYW1lIjoi5bqE5bCR5LicIiwicGhvbmVfbnVtYmVyIjoiMSIsImVtYWlsIjoiIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjE1MzEiLCJhdWQiOiJhcGkiLCJleHAiOjE1MjE3NzQxNjYsIm5iZiI6MTUxNjU5MDE2Nn0.OJVRIXOaLhtGAzgXSS5RcKbUzSxjlos-nMD7hbcw0tA";
     $.ajaxSetup({
         global: false,
         type: "POST",
         contentType: 'application/json;charset=UTF-8',
         cache: false,
         headers: {
-            // ticket: token,
             device: JSON.stringify(layui.device()),
             Authorization: token
         },
