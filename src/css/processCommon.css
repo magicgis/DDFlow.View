@@ -10,7 +10,7 @@ input[name=processName] {
 }
 
 .layui-body {
-    padding: 15px 0;
+    /* padding: 15px 0; */
 }
 
 .layui-tab-content #div-form {

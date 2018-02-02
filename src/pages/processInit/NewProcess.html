@@ -2,68 +2,67 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=1000, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>发起审批</title>
-	<link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css">
-	<link rel="stylesheet" type="text/css" href="../../css/processCommon.css">
-	<link rel="stylesheet" type="text/css" href="../../css/newProcess.css">	
-	<link href="../../plugins/GooFlow/fonts/iconflow.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1000, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发起审批</title>
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../css/processCommon.css">
+    <link rel="stylesheet" type="text/css" href="../../css/newProcess.css">
+    <link href="../../plugins/GooFlow/fonts/iconflow.css" rel="stylesheet" />
     <link href="../../plugins/GooFlow/GooFlow.css" rel="stylesheet" />
 </head>
 
 <body class="layui-body">
-	<div class="layui-container">
-		<!-- 发起页面头部 start-->
-		<div class="layui-row">
-			<div class="layui-col-md9">
-				<div class="layui-form-item">
-					<label class="layui-form-label processTitle-label">流程标题：</label>
-					<div class="layui-input-block">
-						<input type="text" name="processName" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-			</div>
-			<div class="layui-col-md3 btn-group">
-				<div class="layui-btn-group">
-					<button class="layui-btn layui-btn-normal" data-name="btn-init">发起</button>
-					<button class="layui-btn layui-btn-normal" data-name="btn-saveDraf">暂存</button>
-					<button class="layui-btn layui-btn-normal" data-name="btn-more">更多</button>
-				</div>
-			</div>
-		</div>
-		<!-- 发起页面头部 end-->
-		<!-- 中部区域 start-->
-		<div class="layui-tab layui-tab-brief" lay-filter="tab-fromContent">
-			<ul class="layui-tab-title">
-				<li class="layui-this" data-name="form">流程表单</li>
-				<li data-name="step-map">步骤定义</li>
-				<li data-name="process-status">流程状态</li>
-				<li data-name="process-source">相关资源</li>
-			</ul>
-			<div class="layui-tab-content">
-				<div id="div-form">加载中...</div>
-				<div id="div-step-map" style="display:none">加载中...</div>
-				<div id="div-process-status" style="display:none">加载中...</div>
-				<div></div>
-			</div>
-		</div>
-		<!-- 意见 区域 start-->
-		<div class="layui-row div-opinion">
-			<div class="layui-col-md12">
-				<div class="layui-form-item">
-					<label class="layui-form-label wf-label">发起意见：</label>
-					<div class="layui-input-block">
-						<input type="text" name="handle-text" required lay-verify="required" placeholder="请输入发起意见" autocomplete="off" class="layui-input"
-						 value="发起">
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 意见 区域 end-->
-	</div>
-	<!-- 中部区域 end-->
+    <div class="layui-container">
+        <!-- 发起页面头部 start-->
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <div class="layui-form-item">
+                    <label class="layui-form-label processTitle-label">流程标题：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="processName" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3 btn-group">
+                <div class="layui-btn-group">
+                    <button class="layui-btn layui-btn-normal" data-name="btn-init">发起</button>
+                    <button class="layui-btn layui-btn-normal" data-name="btn-saveDraf">暂存</button>
+                    <button class="layui-btn layui-btn-normal" data-name="btn-more">更多</button>
+                </div>
+            </div>
+        </div>
+        <!-- 发起页面头部 end-->
+        <!-- 中部区域 start-->
+        <div class="layui-tab layui-tab-brief" lay-filter="tab-fromContent">
+            <ul class="layui-tab-title">
+                <li class="layui-this" data-name="form">流程表单</li>
+                <li data-name="step-map">步骤定义</li>
+                <li data-name="process-status">流程状态</li>
+                <li data-name="process-source">相关资源</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div id="div-form">加载中...</div>
+                <div id="div-step-map" style="display:none">加载中...</div>
+                <div id="div-process-status" style="display:none">加载中...</div>
+                <div></div>
+            </div>
+        </div>
+        <!-- 意见 区域 start-->
+        <div class="layui-row div-opinion">
+            <div class="layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label wf-label">发起意见：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="handle-text" required lay-verify="required" placeholder="请输入发起意见" autocomplete="off" class="layui-input" value="发起">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 意见 区域 end-->
+    </div>
+    <!-- 中部区域 end-->
 </body>
 <div id="div_stepPathInfo" style="display:none"></div>
 <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
@@ -80,125 +79,116 @@
 <script src="../../plugins/GooFlow/GooFlow.export.js"></script>
 <script src="../../plugins/GooFlow/GooFlow.validate.js"></script>
 <script id="tpl_btngroup" type="text/html">
-	<div class="layui-btn-group">
-			{{#  layui.each(d, function(index, item){ }}
-			<button class="layui-btn layui-btn-normal" data-name="btn-{{ item.id}}" data-oprType="{{ item.id}}">{{ item.name}}</button>
-		  {{#  }); }}
-		</div>
+    <div class="layui-btn-group">
+        {{# layui.each(d, function(index, item){ }}
+        <button class="layui-btn layui-btn-normal" data-name="btn-{{ item.id}}" data-oprType="{{ item.id}}">{{ item.name}}</button> {{# }); }}
+    </div>
 </script>
 <script id="tpl_processRecord" type="text/html">
-	{{# layui.each(d,function(index,item){ }}
-		<li class="layui-timeline-item">
-				{{# if(item.status==0){ }}
-					<i class="layui-icon layui-timeline-axis layui-bg-gray"></i>
-				{{# } else if(item.status==1){ }}
-					<i class="layui-icon layui-timeline-axis layui-bg-orange"></i>
-					{{# }else{ }}
-					<i class="layui-icon layui-timeline-axis layui-bg-green"></i>
-				{{#} }}
-				<div class="layui-timeline-content layui-text">
-					<div class="record-r">
-					<h3 class="layui-timeline-title">{{item.displayName}}</h3>
-					<div class="record-handleInfo" style="height:{{item.children.length*30}}px">
-							{{# layui.each(item.children,function(n_index,node){ }}
-                        <p class="record-auditor">{{node.displayName}} 
-                                {{# if(node.handleText!=null){ }}
-                                : {{node.handleText}}</p>
-                           <p class="record-time"> {{node.endDateTime}}</p>
-                               {{#} }}
-                        	{{#  }); }}
-					</div>
-				</div>
-				</div>
-			</li>
-		{{#  }); }}
+    {{# layui.each(d,function(index,item){ }}
+    <li class="layui-timeline-item">
+        {{# if(item.status==0){ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-gray"></i> {{# } else if(item.status==1){ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-orange"></i> {{# }else{ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-green"></i> {{#} }}
+        <div class="layui-timeline-content layui-text">
+            <div class="record-r">
+                <h3 class="layui-timeline-title">{{item.displayName}}</h3>
+                <div class="record-handleInfo" style="height:{{item.children.length*30}}px">
+                    {{# layui.each(item.children,function(n_index,node){ }}
+                    <p class="record-auditor">{{node.displayName}} {{# if(node.handleText!=null){ }} : {{node.handleText}}</p>
+                    <p class="record-time"> {{node.endDateTime}}</p>
+                    {{#} }} {{# }); }}
+                </div>
+            </div>
+        </div>
+    </li>
+    {{# }); }}
 </script>
 <script id="tpl_stepPathInfo" type="text/html">
-	<div id="confirm-initiate">
-			<div class="initiate-branch" id='dataStep_processGuid' data-id={{d.processGuid}}>
-					{{#  layui.each(d.steps, function(index, item){ }}
-					{{#  if(index === 0){ }}
-						<div class="branch-step branch-start">
-					{{#  }else{ }}
-					<div class="branch-step">
-					{{#  } }}
-				<div class="branch-r">
-												<div class="branch-l" >
-												<div class="circle">
-													<div id={{item.stepGuid}}  data-value={{item.stepGuid}} class="branch-name">{{item.stepName}}</div>
-													<i class="circle-triangle"></i>
-													<span class="circle-cont"></span>
-													</div>
-												</div>
-												<div class="branch-cont user{{item.stepGuid}}" id="div{{item.stepGuid}}" data-isMulti={{item.isMulti}}>												 
-													{{#  layui.each(item.auditors, function(u_index, user){ }}
-														<div class="branch-cont-txt">
-														<label>
+    <div id="confirm-initiate">
+        <div class="initiate-branch" id='dataStep_processGuid' data-id={{d.processGuid}}>
+            {{# layui.each(d.steps, function(index, item){ }} {{# if(index === 0){ }}
+            <div class="branch-step branch-start">
+                {{# }else{ }}
+                <div class="branch-step">
+                    {{# } }}
+                    <div class="branch-r">
+                        <div class="branch-l">
+                            <div class="circle">
+                                <div id={{item.stepGuid}} data-value={{item.stepGuid}} class="branch-name">{{item.stepName}}</div>
+                                <i class="circle-triangle"></i>
+                                <span class="circle-cont"></span>
+                            </div>
+                        </div>
+                        <div class="branch-cont user{{item.stepGuid}}" id="div{{item.stepGuid}}" data-isMulti={{item.isMulti}}>
+                            {{# layui.each(item.auditors, function(u_index, user){ }}
+                            <div class="branch-cont-txt">
+                                <label>
 															{{#  if(item.isMulti==1){ }}
 															<input type="checkbox" data-value={{user.auditorGuid}}  data-name={{user.auditorName}}  class="ckb{{item.stepGuid}}"/>{{user.auditorName}}
 															{{#  }else if(item.isMulti==0){ }}
 															<input type="radio"  name="user{{item.stepGuid}}"  data-value={{user.auditorGuid}}  data-name={{user.auditorName}}>
 															{{user.auditorName}}
 															{{#  }else{ }}
-															<label data-value={{user.auditorGuid}}>{{user.auditorName}}</label>
-															{{#  } }}
-															</label>
-														</div>
-														{{#  }); }}
-												</div>
-											</div>
-										</div>
-										<!-- 12 -->
-										{{#  if(item.stepRuteNotUnique){ }}
-										<div class="branch-step">
-											<div class="branch-r">
-												<div class="branch-l">
-														<div class="circle">
-															<div class="branch-name moreStep"  id="cbk{{item.stepGuid}}"></div>
-															<i class="circle-triangle"></i>
-															<span class="circle-cont"></span>
-															</div>
-												</div>
-											<div class="branch-cont">
-											<div class="branch-cont-txt">
-													{{#  layui.each(item.relationSteps, function(s_index,relationSteps){ }}
-												<div class="branch-list">
-													<div class="radio">
-														<label class="fileValue">
+															<label data-value={{user.auditorGuid}}>{{user.auditorName}}</label> {{# } }}
+                                </label>
+                            </div>
+                            {{# }); }}
+                        </div>
+                    </div>
+                </div>
+                <!-- 12 -->
+                {{# if(item.stepRuteNotUnique){ }}
+                <div class="branch-step">
+                    <div class="branch-r">
+                        <div class="branch-l">
+                            <div class="circle">
+                                <div class="branch-name moreStep" id="cbk{{item.stepGuid}}"></div>
+                                <i class="circle-triangle"></i>
+                                <span class="circle-cont"></span>
+                            </div>
+                        </div>
+                        <div class="branch-cont">
+                            <div class="branch-cont-txt">
+                                {{# layui.each(item.relationSteps, function(s_index,relationSteps){ }}
+                                <div class="branch-list">
+                                    <div class="radio">
+                                        <label class="fileValue">
 															<input type="radio"    class="stepClick"  data-title="cbk{{item.stepGuid}}" data-name={{relationSteps.stepName}} data-type={{relationSteps.stepType}} data-id={{relationSteps.stepGuid}} name="name{{item.stepGuid}}"   value={{relationSteps.stepName}} >
 															{{relationSteps.stepName}}
 														</label>
-													</div> 
-													<ul data-isMulti={{relationSteps.isMulti}}  class="user{{relationSteps.stepGuid}}">
-															{{#  layui.each(relationSteps.auditors, function(user_index,auditors){ }}
-													<li>
-														<div class="radio" >
-															<label id={{relationSteps.isMulti}}>
+                                    </div>
+                                    <ul data-isMulti={{relationSteps.isMulti}} class="user{{relationSteps.stepGuid}}">
+                                        {{# layui.each(relationSteps.auditors, function(user_index,auditors){ }}
+                                        <li>
+                                            <div class="radio">
+                                                <label id={{relationSteps.isMulti}}>
 																	{{#  if(relationSteps.isMulti=="1"){ }}
 																	<input type="checkbox" data-value={{auditors.auditorGuid}} data-parent="{{relationSteps.stepGuid}}" data-name={{auditors.auditorName}} />{{auditors.auditorName}}
 																	{{#  }else if(item.isMulti==0){ }}
 																	<input type="radio" name="parent{{item.stepGuid}}"  data-parent="{{relationSteps.stepGuid}}" data-name={{auditors.auditorName}} data-value={{auditors.auditorGuid}}>
 																	{{auditors.auditorName}}
 																	{{#  }else{ }}
-																	<label data-value={{auditors.auditorGuid}}>{{auditors.auditorName}}</label>
-																	{{#  } }}
-															</label>
-														</div>
-													</li>
-													{{#  }); }}
-													</ul>
-												</div>
-												{{#  }); }}
-										</div>
-										</div>
-											</div>
-										</div>
-										{{#  } }}
-										<!-- 12 -->
-			{{#  }); }}			   
-				</div>
-				</div>  
-			</div>
-	</div>
+																	<label data-value={{auditors.auditorGuid}}>{{auditors.auditorName}}</label> {{# } }}
+                                                </label>
+                                            </div>
+                                        </li>
+                                        {{# }); }}
+                                    </ul>
+                                </div>
+                                {{# }); }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{# } }}
+                <!-- 12 -->
+                {{# }); }}
+            </div>
+        </div>
+    </div>
+    </div>
 </script>
+
 </html>
