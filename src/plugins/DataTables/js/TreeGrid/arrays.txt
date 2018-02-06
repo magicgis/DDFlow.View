@@ -1,0 +1,28 @@
+﻿{
+    "data": [
+        {
+            "name": "员工姓名",
+            "type": "text"
+        },
+        {
+            "name": "年龄",
+            "type": "number"
+        },
+        {
+            "children": [
+                {
+                    "name": "月份",
+                    "type": "text"
+                },
+                {
+                    "name": "分数",
+                    "type": "number"
+                }
+            ],
+            "name": "绩效",
+            "type": "list"
+        }
+    ],
+    "code": "0",
+    "message": "ok"
+}

@@ -10,7 +10,7 @@ function GooFlow(bgDiv, property) {
     else GooFlow.prototype.useSVG = "1";
     //初始化区域图的对象
     this.$id = bgDiv.attr("id");
-    this.$bgDiv = bgDiv;//最父框架的DIV
+    this.$bgDiv = bgDiv; //最父框架的DIV
     this.$bgDiv.addClass("GooFlow");
     if (GooFlow.prototype.color.font) {
         this.$bgDiv.css("color", GooFlow.prototype.color.font);
@@ -21,11 +21,11 @@ function GooFlow(bgDiv, property) {
     var width = (property.width || this.$bgDiv.width());
     var height = (property.height || this.$bgDiv.height());
     this.$bgDiv.css({ width: width + "px", height: height + "px" });
-    this.$tool = null;//左侧工具栏对象
-    this.$head = null;//顶部标签及工具栏按钮
-    this.$title = "newFlow_1";//流程图的名称
-    this.$nodeRemark = {};//每一种结点或按钮的说明文字,JSON格式,key为类名,value为用户自定义文字说明
-    this.$nowType = "cursor";//当前要绘制的对象类型
+    this.$tool = null; //左侧工具栏对象
+    this.$head = null; //顶部标签及工具栏按钮
+    this.$title = "newFlow_1"; //流程图的名称
+    this.$nodeRemark = {}; //每一种结点或按钮的说明文字,JSON格式,key为类名,value为用户自定义文字说明
+    this.$nowType = "cursor"; //当前要绘制的对象类型
     this.$lineData = {};
     this.$lineCount = 0;
     this.$nodeData = {};
@@ -35,22 +35,22 @@ function GooFlow(bgDiv, property) {
     this.$lineDom = {};
     this.$nodeDom = {};
     this.$areaDom = {};
-    this.$max = property.initNum || 1;//计算默认ID值的起始SEQUENCE
-    this.$focus = "";//当前被选定的结点/转换线ID,如果没选中或者工作区被清空,则为""
-    this.$cursor = "default";//鼠标指针在工作区内的样式
-    this.$editable = false;//工作区是否可编辑
-    this.$deletedItem = {};//在流程图的编辑操作中被删除掉的元素ID集合,元素ID为KEY,元素类型(node,line.area)为VALUE
-    this.$workExtendStep = 200;//在自动/手动扩展可编辑区时，一次扩展后宽/高增加多少像素
-    this.$scale = 1.00;//工作区内容的缩放比例，从0.1至无穷大，初始默认为1
+    this.$max = property.initNum || 1; //计算默认ID值的起始SEQUENCE
+    this.$focus = ""; //当前被选定的结点/转换线ID,如果没选中或者工作区被清空,则为""
+    this.$cursor = "default"; //鼠标指针在工作区内的样式
+    this.$editable = false; //工作区是否可编辑
+    this.$deletedItem = {}; //在流程图的编辑操作中被删除掉的元素ID集合,元素ID为KEY,元素类型(node,line.area)为VALUE
+    this.$workExtendStep = 200; //在自动/手动扩展可编辑区时，一次扩展后宽/高增加多少像素
+    this.$scale = 1.00; //工作区内容的缩放比例，从0.1至无穷大，初始默认为1
     var headHeight = 0;
     var tmp = "";
 
     if (property.haveHead) {
-        tmp = "<div class='GooFlow_head' " + (GooFlow.prototype.color.main ? "style='border-bottom-color:" + GooFlow.prototype.color.main + "'" : "")
-            + ">";
+        tmp = "<div class='GooFlow_head' " + (GooFlow.prototype.color.main ? "style='border-bottom-color:" + GooFlow.prototype.color.main + "'" : "") +
+            ">";
         if (property.headLabel) {
-            tmp += "<label title='" + (property.initLabelText || "newFlow_1") + "' "
-                + (GooFlow.prototype.color.main ? "style='background:" + GooFlow.prototype.color.main + "'" : "") + ">" + (property.initLabelText || "newFlow_1") + "</label>";
+            tmp += "<label title='" + (property.initLabelText || "newFlow_1") + "' " +
+                (GooFlow.prototype.color.main ? "style='background:" + GooFlow.prototype.color.main + "'" : "") + ">" + (property.initLabelText || "newFlow_1") + "</label>";
         }
         for (var x = 0; x < property.headBtns.length; ++x) {
             var titleText = GooFlow.prototype.remarks.headBtns[property.headBtns[x]] ? " title='" + GooFlow.prototype.remarks.headBtns[property.headBtns[x]] + "'" : "";
@@ -61,13 +61,13 @@ function GooFlow(bgDiv, property) {
         this.$bgDiv.append(this.$head);
         headHeight = 28;
         //以下是当工具栏按钮被点击时触发的事件自定义(虚函数),格式为function(),因为可直接用THIS操作对象本身,不用传参；用户可自行重定义:
-        this.onBtnNewClick = null;//新建流程图按钮被点中
-        this.onBtnOpenClick = null;//打开流程图按钮定义
-        this.onBtnSaveClick = null;//保存流程图按钮定义
-        this.onFreshClick = null;//重载流程图按钮定义
-        this.onPrintClick = null;//打印流程图按钮定义
+        this.onBtnNewClick = null; //新建流程图按钮被点中
+        this.onBtnOpenClick = null; //打开流程图按钮定义
+        this.onBtnSaveClick = null; //保存流程图按钮定义
+        this.onFreshClick = null; //重载流程图按钮定义
+        this.onPrintClick = null; //打印流程图按钮定义
         if (property.headBtns)
-            this.$head.on("click", { inthis: this }, function (e) {
+            this.$head.on("click", { inthis: this }, function(e) {
                 if (!e) e = window.event;
                 var tar = e.target;
                 if (tar.tagName == "DIV" || tar.tagName == "SPAN") return;
@@ -75,13 +75,27 @@ function GooFlow(bgDiv, property) {
                 var This = e.data.inthis;
                 //定义顶部操作栏按钮的事件
                 switch ($(tar).attr("class")) {
-                    case "ico_new": if (This.onBtnNewClick != null) This.onBtnNewClick(); break;
-                    case "ico_open": if (This.onBtnOpenClick != null) This.onBtnOpenClick(); break;
-                    case "ico_save": if (This.onBtnSaveClick != null) This.onBtnSaveClick(); break;
-                    case "ico_undo": This.undo(); break;
-                    case "ico_redo": This.redo(); break;
-                    case "ico_reload": if (This.onFreshClick != null) This.onFreshClick(); break;
-                    case "ico_print": if (This.onPrintClick != null) This.onPrintClick(); break;
+                    case "ico_new":
+                        if (This.onBtnNewClick != null) This.onBtnNewClick();
+                        break;
+                    case "ico_open":
+                        if (This.onBtnOpenClick != null) This.onBtnOpenClick();
+                        break;
+                    case "ico_save":
+                        if (This.onBtnSaveClick != null) This.onBtnSaveClick();
+                        break;
+                    case "ico_undo":
+                        This.undo();
+                        break;
+                    case "ico_redo":
+                        This.redo();
+                        break;
+                    case "ico_reload":
+                        if (This.onFreshClick != null) This.onFreshClick();
+                        break;
+                    case "ico_print":
+                        if (This.onPrintClick != null) This.onPrintClick();
+                        break;
                 }
             });
     }
@@ -93,17 +107,17 @@ function GooFlow(bgDiv, property) {
         var titleCursor = GooFlow.prototype.remarks.toolBtns["cursor"] ? " title='" + GooFlow.prototype.remarks.toolBtns["cursor"] + "'" : "";
         var titleDirect = GooFlow.prototype.remarks.toolBtns["direct"] ? " title='" + GooFlow.prototype.remarks.toolBtns["direct"] + "'" : "";
         var titleDashed = GooFlow.prototype.remarks.toolBtns["dashed"] ? " title='" + GooFlow.prototype.remarks.toolBtns["dashed"] + "'" : "";
-        this.$tool.append("<div style='margin-bottom:4px'><span/><span/><span/></div>"
-            + "<a href='javascript:void(0)'" + titleCursor + " type='cursor' class='GooFlow_tool_btndown' id='" + this.$id + "_btn_cursor'><i class='ico_cursor'/></a>"
-            + "<a href='javascript:void(0)'" + titleDirect + " type='direct' class='GooFlow_tool_btn' id='" + this.$id + "_btn_direct'><i class='ico_direct'/></a>"
-            + (property.haveDashed ? "<a href='javascript:void(0)'" + titleDashed + " type='dashed' class='GooFlow_tool_btn' id='" + this.$id + "_btn_dashed'><i class='ico_dashed'/></a>" : "")
+        this.$tool.append("<div style='margin-bottom:4px'><span/><span/><span/></div>" +
+            "<a href='javascript:void(0)'" + titleCursor + " type='cursor' class='GooFlow_tool_btndown' id='" + this.$id + "_btn_cursor'><i class='ico_cursor'/></a>" +
+            "<a href='javascript:void(0)'" + titleDirect + " type='direct' class='GooFlow_tool_btn' id='" + this.$id + "_btn_direct'><i class='ico_direct'/></a>" +
+            (property.haveDashed ? "<a href='javascript:void(0)'" + titleDashed + " type='dashed' class='GooFlow_tool_btn' id='" + this.$id + "_btn_dashed'><i class='ico_dashed'/></a>" : "")
         );
         if (property.toolBtns && property.toolBtns.length > 0) {
             tmp = "<span/>";
             for (var i = 0; i < property.toolBtns.length; ++i) {
                 var tmpType = property.toolBtns[i].split(" ")[0];
                 var titleText = GooFlow.prototype.remarks.toolBtns[tmpType] ? " title='" + GooFlow.prototype.remarks.toolBtns[tmpType] + "'" : '';
-                tmp += "<a href='javascript:void(0)'" + titleText + " type='" + property.toolBtns[i] + "' id='" + this.$id + "_btn_" + tmpType + "' class='GooFlow_tool_btn'><i class='ico_" + property.toolBtns[i] + "'/></a>";//加入自定义按钮
+                tmp += "<a href='javascript:void(0)'" + titleText + " type='" + property.toolBtns[i] + "' id='" + this.$id + "_btn_" + tmpType + "' class='GooFlow_tool_btn'><i class='ico_" + property.toolBtns[i] + "'/></a>"; //加入自定义按钮
             }
             this.$tool.append(tmp);
         }
@@ -115,20 +129,25 @@ function GooFlow(bgDiv, property) {
         toolWidth = 31;
         this.$nowType = "cursor";
         //绑定各个按钮的点击事件
-        this.$tool.on("click", { inthis: this }, function (e) {
+        this.$tool.on("click", { inthis: this }, function(e) {
             if (!e) e = window.event;
             var tar;
             switch (e.target.tagName) {
-                case "SPAN": return false;
-                case "DIV": return false;
-                case "I": tar = e.target.parentNode; break;
-                case "A": tar = e.target;
+                case "SPAN":
+                    return false;
+                case "DIV":
+                    return false;
+                case "I":
+                    tar = e.target.parentNode;
+                    break;
+                case "A":
+                    tar = e.target;
             };
             var type = $(tar).attr("type");
             e.data.inthis.switchToolBtn(type);
             return false;
         });
-        this.$editable = true;//只有具有工具栏时可编辑
+        this.$editable = true; //只有具有工具栏时可编辑
     }
 
     width = width - toolWidth - 9;
@@ -140,7 +159,7 @@ function GooFlow(bgDiv, property) {
     //计算工作区相对GooFlow父框架的绝对定位运算值，并保存
     this.t = { top: property.haveHead ? 28 : 3, left: property.haveTool ? 34 : 3 };
 
-    this.$draw = null;//画矢量线条的容器
+    this.$draw = null; //画矢量线条的容器
     this.initDraw("draw_" + this.$id, width, height);
     this.$group = null;
     if (property.haveGroup)
@@ -154,7 +173,7 @@ function GooFlow(bgDiv, property) {
 
     if (this.$editable) {
         //绑定工作区事件
-        this.$workArea.on("click", { inthis: this }, function (e) {
+        this.$workArea.on("click", { inthis: this }, function(e) {
             if (!e) e = window.event;
             var This = e.data.inthis;
             if (!This.$editable) return;
@@ -166,14 +185,13 @@ function GooFlow(bgDiv, property) {
                     if (This.$lineOper.data("tid")) {
                         This.focusItem(This.$lineOper.data("tid"), false);
                         //This.$mpFrom.removeData("p");
-                    }
-                    else { This.blurItem(); }
+                    } else { This.blurItem(); }
                 }
                 return;
-            }
-            else if (type == "direct" || type == "dashed" || type == "group") return;
+            } else if (type == "direct" || type == "dashed" || type == "group") return;
             var X, Y;
-            var ev = mousePosition(e), t = getElCoordinate(this);
+            var ev = mousePosition(e),
+                t = getElCoordinate(this);
             X = ev.x - t.left + this.parentNode.scrollLeft;
             Y = ev.y - t.top + this.parentNode.scrollTop;
             var stepName;
@@ -189,24 +207,24 @@ function GooFlow(bgDiv, property) {
                     stepName = "新建步骤" + This.$max;
             }
 
-            This.addNode(NewGuid(),
-                {
-                    name: stepName,
-                    left: X,
-                    top: Y,
-                    type: This.$nowType
-                    
-                });
+            This.addNode(NewGuid(), {
+                name: stepName,
+                left: X,
+                top: Y,
+                type: This.$nowType
+
+            });
             This.$max++;
         });
         //划线或改线时用的绑定
-        this.$workArea.mousemove({ inthis: this }, function (e) {
+        this.$workArea.mousemove({ inthis: this }, function(e) {
             if ((e.data.inthis.$nowType != "direct" && e.data.inthis.$nowType != "dashed") && !e.data.inthis.$mpTo.data("p")) return;
             var lineStart = $(this).data("lineStart");
             var lineEnd = $(this).data("lineEnd");
             if (!lineStart && !lineEnd) return;
 
-            var ev = mousePosition(e), t = getElCoordinate(this);
+            var ev = mousePosition(e),
+                t = getElCoordinate(this);
             var X, Y;
             X = ev.x - t.left + this.parentNode.scrollLeft;
             Y = ev.y - t.top + this.parentNode.scrollTop;
@@ -218,8 +236,7 @@ function GooFlow(bgDiv, property) {
                     if (line.childNodes[1].getAttribute("marker-end") == "url(\"#arrow2\")")
                         line.childNodes[1].setAttribute("marker-end", "url(#arrow3)");
                     else line.childNodes[1].setAttribute("marker-end", "url(#arrow2)");
-                }
-                else line.points.value = lineStart.x + "," + lineStart.y + " " + X + "," + Y;
+                } else line.points.value = lineStart.x + "," + lineStart.y + " " + X + "," + Y;
             } else if (lineEnd) {
                 if (GooFlow.prototype.useSVG != "") {
                     line.childNodes[0].setAttribute("d", "M " + X + " " + Y + " L " + lineEnd.x + " " + lineEnd.y);
@@ -227,11 +244,10 @@ function GooFlow(bgDiv, property) {
                     if (line.childNodes[1].getAttribute("marker-end") == "url(\"#arrow2\")")
                         line.childNodes[1].setAttribute("marker-end", "url(#arrow3)");
                     else line.childNodes[1].setAttribute("marker-end", "url(#arrow2)");
-                }
-                else line.points.value = X + "," + Y + " " + lineEnd.x + "," + lineEnd.y;
+                } else line.points.value = X + "," + Y + " " + lineEnd.x + "," + lineEnd.y;
             }
         });
-        this.$workArea.mouseup({ inthis: this }, function (e) {
+        this.$workArea.mouseup({ inthis: this }, function(e) {
             var This = e.data.inthis;
             if ((This.$nowType != "direct" && This.$nowType != "dashed") && !This.$mpTo.data("p")) return;
             var tmp = document.getElementById("GooFlow_tmp_line");
@@ -248,21 +264,23 @@ function GooFlow(bgDiv, property) {
 
         this.$textArea = $("<textarea></textarea>");
         this.$bgDiv.append(this.$textArea);
-        this.$lineMove = $('<div class="GooFlow_linemove" style="display:none"></div>');//操作折线时的移动框
+        this.$lineMove = $('<div class="GooFlow_linemove" style="display:none"></div>'); //操作折线时的移动框
         this.$workArea.append(this.$lineMove);
-        this.$lineMove.on("mousedown", { inthis: this }, function (e) {
+        this.$lineMove.on("mousedown", { inthis: this }, function(e) {
             if (e.button == 2) return false;
             var lm = $(this);
             lm.css({ "background-color": "#333" });
             var This = e.data.inthis;
-            var ev = mousePosition(e), t = getElCoordinate(This.$workArea[0]);
+            var ev = mousePosition(e),
+                t = getElCoordinate(This.$workArea[0]);
             var X, Y;
             X = ev.x - t.left + This.$workArea[0].parentNode.scrollLeft;
             Y = ev.y - t.top + This.$workArea[0].parentNode.scrollTop;
             var p = This.$lineMove.position();
-            var vX = X - p.left, vY = Y - p.top;
+            var vX = X - p.left,
+                vY = Y - p.top;
             var isMove = false;
-            document.onmousemove = function (e) {
+            document.onmousemove = function(e) {
                 if (!e) e = window.event;
                 var ev = mousePosition(e);
                 var ps = This.$lineMove.position();
@@ -274,8 +292,7 @@ function GooFlow(bgDiv, property) {
                     else if (X > This.$workArea.width())
                         X = This.$workArea.width();
                     This.$lineMove.css({ left: X + "px" });
-                }
-                else if (This.$lineMove.data("type") == "tb") {
+                } else if (This.$lineMove.data("type") == "tb") {
                     Y = Y - vY;
                     if (Y < 0) Y = 0;
                     else if (Y > This.$workArea.height())
@@ -284,7 +301,7 @@ function GooFlow(bgDiv, property) {
                 }
                 isMove = true;
             }
-            document.onmouseup = function (e) {
+            document.onmouseup = function(e) {
                 if (isMove) {
                     var p = This.$lineMove.position();
                     if (This.$lineMove.data("type") == "lr")
@@ -302,9 +319,9 @@ function GooFlow(bgDiv, property) {
         });
 
         //选定一条转换线后出现的浮动操作栏，有改变线的样式和删除线等按钮。
-        this.$lineOper = $("<div class='GooFlow_line_oper' style='display:none'><i class='b_l1'></i><i class='b_l2'></i><i class='b_l3'></i><i class='b_x'></i></div>");//选定线时显示的操作框
+        this.$lineOper = $("<div class='GooFlow_line_oper' style='display:none'><i class='b_l1'></i><i class='b_l2'></i><i class='b_l3'></i><i class='b_x'></i></div>"); //选定线时显示的操作框
         this.$workArea.parent().append(this.$lineOper);
-        this.$lineOper.on("click", { inthis: this }, function (e) {
+        this.$lineOper.on("click", { inthis: this }, function(e) {
             if (!e) e = window.event;
             if (e.target.tagName != "I") return;
             var This = e.data.inthis;
@@ -312,13 +329,17 @@ function GooFlow(bgDiv, property) {
             switch ($(e.target).attr("class")) {
                 case "b_x":
                     This.delLine(id);
-                    this.style.display = "none"; break;
+                    this.style.display = "none";
+                    break;
                 case "b_l1":
-                    This.setLineType(id, "lr"); break;
+                    This.setLineType(id, "lr");
+                    break;
                 case "b_l2":
-                    This.setLineType(id, "tb"); break;
+                    This.setLineType(id, "tb");
+                    break;
                 case "b_l3":
-                    This.setLineType(id, "sl"); break;
+                    This.setLineType(id, "sl");
+                    break;
             }
         });
         //新增移动线两个端点至新的结点功能移动功能，这里要提供移动用的DOM
@@ -371,13 +392,13 @@ function GooFlow(bgDiv, property) {
         //格式function(id，type)：id是单元的唯一标识ID,type是单元的种类,有"node","line","area"三种取值
 
 
-        if (property.useOperStack && this.$editable) {//如果要使用堆栈记录操作并提供“撤销/重做”的功能,只在编辑状态下有效
+        if (property.useOperStack && this.$editable) { //如果要使用堆栈记录操作并提供“撤销/重做”的功能,只在编辑状态下有效
             this.$undoStack = [];
             this.$redoStack = [];
             this.$isUndo = 0;
             ///////////////以下是构造撤销操作/重做操作的方法
             //为了节省浏览器内存空间,undo/redo中的操作缓存栈,最多只可放40步操作;超过40步时,将自动删掉最旧的一个缓存
-            this.pushOper = function (funcName, paras) {
+            this.pushOper = function(funcName, paras) {
                 var len = this.$undoStack.length;
                 if (this.$isUndo == 1) {
                     this.$redoStack.push([funcName, paras]);
@@ -395,60 +416,86 @@ function GooFlow(bgDiv, property) {
             //将外部的方法加入到GooFlow对象的事务操作堆栈中,在过后的undo/redo操作中可以进行控制，一般用于对流程图以外的附加信息进行编辑的事务撤销/重做控制；
             //传参func为要执行方法对象,jsonPara为外部方法仅有的一个面向字面的JSON传参,由JSON对象带入所有要传的信息；
             //提示:为了让外部方法能够被UNDO/REDO,需要在编写这些外部方法实现时,加入对该方法执行后效果回退的另一个执行方法的pushExternalOper
-            this.pushExternalOper = function (func, jsonPara) {
+            this.pushExternalOper = function(func, jsonPara) {
                 this.pushOper("externalFunc", [func, jsonPara]);
             };
             //撤销上一步操作
-            this.undo = function () {
+            this.undo = function() {
                 if (this.$undoStack.length == 0) return;
                 this.blurItem();
                 var tmp = this.$undoStack.pop();
                 this.$isUndo = 1;
                 if (tmp[0] == "externalFunc") {
                     tmp[1][0](tmp[1][1]);
-                }
-                else {
+                } else {
                     //传参的数量,最多支持6个.
                     switch (tmp[1].length) {
-                        case 0: this[tmp[0]](); break;
-                        case 1: this[tmp[0]](tmp[1][0]); break;
-                        case 2: this[tmp[0]](tmp[1][0], tmp[1][1]); break;
-                        case 3: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2]); break;
-                        case 4: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3]); break;
-                        case 5: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4]); break;
-                        case 6: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4], tmp[1][5]); break;
+                        case 0:
+                            this[tmp[0]]();
+                            break;
+                        case 1:
+                            this[tmp[0]](tmp[1][0]);
+                            break;
+                        case 2:
+                            this[tmp[0]](tmp[1][0], tmp[1][1]);
+                            break;
+                        case 3:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2]);
+                            break;
+                        case 4:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3]);
+                            break;
+                        case 5:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4]);
+                            break;
+                        case 6:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4], tmp[1][5]);
+                            break;
                     }
                 }
             };
             //重做最近一次被撤销的操作
-            this.redo = function () {
+            this.redo = function() {
                 if (this.$redoStack.length == 0) return;
                 this.blurItem();
                 var tmp = this.$redoStack.pop();
                 this.$isUndo = 2;
                 if (tmp[0] == "externalFunc") {
                     tmp[1][0](tmp[1][1]);
-                }
-                else {
+                } else {
                     //传参的数量,最多支持6个.
                     switch (tmp[1].length) {
-                        case 0: this[tmp[0]](); break;
-                        case 1: this[tmp[0]](tmp[1][0]); break;
-                        case 2: this[tmp[0]](tmp[1][0], tmp[1][1]); break;
-                        case 3: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2]); break;
-                        case 4: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3]); break;
-                        case 5: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4]); break;
-                        case 6: this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4], tmp[1][5]); break;
+                        case 0:
+                            this[tmp[0]]();
+                            break;
+                        case 1:
+                            this[tmp[0]](tmp[1][0]);
+                            break;
+                        case 2:
+                            this[tmp[0]](tmp[1][0], tmp[1][1]);
+                            break;
+                        case 3:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2]);
+                            break;
+                        case 4:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3]);
+                            break;
+                        case 5:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4]);
+                            break;
+                        case 6:
+                            this[tmp[0]](tmp[1][0], tmp[1][1], tmp[1][2], tmp[1][3], tmp[1][4], tmp[1][5]);
+                            break;
                     }
                 }
             };
         }
-        $(document).keydown({ inthis: this }, function (e) {
+        $(document).keydown({ inthis: this }, function(e) {
             //绑定键盘操作
             var This = e.data.inthis;
             if (This.$focus == "") return;
             switch (e.keyCode) {
-                case 46://删除
+                case 46: //删除
                     This.delNode(This.$focus, true);
                     This.delLine(This.$focus);
                     break;
@@ -459,7 +506,7 @@ function GooFlow(bgDiv, property) {
 
 GooFlow.prototype = {
     useSVG: "",
-    getSvgMarker: function (id, color) {
+    getSvgMarker: function(id, color) {
         var m = document.createElementNS("http://www.w3.org/2000/svg", "marker");
         m.setAttribute("id", id);
         m.setAttribute("viewBox", "0 0 6 6");
@@ -476,18 +523,17 @@ GooFlow.prototype = {
         m.appendChild(path);
         return m;
     },
-    initDraw: function (id, width, height) {
+    initDraw: function(id, width, height) {
         var elem;
         if (GooFlow.prototype.useSVG != "") {
-            this.$draw = document.createElementNS("http://www.w3.org/2000/svg", "svg");//可创建带有指定命名空间的元素节点
+            this.$draw = document.createElementNS("http://www.w3.org/2000/svg", "svg"); //可创建带有指定命名空间的元素节点
             this.$workArea.prepend(this.$draw);
             var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
             this.$draw.appendChild(defs);
             defs.appendChild(GooFlow.prototype.getSvgMarker("arrow1", GooFlow.prototype.color.line || "#3892D3"));
             defs.appendChild(GooFlow.prototype.getSvgMarker("arrow2", GooFlow.prototype.color.mark || "#ff8800"));
             defs.appendChild(GooFlow.prototype.getSvgMarker("arrow3", GooFlow.prototype.color.mark || "#ff8800"));
-        }
-        else {
+        } else {
             this.$draw = document.createElement("v:group");
             this.$draw.coordsize = width + "," + height;
             this.$workArea.prepend("<div class='GooFlow_work_vml' style='position:relative;width:" + width + "px;height:" + height + "px'></div>");
@@ -502,17 +548,17 @@ GooFlow.prototype = {
         else tmpClk = "PolyLine";
         if (!this.$editable) return;
 
-        $(this.$draw).delegate(tmpClk, "click", { inthis: this }, function (e) {
+        $(this.$draw).delegate(tmpClk, "click", { inthis: this }, function(e) {
             e.data.inthis.focusItem(this.id, true);
         });
         //绑定右键事件
-        $(this.$draw).delegate(tmpClk, "contextmenu", { inthis: this }, function (e) {
+        $(this.$draw).delegate(tmpClk, "contextmenu", { inthis: this }, function(e) {
             if (e.data.inthis.onItemRightClick != null && !e.data.inthis.onItemRightClick(this.id, "line")) {
                 window.event ? window.event.returnValue = false : e.preventDefault();
                 return false;
             }
         });
-        $(this.$draw).delegate(tmpClk, "dblclick", { inthis: this }, function (e) {
+        $(this.$draw).delegate(tmpClk, "dblclick", { inthis: this }, function(e) {
             if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(this.id, "line")) return;
             var oldTxt, x, y, from, to;
             var This = e.data.inthis;
@@ -529,40 +575,41 @@ GooFlow.prototype = {
             if (This.$lineData[this.id].type == "lr") {
                 from[0] = This.$lineData[this.id].M * This.$scale;
                 to[0] = from[0];
-            }
-            else if (This.$lineData[this.id].type == "tb") {
+            } else if (This.$lineData[this.id].type == "tb") {
                 from[1] = This.$lineData[this.id].M * This.$scale;
                 to[1] = from[1];
             }
             x = (parseInt(from[0], 10) + parseInt(to[0], 10)) / 2 - 64;
             y = (parseInt(from[1], 10) + parseInt(to[1], 10)) / 2 - 18;
-            var t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var t = This.t; //t=getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", width: 130, height: 26,
+                display: "block",
+                width: 130,
+                height: 26,
                 left: t.left + x - This.$workArea[0].parentNode.scrollLeft,
                 top: t.top + y - This.$workArea[0].parentNode.scrollTop
             }).data("id", This.$focus).focus();
-            This.$workArea.parent().one("mousedown", function (e) {
+            This.$workArea.parent().one("mousedown", function(e) {
                 if (e.button == 2) return false;
                 This.setName(This.$textArea.data("id"), This.$textArea.val(), "line");
                 This.$textArea.val("").removeData("id").hide();
             });
         });
     },
-    initGroup: function (width, height) {
-        this.$group = $("<div class='GooFlow_work_group' style='width:" + width + "px;height:" + height + "px'></div>");//存放背景区域的容器
+    initGroup: function(width, height) {
+        this.$group = $("<div class='GooFlow_work_group' style='width:" + width + "px;height:" + height + "px'></div>"); //存放背景区域的容器
         this.$workArea.prepend(this.$group);
         if (!this.$editable) return;
 
         //绑定右键事件
-        this.$group.delegate("GooFlow_area", "contextmenu", { inthis: this }, function (e) {
+        this.$group.delegate("GooFlow_area", "contextmenu", { inthis: this }, function(e) {
             if (e.data.inthis.onItemRightClick != null && !e.data.inthis.onItemRightClick(this.id, "area")) {
                 window.event ? window.event.returnValue = false : e.preventDefault();
                 return false;
             }
         });
         //区域划分框操作区的事件绑定
-        this.$group.on("mousedown", { inthis: this }, function (e) {//绑定RESIZE功能以及移动功能
+        this.$group.on("mousedown", { inthis: this }, function(e) { //绑定RESIZE功能以及移动功能
             if (e.button == 2) return false;
             var This = e.data.inthis;
             if (This.$nowType != "group") return;
@@ -570,15 +617,24 @@ GooFlow.prototype = {
             var cursor = $(e.target).css("cursor");
             var id = e.target.parentNode;
             switch (cursor) {
-                case "nw-resize": id = id.parentNode; break;
-                case "w-resize": id = id.parentNode; break;
-                case "n-resize": id = id.parentNode; break;
-                case "move": break;
-                default: return;
+                case "nw-resize":
+                    id = id.parentNode;
+                    break;
+                case "w-resize":
+                    id = id.parentNode;
+                    break;
+                case "n-resize":
+                    id = id.parentNode;
+                    break;
+                case "move":
+                    break;
+                default:
+                    return;
             }
             id = id.id;
 
-            var ev = mousePosition(e), t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var ev = mousePosition(e),
+                t = This.t; //t=getElCoordinate(This.$workArea[0]);
 
             var X, Y;
             X = ev.x - t.left + This.$workArea[0].parentNode.scrollLeft;
@@ -586,21 +642,21 @@ GooFlow.prototype = {
             if (cursor != "move") {
                 This.$ghost.css({
                     display: "block",
-                    width: This.$areaData[id].width * This.$scale + "px", height: This.$areaData[id].height * This.$scale + "px",
+                    width: This.$areaData[id].width * This.$scale + "px",
+                    height: This.$areaData[id].height * This.$scale + "px",
                     top: This.$areaData[id].top * This.$scale + t.top - This.$workArea[0].parentNode.scrollTop + "px",
                     left: This.$areaData[id].left * This.$scale + t.left - This.$workArea[0].parentNode.scrollLeft + "px",
                     cursor: cursor
                 });
                 var vX = (This.$areaData[id].left * This.$scale + This.$areaData[id].width * This.$scale) - X;
                 var vY = (This.$areaData[id].top * This.$scale + This.$areaData[id].height * This.$scale) - Y;
-            }
-            else {
+            } else {
                 var vX = X - This.$areaData[id].left * This.$scale;
                 var vY = Y - This.$areaData[id].top * This.$scale;
             }
             var isMove = false;
             This.$ghost.css("cursor", cursor);
-            document.onmousemove = function (e) {
+            document.onmousemove = function(e) {
                 if (!e) e = window.event;
                 var ev = mousePosition(e);
                 if (cursor != "move") {
@@ -609,21 +665,29 @@ GooFlow.prototype = {
                     if (X < 200 * This.$scale) X = 200 * This.$scale;
                     if (Y < 100 * This.$scale) Y = 100 * This.$scale;
                     switch (cursor) {
-                        case "nw-resize": This.$ghost.css({ width: X + "px", height: Y + "px" }); break;
-                        case "w-resize": This.$ghost.css({ width: X + "px" }); break;
-                        case "n-resize": This.$ghost.css({ height: Y + "px" }); break;
+                        case "nw-resize":
+                            This.$ghost.css({ width: X + "px", height: Y + "px" });
+                            break;
+                        case "w-resize":
+                            This.$ghost.css({ width: X + "px" });
+                            break;
+                        case "n-resize":
+                            This.$ghost.css({ height: Y + "px" });
+                            break;
                     }
-                }
-                else {
+                } else {
                     if (This.$ghost.css("display") == "none") {
                         This.$ghost.css({
                             display: "block",
-                            width: This.$areaData[id].width * This.$scale + "px", height: This.$areaData[id].height * This.$scale + "px",
+                            width: This.$areaData[id].width * This.$scale + "px",
+                            height: This.$areaData[id].height * This.$scale + "px",
                             top: This.$areaData[id].top * This.$scale + t.top - This.$workArea[0].parentNode.scrollTop + "px",
-                            left: This.$areaData[id].left * This.$scale + t.left - This.$workArea[0].parentNode.scrollLeft + "px", cursor: cursor
+                            left: This.$areaData[id].left * This.$scale + t.left - This.$workArea[0].parentNode.scrollLeft + "px",
+                            cursor: cursor
                         });
                     }
-                    X = ev.x - vX; Y = ev.y - vY;
+                    X = ev.x - vX;
+                    Y = ev.y - vY;
                     if (X < t.left - This.$workArea[0].parentNode.scrollLeft)
                         X = t.left - This.$workArea[0].parentNode.scrollLeft;
                     else if (X + This.$workArea[0].parentNode.scrollLeft + This.$areaData[id].width * This.$scale > t.left + This.$workArea.width())
@@ -636,7 +700,7 @@ GooFlow.prototype = {
                 }
                 isMove = true;
             }
-            document.onmouseup = function (e) {
+            document.onmouseup = function(e) {
                 This.$ghost.empty().hide();
                 document.onmousemove = null;
                 document.onmouseup = null;
@@ -649,7 +713,7 @@ GooFlow.prototype = {
             }
         });
         //绑定修改文字说明功能
-        this.$group.on("dblclick", { inthis: this }, function (e) {
+        this.$group.on("dblclick", { inthis: this }, function(e) {
             var This = e.data.inthis;
             if (This.$nowType != "group") return;
             if (!e) e = window.event;
@@ -658,14 +722,17 @@ GooFlow.prototype = {
             if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(p.id, "area")) return;
 
             var oldTxt = e.target.innerHTML;
-            var x = parseInt(p.style.left, 10) + 18, y = parseInt(p.style.top, 10) + 1;
-            var t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var x = parseInt(p.style.left, 10) + 18,
+                y = parseInt(p.style.top, 10) + 1;
+            var t = This.t; //t=getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", width: 130, height: 26,
+                display: "block",
+                width: 130,
+                height: 26,
                 left: t.left + x - This.$workArea[0].parentNode.scrollLeft,
                 top: t.top + y - This.$workArea[0].parentNode.scrollTop
             }).data("id", p.id).focus();
-            This.$workArea.parent().one("mouseup", function (e) {
+            This.$workArea.parent().one("mouseup", function(e) {
                 if (e.button == 2) return false;
                 if (This.$textArea.css("display") == "block") {
                     This.setName(This.$textArea.data("id"), This.$textArea.val(), "area");
@@ -676,7 +743,7 @@ GooFlow.prototype = {
             return false;
         });
         //绑定点击事件
-        this.$group.mouseup({ inthis: this }, function (e) {
+        this.$group.mouseup({ inthis: this }, function(e) {
             var This = e.data.inthis;
             if (This.$textArea.css("display") == "block") {
                 This.setName(This.$textArea.data("id"), This.$textArea.val(), "area");
@@ -687,41 +754,52 @@ GooFlow.prototype = {
             if (This.$nowType != "group") return;
             if (!e) e = window.event;
             switch ($(e.target).attr("class")) {
-                case "rs_close": This.delArea(e.target.parentNode.parentNode.id); return false;//删除该分组区域
-                case "bg": return;
+                case "rs_close":
+                    This.delArea(e.target.parentNode.parentNode.id);
+                    return false; //删除该分组区域
+                case "bg":
+                    return;
             }
             switch (e.target.tagName) {
-                case "LABEL": return false;
-                case "I"://绑定变色功能
+                case "LABEL":
+                    return false;
+                case "I": //绑定变色功能
                     var id = e.target.parentNode.id;
                     switch (This.$areaData[id].color) {
-                        case "red": This.setAreaColor(id, "yellow"); break;
-                        case "yellow": This.setAreaColor(id, "blue"); break;
-                        case "blue": This.setAreaColor(id, "green"); break;
-                        case "green": This.setAreaColor(id, "red"); break;
+                        case "red":
+                            This.setAreaColor(id, "yellow");
+                            break;
+                        case "yellow":
+                            This.setAreaColor(id, "blue");
+                            break;
+                        case "blue":
+                            This.setAreaColor(id, "green");
+                            break;
+                        case "green":
+                            This.setAreaColor(id, "red");
+                            break;
                     }
                     return false;
             }
             if (e.data.inthis.$ghost.css("display") == "none") {
                 var X, Y;
-                var ev = mousePosition(e), t = getElCoordinate(this);
+                var ev = mousePosition(e),
+                    t = getElCoordinate(this);
                 X = ev.x - t.left + this.parentNode.parentNode.scrollLeft;
                 Y = ev.y - t.top + this.parentNode.parentNode.scrollTop;
                 var color = ["red", "yellow", "blue", "green"];
-                e.data.inthis.addArea(NewGuid(),
-                    { name: "area_" + e.data.inthis.$max, left: X / This.$scale, top: Y / This.$scale, color: color[e.data.inthis.$max % 4], width: 200, height: 100 }
-                );
+                e.data.inthis.addArea(NewGuid(), { name: "area_" + e.data.inthis.$max, left: X / This.$scale, top: Y / This.$scale, color: color[e.data.inthis.$max % 4], width: 200, height: 100 });
                 e.data.inthis.$max++;
                 return false;
             }
         });
     },
     //加入手动扩展编辑区功能，一次扩展200px
-    initExpendFunc: function () {
+    initExpendFunc: function() {
         var titleExendRight = GooFlow.prototype.remarks.extendRight ? ' title="' + GooFlow.prototype.remarks.extendRight + '"' : '';
         var titleExendBottom = GooFlow.prototype.remarks.extendBottom ? ' title="' + GooFlow.prototype.remarks.extendBottom + '"' : '';
         this.$workArea.append('<div class="Gooflow_extend_right"' + titleExendRight + '></div><div class="Gooflow_extend_bottom"' + titleExendBottom + '></div>');
-        this.$workArea.children(".Gooflow_extend_right").on("click", { inthis: this }, function (e) {
+        this.$workArea.children(".Gooflow_extend_right").on("click", { inthis: this }, function(e) {
             var This = e.data.inthis;
             var w = This.$workArea.width() + This.$workExtendStep;
             var h = This.$workArea.height();
@@ -738,7 +816,7 @@ GooFlow.prototype = {
             This.$workArea.parent().css("overflow", "scroll");
             return false;
         });
-        this.$workArea.children(".Gooflow_extend_bottom").on("click", { inthis: this }, function (e) {
+        this.$workArea.children(".Gooflow_extend_bottom").on("click", { inthis: this }, function(e) {
             var This = e.data.inthis
             var w = This.$workArea.width();
             var h = This.$workArea.height() + This.$workExtendStep;
@@ -757,8 +835,8 @@ GooFlow.prototype = {
         });
     },
     //初始化用来改变连线的连接端点的两个小方块的操作事件
-    initLinePointsChg: function () {
-        this.$mpFrom.on("mousedown", { inthis: this }, function (e) {
+    initLinePointsChg: function() {
+        this.$mpFrom.on("mousedown", { inthis: this }, function(e) {
             var This = e.data.inthis;
             This.switchToolBtn("cursor");
             var ps = This.$mpFrom.data("p").split(",");
@@ -769,7 +847,7 @@ GooFlow.prototype = {
             This.$draw.appendChild(line);
             return false;
         });
-        this.$mpTo.on("mousedown", { inthis: this }, function (e) {
+        this.$mpTo.on("mousedown", { inthis: this }, function(e) {
             var This = e.data.inthis;
             This.switchToolBtn("cursor");
             var ps = This.$mpFrom.data("p").split(",");
@@ -782,16 +860,16 @@ GooFlow.prototype = {
         });
     },
     //每一种类型结点及其按钮的说明文字
-    setNodeRemarks: function (remark) {
+    setNodeRemarks: function(remark) {
         if (this.$tool == null) return;
-        this.$tool.children("a").each(function () {
+        this.$tool.children("a").each(function() {
             this.title = remark[$(this).attr("id").split("btn_")[1]];
         });
         this.$nodeRemark = remark;
     },
 
     //切换左边工具栏按钮,传参TYPE表示切换成哪种类型的按钮
-    switchToolBtn: function (type) {
+    switchToolBtn: function(type) {
         if (this.$tool != null) {
             this.$tool.children("#" + this.$id + "_btn_" + this.$nowType.split(" ")[0]).attr("class", "GooFlow_tool_btn");
         }
@@ -813,7 +891,7 @@ GooFlow.prototype = {
         if (this.$textArea && this.$textArea.css("display") == "none") this.$textArea.removeData("id").val("").hide();
     },
     //增加一个流程结点,传参为一个JSON,有id,name,top,left,width,height,type(结点类型)等属性
-    addNode: function (id, json) {
+    addNode: function(id, json) {
         let data = this.$nodeData;
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
@@ -834,9 +912,9 @@ GooFlow.prototype = {
             if (!json.left || json.left < 0) json.left = 0;
 
             this.$nodeDom[id] = $("<div class='GooFlow_item" + mark + "' id='" + id + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><table cellspacing='1' style='width:" + (json.width * this.$scale - 2) + "px;height:" + (json.height * this.$scale - 2) + "px;'><tr><td class='ico'><i class='ico_" + json.type + "'></i></td><td><div>" + json.name + "</div></td></tr></table><div style='display:none'><div class='rs_bottom'></div><div class='rs_right'></div><div class='rs_rb'></div><div class='rs_close'></div></div></div>");
-        }
-        else {
-            json.width = 28; json.height = 28;
+        } else {
+            json.width = 28;
+            json.height = 28;
             this.$nodeDom[id] = $("<div class='GooFlow_item item_round" + mark + "' id='" + id + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><table cellspacing='0' style='width:" + (json.width * this.$scale - 2) + "px;height:" + (json.height * this.$scale - 2) + "px;'><tr><td class='ico'><i class='ico_" + json.type + "'></i></td></tr></table><div  style='display:none'><div class='rs_close'></div></div><div class='span'>" + json.name + "</div></div>");
         }
         if (GooFlow.prototype.color.node) {
@@ -846,8 +924,7 @@ GooFlow.prototype = {
                     this.$nodeDom[id].find("td:eq(1)").css("color", GooFlow.prototype.color.mixFont);
                     this.$nodeDom[id].find(".span").css("color", GooFlow.prototype.color.mixFont);
                 }
-            }
-            else if (json.type == "end") {
+            } else if (json.type == "end") {
                 this.$nodeDom[id].css({
                     "background-color": "#FF0000",
                     "border-color": "#FF0000"
@@ -874,25 +951,25 @@ GooFlow.prototype = {
         ++this.$nodeCount;
         if (this.$editable) {
             data[id].alt = true;
-            if (this.$deletedItem[id]) delete this.$deletedItem[id];//在回退删除操作时,去掉该元素的删除记录
+            if (this.$deletedItem[id]) delete this.$deletedItem[id]; //在回退删除操作时,去掉该元素的删除记录
         }
     },
 
-    initWorkForNode: function () {
+    initWorkForNode: function() {
         //绑定点击事件
-        this.$workArea.delegate(".GooFlow_item", "click", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "click", { inthis: this }, function(e) {
             e.data.inthis.focusItem(this.id, true);
             $(this).removeClass("item_mark");
         });
         //绑定右键事件
-        this.$workArea.delegate(".GooFlow_item", "contextmenu", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "contextmenu", { inthis: this }, function(e) {
             if (e.data.inthis.onItemRightClick != null && !e.data.inthis.onItemRightClick(this.id, "node")) {
                 window.event ? window.event.returnValue = false : e.preventDefault();
                 return false;
             }
         });
         //绑定用鼠标移动事件
-        this.$workArea.delegate(".ico", "mousedown", { inthis: this }, function (e) {
+        this.$workArea.delegate(".ico", "mousedown", { inthis: this }, function(e) {
             if (!e) e = window.event;
             if (e.button == 2) return false;
             var This = e.data.inthis;
@@ -901,24 +978,28 @@ GooFlow.prototype = {
             var id = Dom.attr("id");
             This.focusItem(id, true);
 
-            var ev = mousePosition(e), t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var ev = mousePosition(e),
+                t = This.t; //t=getElCoordinate(This.$workArea[0]);
 
             Dom.children("table").clone().prependTo(This.$ghost);
             var X, Y;
             X = ev.x - t.left + This.$workArea[0].parentNode.scrollLeft;
             Y = ev.y - t.top + This.$workArea[0].parentNode.scrollTop;
-            var vX = X - This.$nodeData[id].left * This.$scale, vY = Y - This.$nodeData[id].top * This.$scale;
+            var vX = X - This.$nodeData[id].left * This.$scale,
+                vY = Y - This.$nodeData[id].top * This.$scale;
             var isMove = false;
-            document.onmousemove = function (e) {
+            document.onmousemove = function(e) {
                 if (!e) e = window.event;
                 var ev = mousePosition(e);
                 if (X == ev.x - vX && Y == ev.y - vY) return false;
-                X = ev.x - vX; Y = ev.y - vY;
+                X = ev.x - vX;
+                Y = ev.y - vY;
 
                 if (isMove && This.$ghost.css("display") == "none") {
                     This.$ghost.css({
                         display: "block",
-                        width: This.$nodeData[id].width * This.$scale + "px", height: This.$nodeData[id].height * This.$scale + "px",
+                        width: This.$nodeData[id].width * This.$scale + "px",
+                        height: This.$nodeData[id].height * This.$scale + "px",
                         top: This.$nodeData[id].top * This.$scale + t.top - This.$workArea[0].parentNode.scrollTop + "px",
                         left: This.$nodeData[id].left * This.$scale + t.left - This.$workArea[0].parentNode.scrollLeft + "px",
                         cursor: "move"
@@ -936,7 +1017,7 @@ GooFlow.prototype = {
                 This.$ghost.css({ left: X + "px", top: Y + "px" });
                 isMove = true;
             }
-            document.onmouseup = function (e) {
+            document.onmouseup = function(e) {
                 if (isMove) This.moveNode(id, (X + This.$workArea[0].parentNode.scrollLeft - t.left) / This.$scale, (Y + This.$workArea[0].parentNode.scrollTop - t.top) / This.$scale);
                 This.$ghost.empty().hide();
                 document.onmousemove = null;
@@ -944,16 +1025,16 @@ GooFlow.prototype = {
             }
         });
         //绑定双击功能
-        this.$workArea.delegate(".ico", "dblclick", { inthis: this }, function (e) {
+        this.$workArea.delegate(".ico", "dblclick", { inthis: this }, function(e) {
             var id = $(this).parents(".GooFlow_item").attr("id");
             if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(id, "node")) return;
         });
         if (!this.$editable) {
-            this.$workArea.delegate(".GooFlow_item > .span", "dblclick", { inthis: this }, function (e) {
+            this.$workArea.delegate(".GooFlow_item > .span", "dblclick", { inthis: this }, function(e) {
                 var id = this.parentNode.id;
                 if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(id, "node")) return;
             });
-            this.$workArea.delegate(".ico + td", "dblclick", { inthis: this }, function (e) {
+            this.$workArea.delegate(".ico + td", "dblclick", { inthis: this }, function(e) {
                 var id = $(this).parents(".GooFlow_item").attr("id");
                 if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(id, "node")) return;
             });
@@ -962,11 +1043,11 @@ GooFlow.prototype = {
 
         //以下是工作区为编辑模式时才绑定的事件
         //绑定鼠标覆盖/移出事件
-        this.$workArea.delegate(".GooFlow_item", "mouseenter", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "mouseenter", { inthis: this }, function(e) {
             if ((e.data.inthis.$nowType != "direct" && e.data.inthis.$nowType != "dashed") && !document.getElementById("GooFlow_tmp_line")) return;
             $(this).addClass("item_mark").addClass("crosshair").css("border-color", GooFlow.prototype.color.mark || "#ff8800");
         });
-        this.$workArea.delegate(".GooFlow_item", "mouseleave", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "mouseleave", { inthis: this }, function(e) {
             if ((e.data.inthis.$nowType != "direct" && e.data.inthis.$nowType != "dashed") && !document.getElementById("GooFlow_tmp_line")) return;
             $(this).removeClass("item_mark").removeClass("crosshair");
             if (this.id == e.data.inthis.$focus) {
@@ -976,11 +1057,12 @@ GooFlow.prototype = {
             }
         });
         //绑定连线时确定初始点
-        this.$workArea.delegate(".GooFlow_item", "mousedown", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "mousedown", { inthis: this }, function(e) {
             if (e.button == 2) return false;
             var This = e.data.inthis;
             if (This.$nowType != "direct" && This.$nowType != "dashed") return;
-            var ev = mousePosition(e), t = getElCoordinate(This.$workArea[0]);
+            var ev = mousePosition(e),
+                t = getElCoordinate(This.$workArea[0]);
             var X, Y;
             X = ev.x - t.left + This.$workArea[0].parentNode.scrollLeft;
             Y = ev.y - t.top + This.$workArea[0].parentNode.scrollTop;
@@ -989,7 +1071,7 @@ GooFlow.prototype = {
             This.$draw.appendChild(line);
         });
         //绑定连线时确定结束点
-        this.$workArea.delegate(".GooFlow_item", "mouseup", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item", "mouseup", { inthis: this }, function(e) {
             var This = e.data.inthis;
             if ((This.$nowType != "direct" && This.$nowType != "dashed") && !This.$mpTo.data("p")) return;
             var lineStart = This.$workArea.data("lineStart");
@@ -1001,8 +1083,7 @@ GooFlow.prototype = {
                 }
                 This.addLine(NewGuid(), tmp);
                 This.$max++;
-            }
-            else {
+            } else {
                 if (lineStart) {
                     This.moveLinePoints(This.$focus, lineStart.id, this.id);
                 } else if (lineEnd) {
@@ -1012,58 +1093,61 @@ GooFlow.prototype = {
                     $(this).removeClass("item_mark");
                     if (this.id != This.$focus) {
                         $(this).css("border-color", GooFlow.prototype.color.node);
-                    }
-                    else {
+                    } else {
                         $(this).css("border-color", GooFlow.prototype.color.line);
                     }
                 }
             }
         });
         //绑定双击编辑事件
-        this.$workArea.delegate(".GooFlow_item > .span", "dblclick", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item > .span", "dblclick", { inthis: this }, function(e) {
             var id = this.parentNode.id;
             if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(id, "node")) return;
             var oldTxt = this.innerHTML;
             var This = e.data.inthis;
-            var t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var t = This.t; //t=getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", height: $(this).height() + 6, width: 100,
-                left: t.left + This.$nodeData[id].left * This.$scale - This.$workArea[0].parentNode.scrollLeft - 26,
-                top: t.top + This.$nodeData[id].top * This.$scale - This.$workArea[0].parentNode.scrollTop + 26
-            })
+                    display: "block",
+                    height: $(this).height() + 6,
+                    width: 100,
+                    left: t.left + This.$nodeData[id].left * This.$scale - This.$workArea[0].parentNode.scrollLeft - 26,
+                    top: t.top + This.$nodeData[id].top * This.$scale - This.$workArea[0].parentNode.scrollTop + 26
+                })
                 .data("id", This.$focus).focus();
-            This.$workArea.parent().one("mousedown", function (e) {
+            This.$workArea.parent().one("mousedown", function(e) {
                 if (e.button == 2) return false;
                 This.setName(This.$textArea.data("id"), This.$textArea.val(), "node");
                 This.$textArea.val("").removeData("id").hide();
             });
         });
-        this.$workArea.delegate(".ico + td", "dblclick", { inthis: this }, function (e) {
+        this.$workArea.delegate(".ico + td", "dblclick", { inthis: this }, function(e) {
             var id = $(this).parents(".GooFlow_item").attr("id");
             if (e.data.inthis.onItemDbClick != null && !e.data.inthis.onItemDbClick(id, "node")) return;
             var oldTxt = this.childNodes[0].innerHTML;
             var This = e.data.inthis;
-            var t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var t = This.t; //t=getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", width: $(this).width() + 26, height: $(this).height() + 6,
-                left: t.left + 26 + This.$nodeData[id].left * This.$scale - This.$workArea[0].parentNode.scrollLeft,
-                top: t.top + 2 + This.$nodeData[id].top * This.$scale - This.$workArea[0].parentNode.scrollTop
-            })
+                    display: "block",
+                    width: $(this).width() + 26,
+                    height: $(this).height() + 6,
+                    left: t.left + 26 + This.$nodeData[id].left * This.$scale - This.$workArea[0].parentNode.scrollLeft,
+                    top: t.top + 2 + This.$nodeData[id].top * This.$scale - This.$workArea[0].parentNode.scrollTop
+                })
                 .data("id", This.$focus).focus();
-            This.$workArea.parent().one("mousedown", function (e) {
+            This.$workArea.parent().one("mousedown", function(e) {
                 if (e.button == 2) return false;
                 This.setName(This.$textArea.data("id"), This.$textArea.val(), "node");
                 This.$textArea.val("").removeData("id").hide();
             });
         });
         //绑定结点的删除功能
-        this.$workArea.delegate(".rs_close", "click", { inthis: this }, function (e) {
+        this.$workArea.delegate(".rs_close", "click", { inthis: this }, function(e) {
             if (!e) e = window.event;
             e.data.inthis.delNode(e.data.inthis.$focus);
             return false;
         });
         //绑定结点的RESIZE功能
-        this.$workArea.delegate(".GooFlow_item > div > div[class!=rs_close]", "mousedown", { inthis: this }, function (e) {
+        this.$workArea.delegate(".GooFlow_item > div > div[class!=rs_close]", "mousedown", { inthis: this }, function(e) {
             if (!e) e = window.event;
             if (e.button == 2) return false;
             var cursor = $(this).css("cursor");
@@ -1074,10 +1158,12 @@ GooFlow.prototype = {
             e.cancelBubble = true;
             e.stopPropagation();
 
-            var ev = mousePosition(e), t = This.t;//t=getElCoordinate(This.$workArea[0]);
+            var ev = mousePosition(e),
+                t = This.t; //t=getElCoordinate(This.$workArea[0]);
             This.$ghost.css({
                 display: "block",
-                width: This.$nodeData[id].width * This.$scale + "px", height: This.$nodeData[id].height * This.$scale + "px",
+                width: This.$nodeData[id].width * This.$scale + "px",
+                height: This.$nodeData[id].height * This.$scale + "px",
                 top: This.$nodeData[id].top * This.$scale + t.top - This.$workArea[0].parentNode.scrollTop + "px",
                 left: This.$nodeData[id].left * This.$scale + t.left - This.$workArea[0].parentNode.scrollLeft + "px",
                 cursor: cursor
@@ -1089,7 +1175,7 @@ GooFlow.prototype = {
             var vY = (This.$nodeData[id].top * This.$scale + This.$nodeData[id].height * This.$scale) - Y;
             var isMove = false;
             This.$ghost.css("cursor", cursor);
-            document.onmousemove = function (e) {
+            document.onmousemove = function(e) {
                 if (!e) e = window.event;
                 var ev = mousePosition(e);
                 X = ev.x - t.left + This.$workArea[0].parentNode.scrollLeft - This.$nodeData[id].left * This.$scale + vX;
@@ -1098,12 +1184,18 @@ GooFlow.prototype = {
                 if (Y < 28 * This.$scale) Y = 28 * This.$scale;
                 isMove = true;
                 switch (cursor) {
-                    case "nw-resize": This.$ghost.css({ width: X + "px", height: Y + "px" }); break;
-                    case "w-resize": This.$ghost.css({ width: X + "px" }); break;
-                    case "n-resize": This.$ghost.css({ height: Y + "px" }); break;
+                    case "nw-resize":
+                        This.$ghost.css({ width: X + "px", height: Y + "px" });
+                        break;
+                    case "w-resize":
+                        This.$ghost.css({ width: X + "px" });
+                        break;
+                    case "n-resize":
+                        This.$ghost.css({ height: Y + "px" });
+                        break;
                 }
             }
-            document.onmouseup = function (e) {
+            document.onmouseup = function(e) {
                 document.onmousemove = null;
                 document.onmouseup = null;
                 This.$ghost.hide();
@@ -1114,15 +1206,18 @@ GooFlow.prototype = {
         });
     },
     //获取结点/连线/分组区域的详细信息
-    getItemInfo: function (id, type) {
+    getItemInfo: function(id, type) {
         switch (type) {
-            case "node": return this.$nodeData[id] || null;
-            case "line": return this.$lineData[id] || null;
-            case "area": return this.$areaData[id] || null;
+            case "node":
+                return this.$nodeData[id] || null;
+            case "line":
+                return this.$lineData[id] || null;
+            case "area":
+                return this.$areaData[id] || null;
         }
     },
     //取消所有结点/连线被选定的状态
-    blurItem: function () {
+    blurItem: function() {
         if (this.$focus != "") {
             var jq = $("#" + this.$focus);
             if (jq.prop("tagName") == "DIV") {
@@ -1131,16 +1226,14 @@ GooFlow.prototype = {
                 if (this.$nodeData[this.$focus].marked) {
                     jq.addClass("item_mark").css("border-color", GooFlow.prototype.color.mark || '#ff8800');
                 }
-            }
-            else {
+            } else {
                 if (this.onItemBlur != null && !this.onItemBlur(this.$focus, "line")) return false;
                 if (GooFlow.prototype.useSVG != "") {
                     if (!this.$lineData[this.$focus].marked) {
                         jq[0].childNodes[1].setAttribute("stroke", GooFlow.prototype.color.line || "#3892D3");
                         jq[0].childNodes[1].setAttribute("marker-end", "url(#arrow1)");
                     }
-                }
-                else {
+                } else {
                     if (!this.$lineData[this.$focus].marked) {
                         jq[0].strokeColor = GooFlow.prototype.color.line || "#3892D3";
                     }
@@ -1157,10 +1250,10 @@ GooFlow.prototype = {
         return true;
     },
     //选定某个结点/转换线 bool:TRUE决定了要触发选中事件，FALSE则不触发选中事件，多用在程序内部调用。
-    focusItem: function (id, bool) {
+    focusItem: function(id, bool) {
         var jq = $("#" + id);
         if (jq.length == 0) return;
-        if (!this.blurItem()) return;//先执行"取消选中",如果返回FLASE,则也会阻止选定事件继续进行.
+        if (!this.blurItem()) return; //先执行"取消选中",如果返回FLASE,则也会阻止选定事件继续进行.
         if (jq.prop("tagName") == "DIV") {
             if (bool && this.onItemFocus != null && !this.onItemFocus(id, "node")) return;
             jq.addClass("item_focus");
@@ -1169,14 +1262,12 @@ GooFlow.prototype = {
             }
             if (this.$editable) jq.children("div:eq(0)").css("display", "block");
             //this.$workArea.append(jq);
-        }
-        else {//如果是连接线
+        } else { //如果是连接线
             if (this.onItemFocus != null && !this.onItemFocus(id, "line")) return;
             if (GooFlow.prototype.useSVG != "") {
                 jq[0].childNodes[1].setAttribute("stroke", GooFlow.prototype.color.mark || "#ff8800");
                 jq[0].childNodes[1].setAttribute("marker-end", "url(#arrow2)");
-            }
-            else {
+            } else {
                 jq[0].strokeColor = GooFlow.prototype.color.mark || "#ff8800";
             }
             if (!this.$editable) return;
@@ -1200,20 +1291,23 @@ GooFlow.prototype = {
                 to[0] = from[0];
 
                 this.$lineMove.css({
-                    width: "5px", height: (to[1] - from[1]) * (to[1] > from[1] ? 1 : -1) + "px",
+                    width: "5px",
+                    height: (to[1] - from[1]) * (to[1] > from[1] ? 1 : -1) + "px",
                     left: from[0] - 3 + "px",
                     top: (to[1] > from[1] ? from[1] : to[1]) + 1 + "px",
-                    cursor: "e-resize", display: "block"
+                    cursor: "e-resize",
+                    display: "block"
                 }).data({ "type": "lr", "tid": id });
-            }
-            else if (this.$lineData[id].type == "tb") {
+            } else if (this.$lineData[id].type == "tb") {
                 from[1] = this.$lineData[id].M * this.$scale;
                 to[1] = from[1];
                 this.$lineMove.css({
-                    width: (to[0] - from[0]) * (to[0] > from[0] ? 1 : -1) + "px", height: "5px",
+                    width: (to[0] - from[0]) * (to[0] > from[0] ? 1 : -1) + "px",
+                    height: "5px",
                     left: (to[0] > from[0] ? from[0] : to[0]) + 1 + "px",
                     top: from[1] - 3 + "px",
-                    cursor: "s-resize", display: "block"
+                    cursor: "s-resize",
+                    display: "block"
                 }).data({ "type": "tb", "tid": id });
             }
             x = (from[0] + to[0]) / 2 - 40;
@@ -1229,7 +1323,7 @@ GooFlow.prototype = {
         this.switchToolBtn("cursor");
     },
     //移动结点到一个新的位置
-    moveNode: function (id, left, top) {
+    moveNode: function(id, left, top) {
         if (!this.$nodeData[id]) return;
         if (this.onItemMove != null && !this.onItemMove(id, "node", left, top)) return;
         if (this.$undoStack) {
@@ -1248,9 +1342,9 @@ GooFlow.prototype = {
         }
     },
     //设置结点/连线/分组区域的文字信息
-    setName: function (id, name, type) {
+    setName: function(id, name, type) {
         var oldName;
-        if (type == "node") {//如果是结点
+        if (type == "node") { //如果是结点
             if (!this.$nodeData[id]) return;
             if (this.$nodeData[id].name == name) return;
             if (this.onItemRename != null && !this.onItemRename(id, name, "node")) return;
@@ -1258,8 +1352,7 @@ GooFlow.prototype = {
             this.$nodeData[id].name = name;
             if (this.$nodeData[id].type.indexOf("round") > 1) {
                 this.$nodeDom[id].children(".span").text(name);
-            }
-            else {
+            } else {
                 this.$nodeDom[id].find("td:eq(1)").children("div").text(name);
 
                 var width = this.$nodeDom[id].outerWidth();
@@ -1273,8 +1366,7 @@ GooFlow.prototype = {
             }
             //重画转换线
             this.resetLines(id, this.$nodeData[id]);
-        }
-        else if (type == "line") {//如果是线
+        } else if (type == "line") { //如果是线
             if (!this.$lineData[id]) return;
             if (this.$lineData[id].name == name) return;
             if (this.onItemRename != null && !this.onItemRename(id, name, "line")) return;
@@ -1282,15 +1374,13 @@ GooFlow.prototype = {
             this.$lineData[id].name = name;
             if (GooFlow.prototype.useSVG != "") {
                 this.$lineDom[id].childNodes[2].textContent = name;
-            }
-            else {
+            } else {
                 this.$lineDom[id].childNodes[1].innerHTML = name;
                 var n = this.$lineDom[id].getAttribute("fromTo").split(",");
                 var x;
                 if (this.$lineData[id].type != "lr") {
                     x = (n[2] - n[0]) / 2;
-                }
-                else {
+                } else {
                     var Min = n[2] > n[0] ? n[0] : n[2];
                     if (Min > this.$lineData[id].M) Min = this.$lineData[id].M;
                     x = this.$lineData[id].M - Min;
@@ -1301,8 +1391,7 @@ GooFlow.prototype = {
             if (this.$editable) {
                 this.$lineData[id].alt = true;
             }
-        }
-        else if (type == "area") {//如果是分组区域
+        } else if (type == "area") { //如果是分组区域
             if (!this.$areaData[id]) return;
             if (this.$areaData[id].name == name) return;
             if (this.onItemRename != null && !this.onItemRename(id, name, "area")) return;
@@ -1319,7 +1408,7 @@ GooFlow.prototype = {
         }
     },
     //设置结点的尺寸,仅支持非开始/结束结点
-    resizeNode: function (id, width, height) {
+    resizeNode: function(id, width, height) {
         if (!this.$nodeData[id]) return;
         if (this.onItemResize != null && !this.onItemResize(id, "node", width, height)) return;
         if (this.$nodeData[id].type == "start" || this.$nodeData[id].type == "end") return;
@@ -1343,7 +1432,7 @@ GooFlow.prototype = {
         this.resetLines(id, this.$nodeData[id]);
     },
     //删除结点
-    delNode: function (id, trigger) {
+    delNode: function(id, trigger) {
         if (!this.$nodeData[id]) return;
         if (false != trigger && this.onItemDel != null && !this.onItemDel(id, "node")) return;
         //先删除可能的连线
@@ -1373,13 +1462,14 @@ GooFlow.prototype = {
         }
     },
     //设置流程图的名称
-    setTitle: function (text) {
+    setTitle: function(text) {
         this.$title = text;
         if (this.$head) this.$head.children("label").attr("title", text).text(text);
     },
     //仅供内部使用：计算流程图的实际宽高（单位像素）
-    suitSize: function () {
-        var maxW = 0, maxH = 0;
+    suitSize: function() {
+        var maxW = 0,
+            maxH = 0;
         for (var key in this.$nodeData) {
             var item = this.$nodeData[key];
             if (maxW < item.width + item.left) {
@@ -1411,7 +1501,7 @@ GooFlow.prototype = {
 
     },
     //载入一组数据
-    loadData: function (data) {
+    loadData: function(data) {
         var t = this.$editable;
         this.$editable = false;
         if (data.title) this.setTitle(data.title);
@@ -1446,41 +1536,41 @@ GooFlow.prototype = {
     },
     //用AJAX方式，远程读取一组数据
     //参数para为JSON结构，与JQUERY中$.ajax()方法的传参一样
-    loadDataAjax: function (para) {
-        var This = this;
-        $.ajax({
-            type: para.type,
-            url: para.url,
-            dataType: "json",
-            data: para.data,            
-            success: function (msg) {
-                if (para.dataFilter) para.dataFilter(msg, "json");
-                This.loadData(msg);
-                if (para.success) para.success(msg);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                if (para.error) para.error(textStatus, errorThrown);
-            }
-        })
-    },
-    loadDataAjaxEx: function (para) {
+    loadDataAjax: function(para) {
         var This = this;
         $.ajax({
             type: para.type,
             url: para.url,
             dataType: "json",
             data: para.data,
-            success: function (msg) {
+            success: function(msg) {
+                if (para.dataFilter) para.dataFilter(msg, "json");
+                This.loadData(msg);
+                if (para.success) para.success(msg);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (para.error) para.error(textStatus, errorThrown);
+            }
+        })
+    },
+    loadDataAjaxEx: function(para) {
+        var This = this;
+        $.ajax({
+            type: para.type,
+            url: para.url,
+            dataType: "json",
+            data: para.data,
+            success: function(msg) {
                 This.loadData(msg.data);
                 if (para.success) para.success(msg.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 if (para.error) para.error(textStatus, errorThrown);
             }
         })
     },
     //把画好的整个流程图导出到一个变量中(其实也可以直接访问GooFlow对象的$nodeData,$lineData,$areaData这三个JSON属性)
-    exportData: function () {
+    exportData: function() {
         var ret = {};
         ret.title = this.$title;
         ret.nodes = {};
@@ -1507,9 +1597,10 @@ GooFlow.prototype = {
         }
         return ret;
     },
-    exportDataEx: function () {
+    exportDataEx: function() {
         var ret = { title: this.$title, nodes: this.$nodeData, lines: this.$lineData, areas: this.$areaData, initNum: this.$max };
-        var _nodeobject = [], _lineobject = [];
+        var _nodeobject = [],
+            _lineobject = [];
         for (var k1 in ret.nodes) {
             if (!ret.nodes[k1].marked) {
                 delete ret.nodes[k1]["marked"];
@@ -1529,7 +1620,7 @@ GooFlow.prototype = {
         return ret;
     },
     //只把本次编辑流程图中作了变更(包括增删改)的元素导出到一个变量中,以方便用户每次编辑载入的流程图后只获取变更过的数据
-    exportAlter: function () {
+    exportAlter: function() {
         var ret = { nodes: {}, lines: {}, areas: {} };
         for (var k1 in this.$nodeData) {
             if (this.$nodeData[k1].alt) {
@@ -1550,7 +1641,7 @@ GooFlow.prototype = {
         return ret;
     },
     //变更元素的ID,一般用于快速保存后,将后台返回新元素的ID更新到页面中;type为元素类型(节点,连线,区块)
-    transNewId: function (oldId, newId, type) {
+    transNewId: function(oldId, newId, type) {
         var tmp;
         switch (type) {
             case "node":
@@ -1586,7 +1677,7 @@ GooFlow.prototype = {
         }
     },
     //清空工作区及已载入的数据
-    clearData: function () {
+    clearData: function() {
         for (var key in this.$nodeData) {
             this.delNode(key);
         }
@@ -1599,7 +1690,7 @@ GooFlow.prototype = {
         this.$deletedItem = {};
     },
     //销毁自己
-    destrory: function () {
+    destrory: function() {
         this.$bgDiv.empty();
         this.$lineData = null;
         this.$nodeData = null;
@@ -1614,7 +1705,7 @@ GooFlow.prototype = {
     },
     ///////////以下为有关画线的方法
     //绘制一条箭头线，并返回线的DOM
-    drawLine: function (id, sp, ep, mark, dash, $scale) {
+    drawLine: function(id, sp, ep, mark, dash, $scale) {
         var line;
         if (GooFlow.prototype.useSVG != "") {
             line = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -1638,8 +1729,7 @@ GooFlow.prototype = {
             if (mark) {
                 path.setAttribute("stroke", GooFlow.prototype.color.mark || "#ff8800");
                 path.setAttribute("marker-end", "url(#arrow2)");
-            }
-            else {
+            } else {
                 path.setAttribute("stroke", GooFlow.prototype.color.line || "#3892D3");
                 path.setAttribute("marker-end", "url(#arrow1)");
             }
@@ -1690,7 +1780,7 @@ GooFlow.prototype = {
         return line;
     },
     //画一条只有两个中点的折线
-    drawPoly: function (id, sp, m1, m2, ep, mark, dash, $scale) {
+    drawPoly: function(id, sp, m1, m2, ep, mark, dash, $scale) {
         var poly, strPath;
         if (GooFlow.prototype.useSVG != "") {
             poly = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -1719,8 +1809,7 @@ GooFlow.prototype = {
             if (mark) {
                 path.setAttribute("stroke", GooFlow.prototype.color.mark || "#ff8800");
                 path.setAttribute("marker-end", "url(#arrow2)");
-            }
-            else {
+            } else {
                 path.setAttribute("stroke", GooFlow.prototype.color.line || "#3892D3");
                 path.setAttribute("marker-end", "url(#arrow1)");
             }
@@ -1737,8 +1826,7 @@ GooFlow.prototype = {
             text.style.cursor = "text";
             poly.style.cursor = "pointer";
             text.style.fontSize = 14 * $scale + "px";
-        }
-        else {
+        } else {
             poly = document.createElement("v:Polyline");
             if (id != "") poly.id = id;
             poly.filled = "false";
@@ -1771,60 +1859,72 @@ GooFlow.prototype = {
         return poly;
     },
     //计算两个结点间要连直线的话，连线的开始坐标和结束坐标
-    calcStartEnd: function (n1, n2, scale) {
+    calcStartEnd: function(n1, n2, scale) {
         if (!scale) scale = 1.0;
         var X_1, Y_1, X_2, Y_2;
         //X判断：
-        var x11 = n1.left * scale, x12 = n1.left * scale + n1.width * scale, x21 = n2.left * scale, x22 = n2.left * scale + n2.width * scale;
+        var x11 = n1.left * scale,
+            x12 = n1.left * scale + n1.width * scale,
+            x21 = n2.left * scale,
+            x22 = n2.left * scale + n2.width * scale;
         //结点2在结点1左边
         if (x11 >= x22) {
-            X_1 = x11; X_2 = x22;
+            X_1 = x11;
+            X_2 = x22;
         }
         //结点2在结点1右边
         else if (x12 <= x21) {
-            X_1 = x12; X_2 = x21;
+            X_1 = x12;
+            X_2 = x21;
         }
         //结点2在结点1水平部分重合
         else if (x11 <= x21 && x12 >= x21 && x12 <= x22) {
-            X_1 = (x12 + x21) / 2; X_2 = X_1;
-        }
-        else if (x11 >= x21 && x12 <= x22) {
-            X_1 = (x11 + x12) / 2; X_2 = X_1;
-        }
-        else if (x21 >= x11 && x22 <= x12) {
-            X_1 = (x21 + x22) / 2; X_2 = X_1;
-        }
-        else if (x11 <= x22 && x12 >= x22) {
-            X_1 = (x11 + x22) / 2; X_2 = X_1;
+            X_1 = (x12 + x21) / 2;
+            X_2 = X_1;
+        } else if (x11 >= x21 && x12 <= x22) {
+            X_1 = (x11 + x12) / 2;
+            X_2 = X_1;
+        } else if (x21 >= x11 && x22 <= x12) {
+            X_1 = (x21 + x22) / 2;
+            X_2 = X_1;
+        } else if (x11 <= x22 && x12 >= x22) {
+            X_1 = (x11 + x22) / 2;
+            X_2 = X_1;
         }
 
         //Y判断：
-        var y11 = n1.top * scale, y12 = n1.top * scale + n1.height * scale, y21 = n2.top * scale, y22 = n2.top * scale + n2.height * scale;
+        var y11 = n1.top * scale,
+            y12 = n1.top * scale + n1.height * scale,
+            y21 = n2.top * scale,
+            y22 = n2.top * scale + n2.height * scale;
         //结点2在结点1上边
         if (y11 >= y22) {
-            Y_1 = y11; Y_2 = y22;
+            Y_1 = y11;
+            Y_2 = y22;
         }
         //结点2在结点1下边
         else if (y12 <= y21) {
-            Y_1 = y12; Y_2 = y21;
+            Y_1 = y12;
+            Y_2 = y21;
         }
         //结点2在结点1垂直部分重合
         else if (y11 <= y21 && y12 >= y21 && y12 <= y22) {
-            Y_1 = (y12 + y21) / 2; Y_2 = Y_1;
-        }
-        else if (y11 >= y21 && y12 <= y22) {
-            Y_1 = (y11 + y12) / 2; Y_2 = Y_1;
-        }
-        else if (y21 >= y11 && y22 <= y12) {
-            Y_1 = (y21 + y22) / 2; Y_2 = Y_1;
-        }
-        else if (y11 <= y22 && y12 >= y22) {
-            Y_1 = (y11 + y22) / 2; Y_2 = Y_1;
+            Y_1 = (y12 + y21) / 2;
+            Y_2 = Y_1;
+        } else if (y11 >= y21 && y12 <= y22) {
+            Y_1 = (y11 + y12) / 2;
+            Y_2 = Y_1;
+        } else if (y21 >= y11 && y22 <= y12) {
+            Y_1 = (y21 + y22) / 2;
+            Y_2 = Y_1;
+        } else if (y11 <= y22 && y12 >= y22) {
+            Y_1 = (y11 + y22) / 2;
+            Y_2 = Y_1;
         }
         return { "start": [X_1, Y_1], "end": [X_2, Y_2] };
     },
     //计算两个结点间要连折线的话，连线的所有坐标
-    calcPolyPoints: function (n1, n2, type, M, scale) {
+    calcPolyPoints: function(n1, n2, type, M, scale) {
         if (!scale) scale = 1.0;
         var N1 = { left: n1.left * scale, top: n1.top * scale, width: n1.width * scale, height: n1.height * scale };
         var N2 = { left: n2.left * scale, top: n2.top * scale, width: n2.width * scale, height: n2.height * scale };
@@ -1832,7 +1932,10 @@ GooFlow.prototype = {
         //开始/结束两个结点的中心
         var SP = { x: N1.left + N1.width / 2, y: N1.top + N1.height / 2 };
         var EP = { x: N2.left + N2.width / 2, y: N2.top + N2.height / 2 };
-        var sp = [], m1 = [], m2 = [], ep = [];
+        var sp = [],
+            m1 = [],
+            m2 = [],
+            ep = [];
         //如果是允许中段可左右移动的折线,则参数M为可移动中段线的X坐标
         //粗略计算起始点
         sp = [SP.x, SP.y];
@@ -1844,17 +1947,17 @@ GooFlow.prototype = {
             //再具体分析修改开始点和中点1
             if (m1[0] > N1.left && m1[0] < N1.left + N1.width) {
                 m1[1] = (SP.y > EP.y ? N1.top : N1.top + N1.height);
-                sp[0] = m1[0]; sp[1] = m1[1];
-            }
-            else {
+                sp[0] = m1[0];
+                sp[1] = m1[1];
+            } else {
                 sp[0] = (m1[0] < N1.left ? N1.left : N1.left + N1.width)
             }
             //再具体分析中点2和结束点
             if (m2[0] > N2.left && m2[0] < N2.left + N2.width) {
                 m2[1] = (SP.y > EP.y ? N2.top + N2.height : N2.top);
-                ep[0] = m2[0]; ep[1] = m2[1];
-            }
-            else {
+                ep[0] = m2[0];
+                ep[1] = m2[1];
+            } else {
                 ep[0] = (m2[0] < N2.left ? N2.left : N2.left + N2.width)
             }
         }
@@ -1866,35 +1969,35 @@ GooFlow.prototype = {
             //再具体分析修改开始点和中点1
             if (m1[1] > N1.top && m1[1] < N1.top + N1.height) {
                 m1[0] = (SP.x > EP.x ? N1.left : N1.left + N1.width);
-                sp[0] = m1[0]; sp[1] = m1[1];
-            }
-            else {
+                sp[0] = m1[0];
+                sp[1] = m1[1];
+            } else {
                 sp[1] = (m1[1] < N1.top ? N1.top : N1.top + N1.height)
             }
             //再具体分析中点2和结束点
             if (m2[1] > N2.top && m2[1] < N2.top + N2.height) {
                 m2[0] = (SP.x > EP.x ? N2.left + N2.width : N2.left);
-                ep[0] = m2[0]; ep[1] = m2[1];
-            }
-            else {
+                ep[0] = m2[0];
+                ep[1] = m2[1];
+            } else {
                 ep[1] = (m2[1] < N2.top ? N2.top : N2.top + N2.height);
             }
         }
         return { start: sp, m1: m1, m2: m2, end: ep };
     },
     //初始化折线中段的X/Y坐标,mType='rb'时为X坐标,mType='tb'时为Y坐标
-    getMValue: function (n1, n2, mType, scale) {
+    getMValue: function(n1, n2, mType, scale) {
         if (!scale) scale = 1.0;
         if (mType == "lr") {
             return (n1.left * scale + n1.width * scale / 2 + n2.left * scale + n2.width * scale / 2) / 2;
-        }
-        else if (mType == "tb") {
+        } else if (mType == "tb") {
             return (n1.top * scale + n1.height * scale / 2 + n2.top * scale + n2.height * scale / 2) / 2;
         }
     },
     //原lineData已经设定好的情况下，只在绘图工作区画一条线的页面元素
-    addLineDom: function (id, lineData) {
-        var n1 = this.$nodeData[lineData.from], n2 = this.$nodeData[lineData.to];//获取开始/结束结点的数据
+    addLineDom: function(id, lineData) {
+        var n1 = this.$nodeData[lineData.from],
+            n2 = this.$nodeData[lineData.to]; //获取开始/结束结点的数据
         if (!n1 || !n2) return;
         //开始计算线端点坐标
         var res;
@@ -1922,27 +2025,27 @@ GooFlow.prototype = {
                 this.$lineDom[id].childNodes[1].style.top = (res.m2[1] + res.m1[1]) / 2 - Min - this.$lineDom[id].childNodes[1].offsetHeight / 2;
             } else
                 this.$lineDom[id].childNodes[1].style.left =
-                    ((res.end[0] - res.start[0]) * (res.end[0] > res.start[0] ? 1 : -1) - this.$lineDom[id].childNodes[1].offsetWidth) / 2 + 4;
-        }
-        else {
+                ((res.end[0] - res.start[0]) * (res.end[0] > res.start[0] ? 1 : -1) - this.$lineDom[id].childNodes[1].offsetWidth) / 2 + 4;
+        } else {
             this.$lineDom[id].childNodes[2].textContent = lineData.name;
             var isWebkit = navigator.userAgent.toLowerCase().indexOf('webkit') > -1;
         }
     },
     //增加一条线
-    addLine: function (id, json) {
+    addLine: function(id, json) {
         if (this.onItemAdd != null && !this.onItemAdd(id, "line", json)) return;
         if (this.$undoStack && this.$editable) {
             this.pushOper("delLine", [id]);
         }
         if (json.from == json.to) return;
-        var n1 = this.$nodeData[json.from], n2 = this.$nodeData[json.to];//获取开始/结束结点的数据
+        var n1 = this.$nodeData[json.from],
+            n2 = this.$nodeData[json.to]; //获取开始/结束结点的数据
         if (!n1 || !n2) return;
 
         //避免两个节点间不能有一条以上同向接连线
         for (var k in this.$lineData) {
             if ((json.from == this.$lineData[k].from &&
-                json.to == this.$lineData[k].to /*&& json.dash == this.$lineData[k].dash*/)) {
+                    json.to == this.$lineData[k].to /*&& json.dash == this.$lineData[k].dash*/ )) {
                 return;
             }
         }
@@ -1961,8 +2064,7 @@ GooFlow.prototype = {
         if (json.type) {
             this.$lineData[id].type = json.type;
             this.$lineData[id].M = json.M;
-        }
-        else this.$lineData[id].type = "sl";//默认为直线
+        } else this.$lineData[id].type = "sl"; //默认为直线
         this.$lineData[id].from = json.from;
         this.$lineData[id].to = json.to;
         this.$lineData[id].name = json.name;
@@ -1977,15 +2079,15 @@ GooFlow.prototype = {
         ++this.$lineCount;
         if (this.$editable) {
             this.$lineData[id].alt = true;
-            if (this.$deletedItem[id]) delete this.$deletedItem[id];//在回退删除操作时,去掉该元素的删除记录
+            if (this.$deletedItem[id]) delete this.$deletedItem[id]; //在回退删除操作时,去掉该元素的删除记录
         }
     },
     //重构所有连向某个结点的线的显示，传参结构为$nodeData数组的一个单元结构
-    resetLines: function (id, node) {
+    resetLines: function(id, node) {
         for (var i in this.$lineData) {
-            var other = null;//获取结束/开始结点的数据
+            var other = null; //获取结束/开始结点的数据
             var res;
-            if (this.$lineData[i].from == id) {//找结束点
+            if (this.$lineData[i].from == id) { //找结束点
                 other = this.$nodeData[this.$lineData[i].to] || null;
                 if (other == null) continue;
                 if (this.$lineData[i].type == "sl")
@@ -1993,8 +2095,7 @@ GooFlow.prototype = {
                 else
                     res = GooFlow.prototype.calcPolyPoints(node, other, this.$lineData[i].type, this.$lineData[i].M, this.$scale)
                 if (!res) break;
-            }
-            else if (this.$lineData[i].to == id) {//找开始点
+            } else if (this.$lineData[i].to == id) { //找开始点
                 other = this.$nodeData[this.$lineData[i].from] || null;
                 if (other == null) continue;
                 if (this.$lineData[i].type == "sl")
@@ -2007,8 +2108,7 @@ GooFlow.prototype = {
             this.$draw.removeChild(this.$lineDom[i]);
             if (this.$lineData[i].type == "sl") {
                 this.$lineDom[i] = GooFlow.prototype.drawLine(i, res.start, res.end, this.$lineData[i].marked, this.$lineData[i].dash, this.$scale);
-            }
-            else {
+            } else {
                 this.$lineDom[i] = GooFlow.prototype.drawPoly(i, res.start, res.m1, res.m2, res.end, this.$lineData[i].marked, this.$lineData[i].dash, this.$scale);
             }
             this.$draw.appendChild(this.$lineDom[i]);
@@ -2025,13 +2125,12 @@ GooFlow.prototype = {
                     this.$lineDom[i].childNodes[1].style.top = (res.m2[1] + res.m1[1]) / 2 - Min - this.$lineDom[i].childNodes[1].offsetHeight / 2 - 4;
                 } else
                     this.$lineDom[i].childNodes[1].style.left =
-                        ((res.end[0] - res.start[0]) * (res.end[0] > res.start[0] ? 1 : -1) - this.$lineDom[i].childNodes[1].offsetWidth) / 2 + 4;
-            }
-            else this.$lineDom[i].childNodes[2].textContent = this.$lineData[i].name;
+                    ((res.end[0] - res.start[0]) * (res.end[0] > res.start[0] ? 1 : -1) - this.$lineDom[i].childNodes[1].offsetWidth) / 2 + 4;
+            } else this.$lineDom[i].childNodes[2].textContent = this.$lineData[i].name;
         }
     },
     //重新设置连线的样式 newType= "sl":直线, "lr":中段可左右移动型折线, "tb":中段可上下移动型折线
-    setLineType: function (id, newType, M) {
+    setLineType: function(id, newType, M) {
         if (!newType || newType == null || newType == "" || newType == this.$lineData[id].type) return false;
         if (this.onLineSetType != null && !this.onLineSetType(id, newType)) return;
         if (this.$undoStack) {
@@ -2064,8 +2163,7 @@ GooFlow.prototype = {
                 this.$lineDom[id].childNodes[1].innerHTML = this.$lineData[id].name;
                 this.$lineDom[id].childNodes[1].style.left =
                     ((res.end[0] - res.start[0]) * (res.end[0] > res.start[0] ? 1 : -1) - this.$lineDom[id].childNodes[1].offsetWidth) / 2 + 4;
-            }
-            else
+            } else
                 this.$lineDom[id].childNodes[2].textContent = this.$lineData[id].name;
         }
         if (this.$focus == id) {
@@ -2076,7 +2174,7 @@ GooFlow.prototype = {
         }
     },
     //设置折线中段的X坐标值（可左右移动时）或Y坐标值（可上下移动时）
-    setLineM: function (id, M, noStack) {
+    setLineM: function(id, M, noStack) {
         if (!this.$lineData[id] || M < 0 || !this.$lineData[id].type || this.$lineData[id].type == "sl") return false;
         if (this.onLineMove != null && !this.onLineMove(id, M)) return false;
         if (this.$undoStack && !noStack) {
@@ -2100,14 +2198,13 @@ GooFlow.prototype = {
             if (Min > ps.m2[1]) Min = ps.m2[1];
             if (Min > ps.m1[1]) Min = ps.m1[1];
             this.$lineDom[id].childNodes[1].style.top = (ps.m2[1] + ps.m1[1]) / 2 - Min - this.$lineDom[id].childNodes[1].offsetHeight / 2 - 4;
-        }
-        else this.$lineDom[id].childNodes[2].textContent = this.$lineData[id].name;
+        } else this.$lineDom[id].childNodes[2].textContent = this.$lineData[id].name;
         if (this.$editable) {
             this.$lineData[id].alt = true;
         }
     },
     //删除转换线
-    delLine: function (id, trigger) {
+    delLine: function(id, trigger) {
         if (!this.$lineData[id]) return;
         if (false != trigger && this.onItemDel != null && !this.onItemDel(id, "node")) return;
         if (this.$undoStack) {
@@ -2132,7 +2229,7 @@ GooFlow.prototype = {
     },
     //变更连线两个端点所连的结点
     //参数：要变更端点的连线ID，新的开始结点ID、新的结束结点ID；如果开始/结束结点ID是传入null或者""，则表示原端点不变
-    moveLinePoints: function (lineId, newStart, newEnd, noStack) {
+    moveLinePoints: function(lineId, newStart, newEnd, noStack) {
         if (newStart == newEnd) return;
         if (!lineId || !this.$lineData[lineId]) return;
         if (newStart == null || newStart == "")
@@ -2166,15 +2263,14 @@ GooFlow.prototype = {
 
     //用颜色标注/取消标注一个结点或转换线，常用于显示重点或流程的进度。
     //这是一个在编辑模式中无用,但是在纯浏览模式中非常有用的方法，实际运用中可用于跟踪流程的进度。
-    markItem: function (id, type, mark) {
+    markItem: function(id, type, mark) {
         if (type == "node") {
             if (!this.$nodeData[id]) return;
             if (this.onItemMark != null && !this.onItemMark(id, "node", mark)) return;
             this.$nodeData[id].marked = mark || false;
             if (mark) {
                 this.$nodeDom[id].addClass("item_mark").css("border-color", GooFlow.prototype.color.mark);
-            }
-            else {
+            } else {
                 this.$nodeDom[id].removeClass("item_mark");
                 if (id != this.$focus) this.$nodeDom[id].css("border-color", "transparent");
             }
@@ -2197,8 +2293,7 @@ GooFlow.prototype = {
                 if (mark) {
                     this.$lineDom[id].strokeColor = GooFlow.prototype.color.mark || "#ff8800";
                     this.$lineDom[id].strokeWeight = "2.4";
-                }
-                else {
+                } else {
                     this.$lineDom[id].strokeColor = GooFlow.prototype.color.line || "#3892D3";
                     this.$lineDom[id].strokeWeight = "1.2";
                 }
@@ -2210,7 +2305,7 @@ GooFlow.prototype = {
         }
     },
     ////////////////////////以下为区域分组块操作
-    moveArea: function (id, left, top) {
+    moveArea: function(id, left, top) {
         if (!this.$areaData[id]) return;
         if (this.onItemMove != null && !this.onItemMove(id, "area", left, top)) return;
         if (this.$undoStack) {
@@ -2227,7 +2322,7 @@ GooFlow.prototype = {
         }
     },
     //删除区域分组
-    delArea: function (id, trigger) {
+    delArea: function(id, trigger) {
         if (!this.$areaData[id]) return;
         if (this.$undoStack) {
             var paras = [id, this.$areaData[id]];
@@ -2245,7 +2340,7 @@ GooFlow.prototype = {
         }
     },
     //设置区域分组的颜色
-    setAreaColor: function (id, color) {
+    setAreaColor: function(id, color) {
         if (!this.$areaData[id]) return;
         if (this.$undoStack) {
             var paras = [id, this.$areaData[id].color];
@@ -2260,7 +2355,7 @@ GooFlow.prototype = {
         }
     },
     //设置区域分块的尺寸
-    resizeArea: function (id, width, height) {
+    resizeArea: function(id, width, height) {
         if (!this.$areaData[id]) return;
         if (this.onItemResize != null && !this.onItemResize(id, "area", width, height)) return;
         if (this.$undoStack) {
@@ -2280,28 +2375,29 @@ GooFlow.prototype = {
             this.$areaData[id].alt = true;
         }
     },
-    addArea: function (id, json) {
+    addArea: function(id, json) {
         if (this.onItemAdd != null && !this.onItemAdd(id, "area", json)) return;
         if (this.$undoStack && this.$editable) {
             this.pushOper("delArea", [id]);
         }
-        this.$areaDom[id] = $("<div id='" + id + "' class='GooFlow_area area_" + json.color + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><div class='bg' style='width:" + (json.width * this.$scale) + "px;height:" + (json.height * this.$scale) + "px'></div>"
-            + "<label>" + json.name + "</label><i></i><div><div class='rs_bottom'></div><div class='rs_right'></div><div class='rs_rb'></div><div class='rs_close'></div></div></div>");
+        this.$areaDom[id] = $("<div id='" + id + "' class='GooFlow_area area_" + json.color + "' style='top:" + json.top * this.$scale + "px;left:" + json.left * this.$scale + "px'><div class='bg' style='width:" + (json.width * this.$scale) + "px;height:" + (json.height * this.$scale) + "px'></div>" +
+            "<label>" + json.name + "</label><i></i><div><div class='rs_bottom'></div><div class='rs_right'></div><div class='rs_rb'></div><div class='rs_close'></div></div></div>");
         this.$areaData[id] = json;
         this.$group.append(this.$areaDom[id]);
         if (this.$nowType != "group") this.$areaDom[id].children("div:eq(1)").css("display", "none");
         ++this.$areaCount;
         if (this.$editable) {
             this.$areaData[id].alt = true;
-            if (this.$deletedItem[id]) delete this.$deletedItem[id];//在回退删除操作时,去掉该元素的删除记录
+            if (this.$deletedItem[id]) delete this.$deletedItem[id]; //在回退删除操作时,去掉该元素的删除记录
         }
     },
     //重构整个流程图设计器的宽高
-    reinitSize: function (width, height) {
+    reinitSize: function(width, height) {
         var w = (width || this.$bgDiv.width());
         var h = (height || this.$bgDiv.height());
         this.$bgDiv.css({ height: h + "px", width: w + "px" });
-        var headHeight = 0, hack = 8;
+        var headHeight = 0,
+            hack = 8;
         if (this.$head != null) {
             headHeight = 26;
             hack = 5;
@@ -2332,7 +2428,7 @@ GooFlow.prototype = {
         }
     },
     //重设整个工作区内容的显示缩放比例，从0.5至4倍
-    resetScale: function (scale) {
+    resetScale: function(scale) {
         if (!scale) scale = 1.0;
         else if (scale < 0.5) scale = 0.5;
         else if (scale > 4) scale = 4;
@@ -2340,8 +2436,10 @@ GooFlow.prototype = {
         if (this.$scale == scale) return;
         var oldS = this.$scale;
         this.$scale = scale;
-        var factor = oldS / scale;//因数（旧缩放比例除以新缩放比例）,元素的现有值除以该因子，就能得到新的缩放后的值
-        var W = 0, H = 0, P = {};//宽、高、左及上的临时变量
+        var factor = oldS / scale; //因数（旧缩放比例除以新缩放比例）,元素的现有值除以该因子，就能得到新的缩放后的值
+        var W = 0,
+            H = 0,
+            P = {}; //宽、高、左及上的临时变量
         //TODO:开始正式的缩放（节点、连线、泳道块有宽高和定位，其它编辑工具元素则只有定位）（全部以左上角为原点）
         this.blurItem();
         //先缩放工作区
@@ -2360,7 +2458,7 @@ GooFlow.prototype = {
         }
         //缩放节点
         var isWebkit = navigator.userAgent.toLowerCase().indexOf('webkit') > -1;
-        this.$workArea.children(".GooFlow_item").each(function (i) {
+        this.$workArea.children(".GooFlow_item").each(function(i) {
             var This = $(this);
             P = This.position();
             This.css({ "left": P.left / factor + "px", "top": P.top / factor + "px" });
@@ -2372,12 +2470,14 @@ GooFlow.prototype = {
             This.find("td[class='ico']").css({ width: tmp + "px" });
             var newSize = {};
             if (tmp < 12 && isWebkit) {
-                newSize["width"] = "18px"; newSize["height"] = "18px";
+                newSize["width"] = "18px";
+                newSize["height"] = "18px";
                 newSize["font-size"] = "18px";
                 newSize["transform"] = "scale(" + (tmp / 18) + ")";
                 newSize["margin"] = -((18 - tmp) / 2) + "px";
             } else {
-                newSize["width"] = tmp + "px"; newSize["height"] = tmp + "px";
+                newSize["width"] = tmp + "px";
+                newSize["height"] = tmp + "px";
                 newSize["font-size"] = tmp + "px";
                 newSize["transform"] = "none";
                 newSize["margin"] = "0px auto";
@@ -2408,7 +2508,7 @@ GooFlow.prototype = {
         });
         //缩放区域图
         var ifs = 16 * scale + 2;
-        this.$group.children(".GooFlow_area").each(function (i) {
+        this.$group.children(".GooFlow_area").each(function(i) {
             var This = $(this);
             P = This.position();
             This.css({ "left": P.left / factor + "px", "top": P.top / factor + "px" });
@@ -2434,6 +2534,16 @@ GooFlow.prototype = {
         for (var key in this.$lineData) {
             this.addLineDom(key, this.$lineData[key]);
         }
+    },
+    // 给指定node添加拓展属性
+    setNodeAttribute: function(nodeId, json) {
+        var node = this.$nodeData[nodeId];
+        $.extend(node, json);
+    },
+
+    //给指定line添加分支条件
+    setLineExpression: function(lineId, expression) {
+        this.$lineData[lineId].expressionStru = expression;
     }
 }
 GooFlow.prototype.color = {};
@@ -2445,7 +2555,7 @@ GooFlow.prototype.remarks = {
 };
 //将此类的构造函数加入至JQUERY对象中
 jQuery.extend({
-    createGooFlow: function (bgDiv, property) {
+    createGooFlow: function(bgDiv, property) {
         return new GooFlow(bgDiv, property);
     }
 });
@@ -2455,6 +2565,7 @@ jQuery.extend({
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
+
 function NewGuid() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-}  
+}

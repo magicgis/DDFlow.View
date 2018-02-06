@@ -53,10 +53,9 @@
         <div class="layui-row div-opinion">
             <div class="layui-col-md12">
                 <div class="layui-form-item">
-                    <label class="layui-form-label wf-label">发起意见：</label>
+                    <label class="layui-form-label wf-label">审批意见：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="handle-text" required lay-verify="required" placeholder="请输入发起意见" autocomplete="off" class="layui-input"
-                            value="同意">
+                        <input type="text" name="handle-text" required lay-verify="required" placeholder="请输入发起意见" autocomplete="off" class="layui-input" value="同意">
                     </div>
                 </div>
             </div>
@@ -79,38 +78,31 @@
 <script src="../../plugins/GooFlow/GooFlow.export.js"></script>
 <script src="../../plugins/GooFlow/GooFlow.validate.js"></script>
 <script id="tpl_btngroup" type="text/html">
-        <div class="layui-btn-group">
-                {{#  layui.each(d, function(index, item){ }}
-                <button class="layui-btn layui-btn-normal" data-name="btn-{{ item.id}}" data-oprType="{{ item.id}}">{{ item.name}}</button>
-              {{#  }); }}
-            </div>
-    </script>
+    <div class="layui-btn-group">
+        {{# layui.each(d, function(index, item){ }}
+        <button class="layui-btn layui-btn-normal" data-name="btn-{{ item.id}}" data-oprType="{{ item.id}}">{{ item.name}}</button> {{# }); }}
+    </div>
+</script>
 <script id="tpl_processRecord" type="text/html">
     {{# layui.each(d,function(index,item){ }}
     <li class="layui-timeline-item">
-            {{# if(item.status==0){ }}
-                <i class="layui-icon layui-timeline-axis layui-bg-gray"></i>
-            {{# } else if(item.status==1){ }}
-                <i class="layui-icon layui-timeline-axis layui-bg-orange"></i>
-                {{# }else{ }}
-                <i class="layui-icon layui-timeline-axis layui-bg-green"></i>
-            {{#} }}
-            <div class="layui-timeline-content layui-text">
-                <div class="record-r">
+        {{# if(item.status==0){ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-gray"></i> {{# } else if(item.status==1){ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-orange"></i> {{# }else{ }}
+        <i class="layui-icon layui-timeline-axis layui-bg-green"></i> {{#} }}
+        <div class="layui-timeline-content layui-text">
+            <div class="record-r">
                 <h3 class="layui-timeline-title">{{item.displayName}}</h3>
                 <div class="record-handleInfo" style="height:{{item.children.length*30}}px">
-                        {{# layui.each(item.children,function(n_index,node){ }}
-                        <p class="record-auditor">{{node.displayName}} 
-                                {{# if(node.handleText!=null){ }}
-                                : {{node.handleText}}</p>
-                           <p class="record-time"> {{node.endDateTime}}</p>
-                               {{#} }}
-                        {{#  }); }}
+                    {{# layui.each(item.children,function(n_index,node){ }}
+                    <p class="record-auditor">{{node.displayName}} {{# if(node.handleText!=null){ }} : {{node.handleText}}</p>
+                    <p class="record-time"> {{node.endDateTime}}</p>
+                    {{#} }} {{# }); }}
                 </div>
             </div>
-            </div>
-        </li>
-        {{#  }); }}
-    </script>
+        </div>
+    </li>
+    {{# }); }}
+</script>
 
 </html>

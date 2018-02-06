@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>业务对象</title>
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../css/login.css">
+    <link rel="stylesheet" href="../../plugins/DataTables/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../plugins/DataTables/css/dataTables.bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/processCommon.css">
+</head>
+
+<body class="layui-body">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space8">
+            <div class="layui-col-md2">
+                <ul class="layui-nav layui-nav-tree layui-nav-side">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">站点列表</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">福云ERP</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-col-md10">
+                <!-- <div class="layui-form-item">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="txt_search" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        <button type="buttom" class="layui-btn layui-btn-normal">查询</button>
+                    </div>
+                </div> -->
+                <button type="buttom" style="float:right" class="layui-btn layui-btn-normal" id="btn_delete">删除</button>
+                <button type="buttom" style="float:right" class="layui-btn layui-btn-normal" id="btn_add">新增</button>
+
+                <table class="display table table-striped table-bordered table-hover" id="bizObjectList">
+                </table>
+                <!-- <div id="bizObjectList" class="layui-table div_bizObjectList" lay-filter="object"></div> -->
+            </div>
+        </div>
+    </div>
+    <div id="bizObject-form" style="display:none">
+        <form class="form-horizontal" id="subForm">
+            <div class="form-group">
+                <label for="business-name" class="col-sm-3 control-label">名称</label>
+                <div class="col-sm-9">
+                    <input type="hidden" id="Id" name="Id">
+                    <input type="text" class="form-control" id="Name" name="Name" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="beforeapi" class="col-sm-3 control-label">发起前调用接口</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" name="BeforeInitiateUrl" id="BeforeInitiateUrl" placeholder="发起前调用接口">
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" id="btnInitiateUrl" class="btn btn-primary">获取列表</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="afterapi" class="col-sm-3 control-label">发起后调用接口</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="AfterInitiateUrl" id="AfterInitiateUrl" placeholder="发起后调用接口">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="afterapi" class="col-sm-3 control-label">流程状态改变调用接口</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="BeforeProcessChangeUrl" id="BeforeProcessChangeUrl" placeholder="流程状态改变调用接口">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="stepapi" class="col-sm-3 control-label">步骤状态改变调用接口</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="AfterProcessChangeUrl" id="AfterProcessChangeUrl" placeholder="步骤状态改变调用接口">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" id="btnSave" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+        <div class="add-business-t">
+            <table style="width:100%;" class="table table-striped table-bordered table-hover add-business-table" id="tableInitiate">
+            </table>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../../plugins/jQuery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../js/common/global.js"></script>
+<script type="text/javascript" src="../../js/common/config.js"></script>
+<script type="text/javascript" src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../plugins/DataTables/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="../../js/processModel/bizObject.js"></script>
+
+</html>
