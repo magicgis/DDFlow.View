@@ -17,228 +17,253 @@
 
 <body class="layui-body">
     <div class="layui-fluid">
-        <div class="processInfo-form" style="display:none">
-            <form class="layui-form" lay-filter="stepInfo">
-                <div class="layui-row">
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">流程名称</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="ProcessName" lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">表单类型</label>
-                            <div class="layui-input-block">
-                                <select name="FormType" lay-verify="required">
-                                              <option value="0">HTML表单</option>
-                                              <option value="1">定制表单</option>
-                                            </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">流程分类</label>
-                            <div class="layui-input-block">
-                                <select name="processKindName" lay-verify="required">
-                                    <option value="15691d95-85e0-4feb-b66a-d543b9c510e9">wonder4</option>
-                                    <option value="c7ce49d3-d5e5-4f89-b4e0-07c2e2b43559" selected>人事流程</option>
-                                  </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">监控人</label>
-                            <div class="layui-input-block">
-                                <select name="processKindName">
-                                        <option value="15691d95-85e0-4feb-b66a-d543b9c510e9">wonder4</option>
-                                        <option value="c7ce49d3-d5e5-4f89-b4e0-07c2e2b43559" selected>人事流程</option>
-                                      </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">业务对象</label>
-                            <div class="layui-input-block">
-                                <select name="BusinessObjectGuid" lay-search>
-                                            <option value="">请选择一个城市</option>
-                                            <option value="010">北京</option>
-                                            <option value="021">上海</option>
-                                            <option value="0571">杭州</option>
-                                          </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">表单模板</label>
-                            <div class="layui-input-block">
-                                <select name="FormGUID" lay-search>
-                                            <option value="">请选择一个城市</option>
-                                            <option value="010">北京</option>
-                                            <option value="021">上海</option>
-                                            <option value="0571">杭州</option>
-                                          </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">页面地址</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="ExtendFormUrl" lay-verify="required" placeholder="http://www.fulu.com" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">标题规则</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="NameCodingRule" lay-verify="required" placeholder="[申请部门]-~[申请人]-~[申请日期]-~$流水号$~" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">描述</label>
-                    <div class="layui-input-block">
-                        <textarea name="Description" placeholder="请输入描述信息" class="layui-textarea"></textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="stepMapDesign-from">
-            <div class="layui-row">
-                <div id="div-step-map"></div>
-                <div class="layui-tab layui-tab-brief tab-stepDesign layui-hide" lay-filter="tab-stepDesign">
-                    <ul class="layui-tab-title">
-                        <li class="layui-this" data-content="div-baseInfo">基本信息</li>
-                        <li data-content="div-auditor">责任人</li>
-                        <li data-content="div-stepAuth">步骤权限</li>
-                        <li data-content="div-stepMethod">步骤事件</li>
-                    </ul>
-                    <!-- 步骤信息 start -->
-                    <div class="layui-tab-content">
-                        <form class="layui-form" name="form-stepDesign">
-                            <input name="nodeId" type="hidden">
-                            <!-- 基本信息 start -->
-                            <div name="div-baseInfo" class="layui-row">
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">步骤名称</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="stepName" required lay-verify="required" placeholder="请输入步骤名称" autocomplete="off" class="layui-input">
+        <div class="layui-tab layui-tab-brief" lay-filter="tab_ProcessTab">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="process_info">基本信息</li>
+                <li lay-id="process_form">表单定义</li>
+                <li lay-id="process_stepMap">步骤定义</li>
+                <li lay-id="process_auth">权限分配</li>
+            </ul>
+            <!-- <div class="layui-tab-content"></div> -->
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <!-- 基础信息 start-->
+                    <div class="processInfo-form">
+                        <form class="layui-form" lay-filter="processInfo">
+                            <div class="layui-row">
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">流程名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ProcessName" lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">步骤类型</label>
-                                    <div class="layui-input-block">
-                                        <select name="handleType" lay-verify="required">
-                                            <option value="0" selected>审批</option>
-                                            <option value="1">会签</option>
-                                          </select>
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">是否多人</label>
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" name="isMulti" lay-skin="switch" lay-text="是|否" value="1">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item layui-form-text">
-                                    <label class="layui-form-label">审批要点</label>
-                                    <div class="layui-input-block">
-                                        <textarea name="ApproveAttention" placeholder="请输入审批要点" class="layui-textarea"></textarea>
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">表单类型</label>
+                                        <div class="layui-input-block">
+                                            <select name="FormType" lay-verify="required">
+                                                                  <option value="0">HTML表单</option>
+                                                                  <!-- <option value="1">定制表单</option> -->
+                                                                </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 基本信息 start -->
-                            <!-- 责任人 start -->
-                            <div name="div-auditor" class="layui-row layui-hide">
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">相对人</label>
-                                    <div class="layui-input-block">
-                                        <select name="realtiveAuditor" lay-verify="required">
-                                                    <option value=""></option>
-                                                    <option value="0">北京</option>
-                                                    <option value="1">上海</option>
-                                                    <option value="2">广州</option>
-                                                    <option value="3">深圳</option>
-                                                    <option value="4">杭州</option>
-                                                  </select>
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">岗位</label>
-                                    <div class="layui-input-block">
-                                        <select name="stationAuditor" lay-verify="required">
-                                                        <option value=""></option>
-                                                        <option value="0">北京</option>
-                                                        <option value="1">上海</option>
-                                                        <option value="2">广州</option>
-                                                        <option value="3">深圳</option>
-                                                        <option value="4">杭州</option>
+                            <div class="layui-row">
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">流程分类</label>
+                                        <div class="layui-input-block">
+                                            <select name="ProcessKindGuid" lay-verify="required">
+                                                        <option value="15691d95-85e0-4feb-b66a-d543b9c510e9">wonder4</option>
+                                                        <option value="c7ce49d3-d5e5-4f89-b4e0-07c2e2b43559" selected>人事流程</option>
                                                       </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">监控人</label>
+                                        <div class="layui-input-block">
+                                            <select name="ProcessWatch">
+                                                            <option value="15691d95-85e0-4feb-b66a-d543b9c510e9">wonder4</option>
+                                                            <option value="c7ce49d3-d5e5-4f89-b4e0-07c2e2b43559" selected>人事流程</option>
+                                                          </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 责任人 end -->
-                            <!-- 步骤权限 start -->
-                            <div name="div-stepAuth" class="layui-row layui-hide">
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">审批权限</label>
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" name="canRollBack" title="打回" checked>
-                                        <!-- <input type="checkbox" name="auth[canCancel]" title="作废">
-                                            <input type="checkbox" name="auth[canAssign]" title="交办"> -->
-                                        <input type="checkbox" name="canConsult" title="协商" checked>
+                            <div class="layui-row">
+                                <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">业务对象</label>
+                                        <div class="layui-input-block">
+                                            <select name="BusinessObjectGuid" lay-search>
+                                                                <option value="">请选择一个业务对象</option>
+                                                              </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="layui-form-item">
-                                    <div name="div-formAuth"></div>
-                                </div>
+                                <!-- <div class="layui-col-md6">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">表单模板</label>
+                                        <div class="layui-input-block">
+                                            <select name="FormGUID" lay-search>
+                                                                <option value="">请选择一个城市</option>
+                                                                <option value="010">北京</option>
+                                                                <option value="021">上海</option>
+                                                                <option value="0571">杭州</option>
+                                                              </select>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
-                            <!-- 步骤权限 end -->
-                            <!-- 步骤事件定义 start-->
-                            <div name="div-stepMethod" class="layui-row layui-hide">
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">步骤回调</label>
-                                    <div class="layui-input-block">
-                                        <select name="StepStatusChangeInterface" lay-verify="" lay-search>
-                                            <option value="xxx">步骤状态变化时回调</option>
-                                          </select>
+                            <!-- <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">页面地址</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ExtendFormUrl" lay-verify="required" placeholder="http://www.fulu.com" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">标题规则</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="NameCodingRule" lay-verify="required" readonly placeholder="[申请部门]-~[申请人]-~[申请日期]-~$流水号$~" autocomplete="off" class="layui-input" value="[申请部门]-~[申请人]-~[申请日期]-~$流水号$~">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 步骤事件定义 end-->
+
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">描述</label>
+                                <div class="layui-input-block">
+                                    <textarea name="Description" placeholder="请输入描述信息" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <button name="btn_saveNodeInfo" class="layui-btn" lay-submit lay-filter="form-stepInfo">立即提交</button>
+                                    <button class="layui-btn" lay-submit lay-filter="process_info">保存</button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <!-- 步骤信息 end -->
+                    <!-- 基础信息 end-->
                 </div>
+                <div class="layui-tab-item">表单定义</div>
+                <div class="layui-tab-item">
+                    <!-- 步骤定义 start -->
+                    <div class="stepMapDesign-from">
+                        <div class="layui-row">
+                            <div id="div-step-map" style="width:1280px"></div>
+                            <div class="layui-tab layui-tab-brief tab-stepDesign layui-hide" lay-filter="tab-stepDesign">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this" data-content="div-baseInfo" lay-id="div-baseInfo">基本信息</li>
+                                    <li data-content="div-auditor">责任人</li>
+                                    <li data-content="div-stepAuth">步骤权限</li>
+                                    <li data-content="div-stepMethod">步骤事件</li>
+                                </ul>
+                                <!-- 步骤信息 start -->
+                                <div class="layui-tab-content">
+                                    <form class="layui-form" name="form-stepDesign" lay-filter="form-stepDesign">
+                                        <input name="nodeId" type="hidden">
+                                        <!-- 基本信息 start -->
+                                        <div name="div-baseInfo" class="layui-row">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">步骤名称</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="stepName" required lay-verify="required" placeholder="请输入步骤名称" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">步骤类型</label>
+                                                <div class="layui-input-block">
+                                                    <select name="handleType" lay-verify="required">
+                                                            <option value="0" selected>审批</option>
+                                                            <option value="1">会签</option>
+                                                          </select>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">是否多人</label>
+                                                <div class="layui-input-block">
+                                                    <input type="checkbox" name="isMulti" checked lay-skin="switch" lay-text="是|否" value="1">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item layui-form-text">
+                                                <label class="layui-form-label">审批要点</label>
+                                                <div class="layui-input-block">
+                                                    <textarea name="ApproveAttention" placeholder="请输入审批要点" class="layui-textarea"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 基本信息 start -->
+                                        <!-- 责任人 start -->
+                                        <div name="div-auditor" class="layui-row layui-hide">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">相对人</label>
+                                                <div class="layui-input-block">
+                                                    <select name="realtiveAuditor" lay-verify="">
+                                                                    <option value=""></option>
+                                                                    <option value="0">北京</option>
+                                                                    <option value="1">上海</option>
+                                                                    <option value="2">广州</option>
+                                                                    <option value="3">深圳</option>
+                                                                    <option value="4">杭州</option>
+                                                                  </select>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">岗位</label>
+                                                <div class="layui-input-block">
+                                                    <select name="stationAuditor" lay-verify="">
+                                                                        <option value=""></option>
+                                                                        <option value="0">北京</option>
+                                                                        <option value="1">上海</option>
+                                                                        <option value="2">广州</option>
+                                                                        <option value="3">深圳</option>
+                                                                        <option value="4">杭州</option>
+                                                                      </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 责任人 end -->
+                                        <!-- 步骤权限 start -->
+                                        <div name="div-stepAuth" class="layui-row layui-hide">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">审批权限</label>
+                                                <div class="layui-input-block">
+                                                    <input type="checkbox" name="canRollBack" title="打回" checked value="1">
+                                                    <!-- <input type="checkbox" name="auth[canCancel]" title="作废">
+                                                            <input type="checkbox" name="auth[canAssign]" title="交办"> -->
+                                                    <input type="checkbox" name="canConsult" title="协商" checked value="1">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <div name="div-formAuth"></div>
+                                            </div>
+                                        </div>
+                                        <!-- 步骤权限 end -->
+                                        <!-- 步骤事件定义 start-->
+                                        <div name="div-stepMethod" class="layui-row layui-hide">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">步骤回调</label>
+                                                <div class="layui-input-block">
+                                                    <select name="StepStatusChangeInterface" lay-verify="" lay-search>
+                                                            <option value="xxx">步骤状态变化时回调</option>
+                                                          </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 步骤事件定义 end-->
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button name="btn_saveNodeInfo" class="layui-btn" lay-submit lay-filter="form-stepInfo">保存</button>
+                                                <button class="layui-btn" lay-submit lay-filter="form-stepInfo" name="process_close">取消</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- 步骤信息 end -->
+                            </div>
+                        </div>
+                        <div class="layui-row" style="margin-top: 10px;">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left: 30px;">
+                                    <button class="layui-btn" name="process_stepMap">保存步骤定义</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤定义 end -->
+                </div>
+                <div class="layui-tab-item">权限分配</div>
             </div>
         </div>
     </div>
@@ -257,7 +282,7 @@
 <script type="text/html" id="tpl_stepAuth">
     {{# layui.each(d, function(index, item){ }}
     <div class="layui-form-item">
-        <label class="layui-form-label">{{item.key}}</label>
+        <label class="layui-form-label" style="width: 140px;">{{item.key}}</label>
         <div class="layui-input-block">
             <input type="radio" name="display_{{index}}" value="{{item.key}}" title="显示" checked>
             <input type="radio" name="edit_{{index}}" value="{{item.key}}" title="编辑">

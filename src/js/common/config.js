@@ -1,4 +1,4 @@
-layui.use(['layer'], function () {
+layui.use(['layer'], function() {
     var $ = layui.$;
     $.extend({
         config: {
@@ -32,7 +32,7 @@ layui.use(['layer'], function () {
                 }
             },
         },
-        getConfig: function () {
+        getConfig: function() {
             return $.config[$.config.version];
         }
     });

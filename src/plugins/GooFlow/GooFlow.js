@@ -2063,7 +2063,7 @@ GooFlow.prototype = {
         this.$lineData[id] = {};
         if (json.type) {
             this.$lineData[id].type = json.type;
-            this.$lineData[id].M = json.M;
+            this.$lineData[id].M = json.m;
         } else this.$lineData[id].type = "sl"; //默认为直线
         this.$lineData[id].from = json.from;
         this.$lineData[id].to = json.to;
