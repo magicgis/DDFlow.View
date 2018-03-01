@@ -20,3 +20,21 @@
     box-shadow: 0 0 5px #ccc;
     margin-top: 1px
 }
+
+.form-lineInfo .layui-input,
+.form-lineInfo .layui-select,
+.form-lineInfo .layui-textarea {
+    height: 29px;
+}
+
+.form-lineInfo .layui-form-select dl {
+    top: 29px;
+}
+
+.form-lineInfo .layui-form-select dd {
+    line-height: 29px;
+}
+
+.form-lineInfo .layui-form-pane .layui-form-label {
+    padding: 5px 15px;
+}

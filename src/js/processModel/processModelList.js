@@ -56,7 +56,7 @@ layui.use(['layer', 'laytpl', 'table'], function() {
                         sort: true,
                         fixed: 'left',
                         templet: function(d) {
-                            return '<a href="../processModel/processmodelform.html?processDefinedGuid=' + d.processDefinedGuid + '" target="_blank">' + d.processName + '</a>'
+                            return '<a href="../processModel/processmodelform.html?id=' + d.processDefinitionGuid + '" target="_blank">' + d.processName + '</a>'
                         }
                     },
                     { field: 'processKindName', title: '所属分类', width: 180, sort: true },

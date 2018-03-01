@@ -6,7 +6,7 @@ layui.use(['form', 'element', 'laytpl'], function() {
     var form = layui.form,
         processDefinedId, dd_gooflow, element = layui.element,
         laytpl = layui.laytpl,
-        processModelData;
+        processModelData, bizObjDomainList;
 
 
     //页面初始化
@@ -27,6 +27,7 @@ layui.use(['form', 'element', 'laytpl'], function() {
         StepMapInit();
 
         InitProcessInfo(processDefinedId);
+
     }
     //绑定业务对象下拉列表
     function BandBizObject(bizObjectGuid) {
@@ -65,6 +66,7 @@ layui.use(['form', 'element', 'laytpl'], function() {
                         processModelData = data.data;
                         $("input[name=ProcessName]").val(processModelData.processName);
                         BandBizObject(processModelData.businessObjectGuid);
+                        InitBizObjDamainList(processModelData.businessObjectGuid);
                     } else {
                         layer.msg(data.message);
                     }
@@ -84,7 +86,6 @@ layui.use(['form', 'element', 'laytpl'], function() {
         });
         //步骤信息保存按钮
         form.on('submit(form-stepInfo)', function(data) {
-
             var stepData = data.field;
             if (stepData.canConsult == "1") {
                 stepData.canConsult = 1;
@@ -99,6 +100,18 @@ layui.use(['form', 'element', 'laytpl'], function() {
             if (!stepData.isMulti) {
                 stepData.isMulti = "0";
             }
+            var editDomain = new Array();
+            var hiddenDomain = new Array();
+            $.each(stepData, function(n, item) {
+                if (n.indexOf("domainList.") == 0) {
+                    var z = n.split(".")[1];
+                    if (item == "edit") editDomain.push(z);
+                    if (item == "hiden") hiddenDomain.push(z);
+                    delete stepData[n];
+                }
+            });
+            stepData.editDomain = editDomain.join(',');
+            stepData.hiddenDomain = hiddenDomain.join(',');
             console.log(stepData);
             dd_gooflow.setName(stepData.nodeId, stepData.stepName, "node");
             dd_gooflow.setNodeAttribute(stepData.nodeId, stepData);
@@ -124,6 +137,7 @@ layui.use(['form', 'element', 'laytpl'], function() {
             });
             return false;
         });
+
         //步骤定义
         $(document).on("click", "button[name=process_stepMap]", function() {
             var mapData = dd_gooflow.exportDataEx();
@@ -134,8 +148,6 @@ layui.use(['form', 'element', 'laytpl'], function() {
                 data: JSON.stringify(mapData),
                 success: function(data) {
                     if (data.code == "0") {
-                        // var moduleData = data.data;
-                        // window.location.href = 'processmodelform.html?id=' + moduleData.processDefinitionGuid;
                         layer.msg("保存成功！");
                     } else {
                         layer.msg(data.message);
@@ -143,13 +155,37 @@ layui.use(['form', 'element', 'laytpl'], function() {
                 }
             });
         });
-        //页面点击事件
-        $(document).on("click", "body", function(e) {
-            //$("div.tab-stepDesign").addClass("layui-hide");
+        //编辑分支信息操作按钮
+        // form.on("submit(btn_add)", function(data) {
+        //     console.log(data);
+        //     var that = $(data.elem);
+        //     var table = $("table[name=table_exp]");
+        //     var rowIndex = table.find("tr").length;
+        //     return false;
+        // });
+        $(document).on("click", "table[name=table_exp] button[name=add]", function(e) {
+            console.log(e);
+            var that = $(e.target);
+            var thisRow = that.parent().parent().parent().parent()[0];
+            var table = $("table[name=table_exp]");
+            table.append($(thisRow).clone())
+            var rowIndex = table.find("tr").length;
+            form.render(null, "form_lineInfo");
+            e.stopPropagation();
+            return false;
+        });
+        $(document).on("click", "table[name=table_exp] button[name=delete]", function(e) {
+            console.log(e);
+            var that = $(e.target);
+            var thisRow = that.parent().parent().parent().parent()[0];
+            thisRow && thisRow.remove();
+            e.stopPropagation();
+            return false;
         });
     }
     //加载步骤基本属性
     function ShowStepBase(stepInfo) {
+        console.log(stepInfo);
         element.tabChange("tab-stepDesign", "div-baseInfo");
         $("input[name=nodeId]").val(stepInfo.id);
         var stepGuid = stepInfo.stepDefinitionGuid;
@@ -159,13 +195,12 @@ layui.use(['form', 'element', 'laytpl'], function() {
         } else {
             $("select[name=handleType]").find("option[value=" + stepInfo.handleType + "]").removeProp("selected");
         }
-
         if (stepInfo.isMulti == 1) {
             $("input[name=isMulti]").attr("checked", "checked");
         } else {
             $("input[name=isMulti]").removeAttr("checked");
         }
-        stepInfo.approveAttention && ($("textarea[name=ApproveAttention]").val(stepInfo.approveAttention));
+        stepInfo.approveAttention && ($("textarea[name=approveAttention]").val(stepInfo.approveAttention));
         stepInfo.auditorList && BandAuditor(stepInfo.auditorList);
         if (stepInfo.canRollBack == 1) {
             $("input[name=canRollBack]").attr("checked", "checked");
@@ -177,7 +212,7 @@ layui.use(['form', 'element', 'laytpl'], function() {
         } else {
             $("input[name=canConsult]").removeAttr("checked");
         }
-        InitStepAuth();
+        InitStepAuth(stepInfo);
         //layui重新渲染
         form.render(null, "form-stepDesign");
         // $("div.tab-stepDesign").find("li[data-content=div-baseInfo]").click();
@@ -186,6 +221,41 @@ layui.use(['form', 'element', 'laytpl'], function() {
     //绑定责任人
     function BandAuditor(auditList) {
 
+    }
+    //初始化业务对象列表集合
+    function InitBizObjDamainList(bizObjectGuid) {
+        if (bizObjDomainList) { return; }
+        $.ajax({
+            url: $.getConfig().apis.object + "/BizObject/GetBizObjDomainList",
+            type: "post",
+            data: JSON.stringify({ bizObjGuid: bizObjectGuid }),
+            success: function(data) {
+                if (data.code == "0") {
+                    bizObjDomainList = data.data.list;
+                } else {
+
+                }
+            }
+        });
+    }
+    //加载分支调整
+    function ShowLineInfo(lineInfo) {
+        var data = { lineInfo: lineInfo, bizObjDomainList: bizObjDomainList };
+        laytpl(tpl_stepLine.innerHTML).render(data, function(html) {
+            layer.open({
+                title: "编辑分支信息",
+                anim: 3,
+                area: ['600px', '350px'],
+                content: html,
+                yes: function(index, layero) {
+                    var dom = $(layero);
+                    var lineName = dom.find("input[name=name]").val();
+                    dd_gooflow.setName(lineInfo.id, lineName, "line");
+                    // layer.close(index); //如果设定了yes回调，需进行手工关闭
+                }
+            });
+        });
+        form.render(null, "form_lineInfo");
     }
 
     function StepMapInit() {
@@ -226,7 +296,8 @@ layui.use(['form', 'element', 'laytpl'], function() {
                 ShowStepBase(Objdata);
             } else if (type == 'line') {
                 Objdata = dd_gooflow.$lineData[id];
-                // lineshow(Objdata);
+                !Objdata.id && (Objdata.id = Objid);
+                ShowLineInfo(Objdata);
             }
             return false; //返回false可以阻止原组件自带的双击直接编辑事件
         }
@@ -244,17 +315,23 @@ layui.use(['form', 'element', 'laytpl'], function() {
         }
     }
     //步骤表单域操作权限配置
-    function InitStepAuth() {
+    function InitStepAuth(stepInfo) {
         var arrayData = new Array();
         $.ajax({
             url: $.getConfig().apis.object + "/BizObject/GetBizObjDomainList",
             type: "post",
-            data: JSON.stringify({ bizObjGuid: "" }),
+            data: JSON.stringify({ bizObjGuid: processModelData.businessObjectGuid }),
             success: function(data) {
                 if (data.code == "0") {
                     var list = data.data.list;
+                    var editDomain, hiddenDomain;
+                    stepInfo.editDomain && (editDomain = stepInfo.editDomain.split(","));
+                    stepInfo.hiddenDomain && (hiddenDomain = stepInfo.hiddenDomain.split(","));
                     $.each(list, function(n, item) {
-                        arrayData.push({ key: item.name, value: item.name });
+                        var showType = "show";
+                        if (editDomain && $.inArray(item.name, editDomain) >= 0) showType = "edit";
+                        if (hiddenDomain && $.inArray(item.name, hiddenDomain) >= 0) showType = "hiden";
+                        arrayData.push({ key: item.name, value: item.name, showType: showType });
                     });
                     laytpl(tpl_stepAuth.innerHTML).render(arrayData, function(html) {
                         $("div[name=div-formAuth]").html(html);

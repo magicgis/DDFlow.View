@@ -179,7 +179,7 @@
                                             <div class="layui-form-item layui-form-text">
                                                 <label class="layui-form-label">审批要点</label>
                                                 <div class="layui-input-block">
-                                                    <textarea name="ApproveAttention" placeholder="请输入审批要点" class="layui-textarea"></textarea>
+                                                    <textarea name="approveAttention" placeholder="请输入审批要点" class="layui-textarea"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,8 +225,9 @@
                                                     <input type="checkbox" name="canConsult" title="协商" checked value="1">
                                                 </div>
                                             </div>
+                                            <hr class="layui-bg-orange">
                                             <div class="layui-form-item">
-                                                <div name="div-formAuth"></div>
+                                                <div name="div-formAuth" style="height: 370px;overflow-y: auto;"></div>
                                             </div>
                                         </div>
                                         <!-- 步骤权限 end -->
@@ -284,12 +285,83 @@
     <div class="layui-form-item">
         <label class="layui-form-label" style="width: 140px;">{{item.key}}</label>
         <div class="layui-input-block">
-            <input type="radio" name="display_{{index}}" value="{{item.key}}" title="显示" checked>
-            <input type="radio" name="edit_{{index}}" value="{{item.key}}" title="编辑">
-            <input type="radio" name="hide_{{index}}" value="{{item.key}}" title="隐藏">
+            {{# if(item.showType=="show"){ }}
+            <input type="radio" name="domainList.{{item.key}}" value="show" title="显示" checked>
+            <input type="radio" name="domainList.{{item.key}}" value="edit" title="编辑">
+            <input type="radio" name="domainList.{{item.key}}" value="hiden" title="隐藏"> {{# }else if(item.showType=="edit"){ }}
+            <input type="radio" name="domainList.{{item.key}}" value="show" title="显示">
+            <input type="radio" name="domainList.{{item.key}}" value="edit" title="编辑" checked>
+            <input type="radio" name="domainList.{{item.key}}" value="hiden" title="隐藏"> {{# }else{ }}
+            <input type="radio" name="domainList.{{item.key}}" value="show" title="显示">
+            <input type="radio" name="domainList.{{item.key}}" value="edit" title="编辑">
+            <input type="radio" name="domainList.{{item.key}}" value="hiden" title="隐藏" checked> {{# } }}
         </div>
     </div>
     {{# }); }} {{# if(d.length === 0){ }} 无数据 {{# } }}
+</script>
+<script type="text/html" id="tpl_stepLine">
+    <form class="layui-form layui-form-pane form-lineInfo" lay-filter="form_lineInfo">
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">分支名称</label>
+            <div class="layui-input-block" style="min-height: 29px;">
+                <input type="text" name="name" placeholder="请输入分支名称" autocomplete="off" class="layui-input" value="{{d.lineInfo.name}}">
+            </div>
+        </div>
+        <table name="table_exp">
+            <thead>
+                <tr style="text-align:left">
+                    <th width="50" style="text-align:center">序号</th>
+                    <th width="175">字段名称</th>
+                    <th width="100">表达式</th>
+                    <th>值</th>
+                    <th width="60">逻辑</th>
+                    <th width="90">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center">1</td>
+                    <td>
+                        <select name="domainName" lay-search required lay-verify="required">
+                                {{# layui.each(d.bizObjDomainList, function(index, item){ }}
+                                <option value="{{item.name}}" data-type="{{item.type}}">{{item.name}}</option>
+                                {{# }); }}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="exp" required lay-verify="required">
+                                    <option value="eq">等于</option>
+                                    <option value="neq">不等于</option>
+                                    <option value="gt">大于</option>
+                                    <option value="egt">大于等于</option>
+                                    <option value="lt">小于</option>
+                                    <option value="elt">小于等于</option>
+                                    <option value="like">包含</option>
+                                </select>
+                    </td>
+                    <td>
+                        <input type="text" name="compareValue" required lay-verify="required" placeholder="值" autocomplete="off" class="layui-input">
+                    </td>
+                    <td>
+                        <select name="logic" required lay-verify="required">
+                                <option value="and">且</option>
+                                <option value="or">或</option>
+                                </select>
+                    </td>
+                    <td>
+                        <div class="layui-btn-group">
+                            <button name="add" class="layui-btn layui-btn-primary layui-btn-sm">
+                                      <i class="layui-icon">&#xe654;</i>
+                                    </button>
+                            <button name="delete" class="layui-btn layui-btn-primary layui-btn-sm">
+                                      <i class="layui-icon">&#xe640;</i>
+                                    </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 </script>
 
 </html>
