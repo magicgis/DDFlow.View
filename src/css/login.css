@@ -3,7 +3,7 @@
     margin: 20% auto;
 }
 
-button[name='btn_login'] {
+a[name='btn_login'] {
     margin: 0 auto;
     width: 300px;
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css">
+</head>
+
+<body>
+    <form class="layui-form layui-row">
+        <div class="layui-form-item">
+            <label class="layui-form-label">动态赋值</label>
+            <div class="layui-input-block">
+                <input type="text" id="treeselecttest" placeholder="模块" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</body>
+<script type="text/javascript" src="plugins/layui/layui.js"></script>
+<script type="text/javascript" src="plugins/jQuery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    var node = [{
+        id: 1,
+        name: '父节点1',
+        children: [{
+            id: 2,
+            name: '子节点11'
+        }, {
+            id: 3,
+            name: '子节点12'
+        }]
+    }, {
+        id: 33,
+        name: '父节点2（可以点左侧箭头，也可以双击标题）',
+        children: [{
+            id: 4,
+            name: '子节点21',
+            children: [{
+                id: 5,
+                name: '子节点211'
+            }]
+        }]
+    }];
+    layui.use(['treeselect'], function() {
+        layui.treeselect({
+            elem: "#treeselecttest",
+            data: node //可以是treedata，也可以是 获取treedata的URL地址
+        });
+    });
+</script>
+
+</html>

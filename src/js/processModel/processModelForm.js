@@ -2,10 +2,11 @@
  * 功能:流程定义详情页
  * 
  */
-layui.use(['form', 'element', 'laytpl'], function() {
+layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
     var form = layui.form,
         processDefinedId, dd_gooflow, element = layui.element,
         laytpl = layui.laytpl,
+        treeselect = layui.treeselect,
         processModelData, bizObjDomainList;
 
 
@@ -67,12 +68,32 @@ layui.use(['form', 'element', 'laytpl'], function() {
                         $("input[name=ProcessName]").val(processModelData.processName);
                         BandBizObject(processModelData.businessObjectGuid);
                         InitBizObjDamainList(processModelData.businessObjectGuid);
+                        InitProcessWatch(processModelData);
                     } else {
                         layer.msg(data.message);
                     }
                 }
             });
         }
+    }
+    //初始化监控人
+    function InitProcessWatch(processModelData) {
+        $.ajax({
+            url: $.getConfig().apis.process + "/User",
+            type: "get",
+            data: {},
+            success: function(data) {
+                if (data.code == "0") {
+                    treeselect({
+                        elem: "#ProcessWatch",
+                        data: data.data.list
+                    });
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+
     }
     //事件绑定
     function InitEvent() {
@@ -120,11 +141,17 @@ layui.use(['form', 'element', 'laytpl'], function() {
         });
         //基本信息保存
         form.on('submit(process_info)', function(data) {
-            console.log(data.field);
             var postData = data.field;
+
+            var method = "post";
+            if (processDefinedId) {
+                method = "put";
+                postData.processDefinitionGuid = processDefinedId;
+            }
+            console.log(data.field);
             $.ajax({
                 url: $.getConfig().apis.process + "/ProcessModule",
-                type: "post",
+                type: method,
                 data: JSON.stringify(postData),
                 success: function(data) {
                     if (data.code == "0") {
@@ -155,37 +182,70 @@ layui.use(['form', 'element', 'laytpl'], function() {
                 }
             });
         });
-        //编辑分支信息操作按钮
-        // form.on("submit(btn_add)", function(data) {
-        //     console.log(data);
-        //     var that = $(data.elem);
-        //     var table = $("table[name=table_exp]");
-        //     var rowIndex = table.find("tr").length;
-        //     return false;
-        // });
-        $(document).on("click", "table[name=table_exp] button[name=add]", function(e) {
-            console.log(e);
-            var that = $(e.target);
-            var thisRow = that.parent().parent().parent().parent()[0];
+        //分支条件添加
+        $(document).on("click", "table[name=table_exp] a[name=add]", function(e) {
+            var that = $(this);
+
+            var thisRow = that.closest("tr")[0];
+            if (thisRow.tagName != "TR") {
+                return;
+            }
+            var newRow = $(thisRow).clone();
+            $(newRow).find("select[name=exp] option").removeAttr("disabled");
+            $(newRow).find("input[name=compareValue]").val("");
+            $(newRow).find("div[class!=layui-btn-group]").remove();
+
             var table = $("table[name=table_exp]");
-            table.append($(thisRow).clone())
-            var rowIndex = table.find("tr").length;
-            form.render(null, "form_lineInfo");
+            table.append(newRow);
+
+            setTimeout(function() {
+                form.render("select", "form_lineInfo");
+            }, 200);
             e.stopPropagation();
             return false;
         });
-        $(document).on("click", "table[name=table_exp] button[name=delete]", function(e) {
-            console.log(e);
-            var that = $(e.target);
-            var thisRow = that.parent().parent().parent().parent()[0];
+        //分支条件删除
+        $(document).on("click", "table[name=table_exp] a[name=delete]", function(e) {
+            var that = $(this);
+            var rowCount = $("table[name=table_exp]").find("tr").length;
+            if (rowCount == 2) {
+                return;
+            }
+            var thisRow = that.closest("tr")[0];
+            if (thisRow.tagName != "TR") {
+                return;
+            }
             thisRow && thisRow.remove();
             e.stopPropagation();
             return false;
         });
+        //分支条件字段名称下拉列表切换
+        form.on('select(select-DomainName)', function(data) {
+            var select = $(data.elem);
+            var selectedVal = data.value;
+            var selectDom = select.find("option[value='" + selectedVal + "']")[0];
+            var dataType = $(selectDom).attr("data-type");
+            var expSelect = $(select.closest("tr").find("select[name=exp]")[0]);
+            expSelect.find("option").removeAttr("disabled");
+            if (dataType == "String") {
+                expSelect.find("option[data-for='Number']").attr("disabled", "disabled");
+            } else if (dataType == "Number") {
+                expSelect.find("option[data-for='String']").attr("disabled", "disabled");
+            }
+            setTimeout(function() {
+                form.render('select', "form_lineInfo");
+            }, 200);
+
+            // console.log(selectDom);
+        });
+        form.on('select(select-Exp)', function(data) {
+            // console.log(data.elem);
+
+        });
     }
     //加载步骤基本属性
     function ShowStepBase(stepInfo) {
-        console.log(stepInfo);
+        // console.log(stepInfo);
         element.tabChange("tab-stepDesign", "div-baseInfo");
         $("input[name=nodeId]").val(stepInfo.id);
         var stepGuid = stepInfo.stepDefinitionGuid;
@@ -251,7 +311,11 @@ layui.use(['form', 'element', 'laytpl'], function() {
                     var dom = $(layero);
                     var lineName = dom.find("input[name=name]").val();
                     dd_gooflow.setName(lineInfo.id, lineName, "line");
-                    // layer.close(index); //如果设定了yes回调，需进行手工关闭
+                    // var tableTr = dom.find("table tr")
+                    // $.each(tableTr, function(item, n) {
+                    //     var domainName = item.find("select:option");
+                    // });
+                    layer.close(index); //如果设定了yes回调，需进行手工关闭
                 }
             });
         });

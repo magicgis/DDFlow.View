@@ -67,7 +67,7 @@
             <div style="padding: 15px;padding-bottom:0">
                 <span class="layui-breadcrumb">
                     <a href="">流程管理</a>
-                    <a><cite>新建流程</cite></a>
+                    <a><cite>我办理的流程</cite></a>
                   </span>
             </div>
             <hr class="layui-bg-blue">
@@ -91,6 +91,8 @@
             $("li.layui-nav-item dl a").on("click", function(e) {
                 var that = $(this);
                 var href = that.attr("data-href");
+                var text = that.html();
+                $("span.layui-breadcrumb a cite").html(text);
                 var frame = $("#frame-content");
                 href && frame && frame.attr("src", href + "?_v=" + Math.random());
                 console.log(that.attr("data-href"));
