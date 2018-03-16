@@ -94,21 +94,34 @@ layui.use(['layer', 'laytpl', 'table'], function() {
     //
     function InitEvent() {
         $("button[name=btn_search]").on("click", function() {
-            var processName = $("input[name=txt_processName]").val();
-            var postData = {};
-            postData.processName = processName;
-            //表格reload
-            processTable.reload({
-                where: {
-                    conditionJson: JSON.stringify(postData)
-                },
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
+            ReloadTable();
         });
         $(document).on("click", "button[name=btn-add]", function() {
             window.open("../processModel/processmodelform.html");
+        });
+        $('#tree_processkind').bind("activate_node.jstree", function(obj, e) {
+            // 获取当前节点
+            var currentNode = e.node;
+            console.log(currentNode);
+            ReloadTable({
+                processKindGuid: currentNode.id
+            });
+        });
+    }
+    //表格reload
+    function ReloadTable(filter) {
+        var processName = $("input[name=txt_processName]").val();
+        var postData = {};
+        $.extend(postData, filter);
+        postData.processName = processName;
+        //表格reload
+        processTable.reload({
+            where: {
+                conditionJson: JSON.stringify(postData)
+            },
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
         });
     }
 });
