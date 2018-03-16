@@ -7,27 +7,32 @@
  */
 
 
-layui.define('jquery', function (exports) {
+layui.define('jquery', function(exports) {
     "use strict";
 
-    var $ = layui.$
-        , hint = layui.hint();
+    var $ = layui.$,
+        hint = layui.hint();
 
-    var enterSkin = 'layui-tree-enter', Tree = function (options) {
-        this.options = options;
-    };
+    var enterSkin = 'layui-tree-enter',
+        Tree = function(options) {
+            this.options = options;
+        };
 
     //图标
     var icon = {
         arrow: ['&#xe623;', '&#xe625;'] //箭头
-        , checkbox: ['&#xe626;', '&#xe627;'] //复选框
-        , radio: ['&#xe62b;', '&#xe62a;'] //单选框
-        , branch: ['&#xe622;', '&#xe624;'] //父节点
-        , leaf: '&#xe621;' //叶节点
+            ,
+        checkbox: ['&#xe626;', '&#xe627;'] //复选框
+            ,
+        radio: ['&#xe62b;', '&#xe62a;'] //单选框
+            ,
+        branch: ['&#xe622;', '&#xe624;'] //父节点
+            ,
+        leaf: '&#xe621;' //叶节点
     };
 
     //初始化
-    Tree.prototype.init = function (elem) {
+    Tree.prototype.init = function(elem) {
         var that = this;
         elem.addClass('layui-box layui-tree'); //添加tree样式
         if (that.options.skin) {
@@ -38,25 +43,28 @@ layui.define('jquery', function (exports) {
     };
 
     //树节点解析
-    Tree.prototype.tree = function (elem, children) {
-        var that = this, options = that.options
+    Tree.prototype.tree = function(elem, children) {
+        var that = this,
+            options = that.options
         var nodes = children || options.nodes;
 
-        layui.each(nodes, function (index, item) {
+        layui.each(nodes, function(index, item) {
             var hasChild = item.children && item.children.length > 0;
             var ul = $('<ul class="' + (item.spread ? "layui-show" : "") + '"></ul>');
-            var li = $(['<li data-name="' + item.name+'"' + (item.spread ? 'data-spread="' + item.spread + '"' : '') + '>'
+            var li = $(['<li data-name="' + item.name + '"' + (item.spread ? 'data-spread="' + item.spread + '"' : '') + '>'
                 //展开箭头
-                , function () {
+                ,
+                function() {
                     return hasChild ? '<i class="layui-icon layui-tree-spread">' + (
                         item.spread ? icon.arrow[1] : icon.arrow[0]
                     ) + '</i>' : '';
                 }()
 
                 //复选框/单选框
-                , function () {
+                ,
+                function() {
                     return options.check ? (
-                        '<div class="layui-unselect layui-form-checkbox" data-id="' + item.id+'" lay-skin="primary"><i class="layui-icon layui-icon-checkbox">'+ (
+                        '<div class="layui-unselect layui-form-checkbox" data-id="' + item.id + '" lay-skin="primary"><i class="layui-icon layui-icon-checkbox">' + (
                             options.check === 'checkbox' ? icon.checkbox[0] : (
                                 options.check === 'radio' ? icon.radio[0] : ''
                             )
@@ -65,19 +73,22 @@ layui.define('jquery', function (exports) {
                 }()
 
                 //节点
-                , function () {
+                ,
+                function() {
                     return '<a href="' + (item.href || 'javascript:;') + '" ' + (
-                        options.target && item.href ? 'target=\"' + options.target + '\"' : ''
-                    ) + '>'
-                        + ('<i class="layui-icon layui-tree-' + (hasChild ? "branch" : "leaf") + '">' + (
+                            options.target && item.href ? 'target=\"' + options.target + '\"' : ''
+                        ) + '>' +
+                        ('<i class="layui-icon layui-tree-' + (hasChild ? "branch" : "leaf") + '">' + (
                             hasChild ? (
                                 item.spread ? icon.branch[1] : icon.branch[0]
                             ) : icon.leaf
                         ) + '</i>') //节点图标
-                        + ('<cite>' + (item.name || '未命名') + '</cite></a>');
+                        +
+                        ('<cite>' + (item.name || '未命名') + '</cite></a>');
                 }()
 
-                , '</li>'].join(''));
+                , '</li>'
+            ].join(''));
 
             //如果有子节点，则递归继续生成树
             if (hasChild) {
@@ -87,7 +98,7 @@ layui.define('jquery', function (exports) {
 
             elem.append(li);
             //触发点击节点回调
-            if (options.check !='checkbox')
+            if (options.check != 'checkbox')
                 typeof options.click === 'function' && that.click(li, item);
             else
                 typeof options.checked === 'function' && that.checked(li, item);
@@ -100,30 +111,35 @@ layui.define('jquery', function (exports) {
     };
 
     //点击节点回调
-    Tree.prototype.click = function (elem, item) {
-        var that = this, options = that.options;
-        elem.children('a').on('click', function (e) {
+    Tree.prototype.click = function(elem, item) {
+        var that = this,
+            options = that.options;
+        elem.children('a').on('click', function(e) {
             layui.stope(e);
             options.click(item)
         });
     };
-    Tree.prototype.checked = function (elem, item) {
-        var that = this, options = that.options;
-        elem.children('a').on('click', function (e) {
+    Tree.prototype.checked = function(elem, item) {
+        var that = this,
+            options = that.options;
+        elem.children('a').on('click', function(e) {
             layui.stope(e);
         });
-        elem.children('.layui-form-checkbox').on('click', function (e) {
-            that.options.checked(e,item);
+        elem.children('.layui-form-checkbox').on('click', function(e) {
+            // if (!item.children)
+            that.options.checked(e, item);
         });
     };
     //伸展节点
-    Tree.prototype.spread = function (elem, item) {
-        var that = this, options = that.options;
+    Tree.prototype.spread = function(elem, item) {
+        var that = this,
+            options = that.options;
         var arrow = elem.children('.layui-tree-spread')
-        var ul = elem.children('ul'), a = elem.children('a');
+        var ul = elem.children('ul'),
+            a = elem.children('a');
 
         //执行伸展
-        var open = function () {
+        var open = function() {
             if (elem.data('spread')) {
                 elem.data('spread', null)
                 ul.removeClass('layui-show');
@@ -145,31 +161,33 @@ layui.define('jquery', function (exports) {
     }
 
     //通用事件
-    Tree.prototype.on = function (elem) {
-        var that = this, options = that.options;
+    Tree.prototype.on = function(elem) {
+        var that = this,
+            options = that.options;
         var dragStr = 'layui-tree-drag';
 
         //屏蔽选中文字
-        elem.find('i').on('selectstart', function (e) {
+        elem.find('i').on('selectstart', function(e) {
             return false
         });
 
         //拖拽
         if (options.drag) {
-            $(document).on('mousemove', function (e) {
+            $(document).on('mousemove', function(e) {
                 var move = that.move;
                 if (move.from) {
-                    var to = move.to, treeMove = $('<div class="layui-box ' + dragStr + '"></div>');
+                    var to = move.to,
+                        treeMove = $('<div class="layui-box ' + dragStr + '"></div>');
                     e.preventDefault();
                     $('.' + dragStr)[0] || $('body').append(treeMove);
                     var dragElem = $('.' + dragStr)[0] ? $('.' + dragStr) : treeMove;
                     (dragElem).addClass('layui-show').html(move.from.elem.children('a').html());
                     dragElem.css({
-                        left: e.pageX + 10
-                        , top: e.pageY + 10
+                        left: e.pageX + 10,
+                        top: e.pageY + 10
                     })
                 }
-            }).on('mouseup', function () {
+            }).on('mouseup', function() {
                 var move = that.move;
                 if (move.from) {
                     move.from.elem.children('a').removeClass(enterSkin);
@@ -183,28 +201,32 @@ layui.define('jquery', function (exports) {
 
     //拖拽节点
     Tree.prototype.move = {};
-    Tree.prototype.drag = function (elem, item) {
-        var that = this, options = that.options;
-        var a = elem.children('a'), mouseenter = function () {
-            var othis = $(this), move = that.move;
-            if (move.from) {
-                move.to = {
-                    item: item
-                    , elem: elem
-                };
-                othis.addClass(enterSkin);
-            }
-        };
-        a.on('mousedown', function () {
+    Tree.prototype.drag = function(elem, item) {
+        var that = this,
+            options = that.options;
+        var a = elem.children('a'),
+            mouseenter = function() {
+                var othis = $(this),
+                    move = that.move;
+                if (move.from) {
+                    move.to = {
+                        item: item,
+                        elem: elem
+                    };
+                    othis.addClass(enterSkin);
+                }
+            };
+        a.on('mousedown', function() {
             var move = that.move
             move.from = {
-                item: item
-                , elem: elem
+                item: item,
+                elem: elem
             };
         });
         a.on('mouseenter', mouseenter).on('mousemove', mouseenter)
-            .on('mouseleave', function () {
-                var othis = $(this), move = that.move;
+            .on('mouseleave', function() {
+                var othis = $(this),
+                    move = that.move;
                 if (move.from) {
                     delete move.to;
                     othis.removeClass(enterSkin);
@@ -213,7 +235,7 @@ layui.define('jquery', function (exports) {
     };
 
     //暴露接口
-    exports('tree', function (options) {
+    exports('tree', function(options) {
         var tree = new Tree(options = options || {});
         var elem = $(options.elem);
         if (!elem[0]) {

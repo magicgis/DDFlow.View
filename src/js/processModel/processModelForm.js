@@ -24,11 +24,15 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
             element.tabDelete("tab_ProcessTab", "process_form");
             element.tabDelete("tab_ProcessTab", "process_stepMap");
             element.tabDelete("tab_ProcessTab", "process_auth");
-        }
-        StepMapInit();
-
+        } else { StepMapInit(); }
         InitProcessInfo(processDefinedId);
-
+    }
+    //初始化表单类容
+    function InitForm() {
+        $("#formContent").html(processModelData.formLayout);
+        // if (!htmlContent) {
+        //     layer.msg("表单不能为空。");
+        // }
     }
     //绑定业务对象下拉列表
     function BandBizObject(bizObjectGuid) {
@@ -66,27 +70,35 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
                     if (data.code == "0") {
                         processModelData = data.data;
                         $("input[name=ProcessName]").val(processModelData.processName);
+                        $("textarea[name=Description]").val(processModelData.description);
+
                         BandBizObject(processModelData.businessObjectGuid);
                         InitBizObjDamainList(processModelData.businessObjectGuid);
                         InitProcessWatch(processModelData);
+                        InitForm();
                     } else {
                         layer.msg(data.message);
                     }
                 }
             });
+        } else {
+            BandBizObject('');
+            InitProcessWatch('');
         }
     }
     //初始化监控人
     function InitProcessWatch(processModelData) {
         $.ajax({
-            url: $.getConfig().apis.process + "/User",
+            url: $.getConfig().apis.process + "/User/GetUsers",
             type: "get",
             data: {},
             success: function(data) {
                 if (data.code == "0") {
-                    treeselect({
+                    var watchTree = treeselect({
                         elem: "#ProcessWatch",
-                        data: data.data.list
+                        data: data.data,
+                        method: "setValue",
+                        item: processModelData.watchMembers
                     });
                 } else {
                     layer.msg(data.message);
@@ -133,7 +145,34 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
             });
             stepData.editDomain = editDomain.join(',');
             stepData.hiddenDomain = hiddenDomain.join(',');
+            var realtiveAuditor = '' || stepData.RealtiveAuditor;
+            var specificAuditor = '' || stepData.SpecificAuditor;
+            var stationAuditor = '' || stepData.StationAuditor;
+
+            stepData.auditorList = new Array();
+            realtiveAuditor && $.each(realtiveAuditor.split(","), function(n, item) {
+                stepData.auditorList.push({
+                    auditorScopeGuid: item,
+                    auditorType: 3
+                });
+            });
+            specificAuditor && $.each(specificAuditor.split(","), function(n, item) {
+                stepData.auditorList.push({
+                    auditorScopeGuid: item,
+                    auditorType: 4
+                });
+            });
+            stationAuditor && $.each(stationAuditor.split(","), function(n, item) {
+                stepData.auditorList.push({
+                    auditorScopeGuid: item,
+                    auditorType: 1
+                });
+            });
             console.log(stepData);
+            if (stepData.auditorList.length == 0) {
+                layer.msg("请配置步骤责任人");
+                return false;
+            }
             dd_gooflow.setName(stepData.nodeId, stepData.stepName, "node");
             dd_gooflow.setNodeAttribute(stepData.nodeId, stepData);
             $("div.tab-stepDesign").addClass("layui-hide");
@@ -170,7 +209,7 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
             var mapData = dd_gooflow.exportDataEx();
             mapData.processDefinitionGuid = processDefinedId;
             $.ajax({
-                url: $.getConfig().apis.process + "/StepDesign",
+                url: $.getConfig().apis.process + "/StepDesign/EditStepMap",
                 type: "put",
                 data: JSON.stringify(mapData),
                 success: function(data) {
@@ -261,7 +300,8 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
             $("input[name=isMulti]").removeAttr("checked");
         }
         stepInfo.approveAttention && ($("textarea[name=approveAttention]").val(stepInfo.approveAttention));
-        stepInfo.auditorList && BandAuditor(stepInfo.auditorList);
+        console.log(stepInfo);
+        BandAuditor(stepInfo.auditorList);
         if (stepInfo.canRollBack == 1) {
             $("input[name=canRollBack]").attr("checked", "checked");
         } else {
@@ -280,7 +320,39 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
     }
     //绑定责任人
     function BandAuditor(auditList) {
-
+        var specificAuditor = [],
+            realtiveAuditor = [];
+        $.each(auditList, function(n, item) {
+            if (item.auditorType == 4) {
+                specificAuditor.push(item.auditorScopeGuid);
+            } else if (item.auditorType == 3) {
+                realtiveAuditor.push(item.auditorScopeGuid);
+            }
+        });
+        $.ajax({
+            url: $.getConfig().apis.process + "/User/GetUsers",
+            type: "get",
+            success: function(data) {
+                treeselect({
+                    elem: "#SpecificAuditor",
+                    data: data.data,
+                    method: "setValue",
+                    item: specificAuditor
+                });
+            }
+        });
+        $.ajax({
+            url: $.getConfig().apis.process + "/User/GetRelattiveListEx",
+            type: "get",
+            success: function(data) {
+                treeselect({
+                    elem: "#RealtiveAuditor",
+                    data: data.data,
+                    method: "setValue",
+                    item: realtiveAuditor
+                });
+            }
+        });
     }
     //初始化业务对象列表集合
     function InitBizObjDamainList(bizObjectGuid) {

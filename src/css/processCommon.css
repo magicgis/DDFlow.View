@@ -147,3 +147,11 @@ div.layui-form-ex .layui-form-radio {
 div.layui-form-ex .layui-field-title legend {
     font-weight: 400
 }
+
+input[name=txt_search] {
+    width: auto;
+    display: inline-block;
+    width: 260px;
+    height: 30px;
+    margin-top: 2px;
+}

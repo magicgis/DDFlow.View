@@ -7,6 +7,7 @@ layui.use(['layer', 'laytpl', 'table'], function() {
         objectTable, thisTT, layer = layui.layer;
     $(function() {
         loadTable();
+        // LoadProcessList();
         InitEvent();
     });
 
@@ -71,6 +72,50 @@ layui.use(['layer', 'laytpl', 'table'], function() {
             bAutoWidth: false,
         });
     }
+    //加载数据表格
+    function LoadProcessList(kindGuid, processName) {
+        processTable = table.render({
+            elem: '#bizObjectList',
+            height: 540,
+            url: $.getConfig().apis.process + '/ProcessList/GetProcessListEx',
+            where: {
+                conditionJson: '{"nodeStatus":1,"PageName":"mypartflow"}'
+            },
+            page: true, //开启分页
+            limit: 15,
+            limits: [15, 30, 45, 60, 75, 90],
+            cols: [
+                [ //表头
+                    { field: 'processGuid', title: '序号', type: 'numbers', width: 40, fixed: 'left' },
+                    {
+                        field: 'processName',
+                        title: '流程名称',
+                        width: '40%',
+                        sort: true,
+                        fixed: 'left',
+                        templet: function(d) {
+                            return '<a href="../processHandle/handleProcess.html?nodeGuid=' + d.nodeGuid + '" target="_blank">' + d.processName + '</a>'
+                        }
+                    },
+                    { field: 'ownerName', title: '发起人', width: 80, sort: true },
+                    { field: 'initiateDatetime', title: '发起时间', width: 160, sort: true },
+                    { field: 'stepName', title: '当前步骤', width: 100, sort: true },
+                    { field: 'sysActiveDatetime', title: '到达时间', width: 160, sort: true, fixed: 'right' },
+                ]
+            ],
+            request: {
+                pageName: 'page',
+                limitName: 'rows'
+            },
+            response: {
+                pageName: 'current',
+                limitName: 'pageSize',
+                dataName: 'list',
+                countName: 'total'
+            },
+            loading: false
+        });
+    }
     //页面事件绑定
     function InitEvent() {
         var form = $("#bizObject-form");
@@ -104,8 +149,9 @@ layui.use(['layer', 'laytpl', 'table'], function() {
         layer.open({
             type: 1,
             title: '编辑业务对象',
-            area: ['800px', '600px'],
-            content: $('#bizObject-form')
+            area: ['820px', '400px'],
+            content: $('#bizObject-form'),
+            zIndex: 999
         });
     }
 

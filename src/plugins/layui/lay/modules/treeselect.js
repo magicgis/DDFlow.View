@@ -39,6 +39,7 @@ layui.define(['layer', 'tree'], function(exports) {
                 thatInput = null;
             },
             events = function(reElem, disabled) {
+
                 var select = $(this),
                     title = reElem.find('.' + TITLE),
                     input = title.find('input'),
@@ -110,7 +111,6 @@ layui.define(['layer', 'tree'], function(exports) {
                     click: function(obj) {
                         $(that.selectdiv).html(obj.name);
                         $(that.options.elem).val(obj.id);
-                        alert($("#treeselecttest").val());
                         hideDown(true);
                         return false;
                     },
@@ -211,18 +211,14 @@ layui.define(['layer', 'tree'], function(exports) {
         // 导出组件
         //exports(_MOD, new TreeSelect());
         //暴露接口
-    exports(_MOD, function(options, trag) {
-        var $this = $(this),
+    exports(_MOD, function(options) {
+        var $this = $(options.elem),
             value,
             treeSelect = $this.data('treeSelect'),
             options = options = options || {};
         var elem = $(options.elem);
         if (!treeSelect) {
             $this.data('treeSelect', (treeSelect = new TreeSelect(options)));
-        }
-        if (typeof options === "string") {
-            value = treeSelect[options](trag);
-            return;
         }
         if (!elem[0])
             return hint.error('layui.treeSelect 没有找到' + options.elem + '元素');
@@ -240,6 +236,10 @@ layui.define(['layer', 'tree'], function(exports) {
                     treeSelect.init(elem);
                 }
             });
+        }
+        if (typeof options.method === "string") {
+            value = treeSelect[options.method](options.item);
+            return;
         }
         return value;
     });

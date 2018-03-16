@@ -72,7 +72,14 @@ var wfutil = {
         });
     },
     // 表单区域初始化 --end
-
+    // 表单区域初始化Ex --start
+    formInitEx: function(htmlContent, editDomain, callBack) {
+        $("div#div-form").html(htmlContent);
+        if (typeof(callBack) == "function") {
+            callBack();
+        }
+    },
+    // 表单区域初始化Ex --end
     //审批记录 --start
     processRecordInit: function(laytpl, processGuid) {
         $.ajax({

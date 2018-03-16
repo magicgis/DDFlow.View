@@ -27,19 +27,36 @@
                 </ul>
             </div>
             <div class="layui-col-md10">
+                <div class="table-search">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="txt_search" placeholder="请输入名称" autocomplete="off" class="layui-input layui-input-sm">
+                        <button name="btn_search" class="layui-btn layui-btn-normal layui-btn-sm" style="width: 60px;">查询</button>
+                        <div class="layui-btn-group float-r">
+                            <button name="btn_add" id="btn_add" data-status="1" class="layui-btn layui-btn-normal layui-btn-sm" selected="">
+                                    新增
+                                    </button>
+                            <button name="btn_delete" id="btn_delete" data-status="3" class="layui-btn layui-btn-primary layui-btn-sm">
+                                    删除
+                                    </button>
+                        </div>
+                    </div>
+                </div>
+                <table class="display table table-striped table-bordered table-hover" id="bizObjectList"></table>
+                <!-- <div id="bizObjectList" class="layui-table div_bizObjectList" lay-filter="object"></div> -->
                 <!-- <div class="layui-form-item">
                     <label class="layui-form-label">名称</label>
                     <div class="layui-input-block">
                         <input type="text" name="txt_search" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
                         <button type="buttom" class="layui-btn layui-btn-normal">查询</button>
                     </div>
-                </div> -->
+                </div>
                 <button type="buttom" style="float:right" class="layui-btn layui-btn-normal" id="btn_delete">删除</button>
                 <button type="buttom" style="float:right" class="layui-btn layui-btn-normal" id="btn_add">新增</button>
 
                 <table class="display table table-striped table-bordered table-hover" id="bizObjectList">
-                </table>
-                <!-- <div id="bizObjectList" class="layui-table div_bizObjectList" lay-filter="object"></div> -->
+                </table> -->
+                <div id="bizObjectList" class="layui-table div_bizObjectList" lay-filter="object"></div>
             </div>
         </div>
     </div>

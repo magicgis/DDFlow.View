@@ -5,7 +5,7 @@ layui.use(['layer', 'laytpl', 'table'], function() {
     $(function() {
         LoadKindTree();
         LoadProcessModelList();
-        // InitEvent();
+        InitEvent();
     });
     //加载流程分类
     function LoadKindTree() {
@@ -48,6 +48,7 @@ layui.use(['layer', 'laytpl', 'table'], function() {
             limits: [15, 30, 45, 60, 75, 90],
             cols: [
                 [ //表头
+                    { field: 'processGuid', title: '全选', type: 'checkbox', width: 40, fixed: 'center' },
                     { field: 'processGuid', title: '序号', type: 'numbers', width: 40, fixed: 'left' },
                     {
                         field: 'processName',
@@ -93,7 +94,7 @@ layui.use(['layer', 'laytpl', 'table'], function() {
     //
     function InitEvent() {
         $("button[name=btn_search]").on("click", function() {
-            var processName = $("input[name=txt_processName]");
+            var processName = $("input[name=txt_processName]").val();
             var postData = {};
             postData.processName = processName;
             //表格reload
@@ -105,6 +106,9 @@ layui.use(['layer', 'laytpl', 'table'], function() {
                     curr: 1 //重新从第 1 页开始
                 }
             });
+        });
+        $(document).on("click", "button[name=btn-add]", function() {
+            window.open("../processModel/processmodelform.html");
         });
     }
 });

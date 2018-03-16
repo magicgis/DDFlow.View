@@ -42,13 +42,20 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'form', 'laydate'], function()
             success: function(data) {
                 InitPageDataInfo = data.data;
                 $("input[name=processName]").val(InitPageDataInfo.processName);
-                wfutil.formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, 'all', function() {
+                wfutil.formInitEx(InitPageDataInfo.formContent, 'all', function() {
                     form.render(); //更新全部         
                     laydate.render({
                         elem: '#成立时间',
                         value: new Date(),
                     });
                 });
+                // wfutil.formInit(InitPageDataInfo.processGuid, InitPageDataInfo.bizGuid, 'all', function() {
+                //     form.render(); //更新全部         
+                //     laydate.render({
+                //         elem: '#成立时间',
+                //         value: new Date(),
+                //     });
+                // });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);

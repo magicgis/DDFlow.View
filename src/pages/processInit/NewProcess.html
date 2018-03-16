@@ -125,10 +125,13 @@
                             {{# layui.each(item.auditors, function(u_index, user){ }}
                             <div class="branch-cont-txt">
                                 <label>
-															{{#  if(item.isMulti==1){ }}
-															<input type="checkbox" data-value={{user.auditorGuid}}  data-name={{user.auditorName}}  class="ckb{{item.stepGuid}}"/>{{user.auditorName}}
+                                                            {{#  if(item.isMulti==1){ }}
+                                                            
+                                                            <input type="checkbox" data-value={{user.auditorGuid}}  data-name={{user.auditorName}}  
+                                                            class="ckb{{item.stepGuid}}" {{# if(item.auditors.length==1){ }} checked {{# };}}/>{{user.auditorName}}
 															{{#  }else if(item.isMulti==0){ }}
-															<input type="radio"  name="user{{item.stepGuid}}"  data-value={{user.auditorGuid}}  data-name={{user.auditorName}}>
+                                                            <input type="radio"  name="user{{item.stepGuid}}"  data-value={{user.auditorGuid}}  
+                                                            data-name={{user.auditorName}} {{# if(item.auditors.length==1){ }} checked {{# };}}>
 															{{user.auditorName}}
 															{{#  }else{ }}
 															<label data-value={{user.auditorGuid}}>{{user.auditorName}}</label> {{# } }}

@@ -130,14 +130,16 @@
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="process_info">保存</button>
+                                    <button class="layui-btn" lay-submit lay-filter="process_info">保存基本信息</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <!-- 基础信息 end-->
                 </div>
-                <div class="layui-tab-item">表单定义</div>
+                <div class="layui-tab-item">
+                    <textarea rows="30" cols="180" id="formContent"></textarea>
+                </div>
                 <div class="layui-tab-item">
                     <!-- 步骤定义 start -->
                     <div class="stepMapDesign-from">
@@ -190,27 +192,20 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">相对人</label>
                                                 <div class="layui-input-block">
-                                                    <select name="realtiveAuditor" lay-verify="">
-                                                                    <option value=""></option>
-                                                                    <option value="0">北京</option>
-                                                                    <option value="1">上海</option>
-                                                                    <option value="2">广州</option>
-                                                                    <option value="3">深圳</option>
-                                                                    <option value="4">杭州</option>
-                                                                  </select>
+                                                    <!-- todo -->
+                                                    <input type="text" name="RealtiveAuditor" id="RealtiveAuditor" placeholder="请选择相对人" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">岗位</label>
                                                 <div class="layui-input-block">
-                                                    <select name="stationAuditor" lay-verify="">
-                                                                        <option value=""></option>
-                                                                        <option value="0">北京</option>
-                                                                        <option value="1">上海</option>
-                                                                        <option value="2">广州</option>
-                                                                        <option value="3">深圳</option>
-                                                                        <option value="4">杭州</option>
-                                                                      </select>
+                                                    <input type="text" name="StationAuditor" id="StationAuditor" placeholder="请选择相对人" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">具体人</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="SpecificAuditor" id="SpecificAuditor" placeholder="请选择相对人" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                         </div>
