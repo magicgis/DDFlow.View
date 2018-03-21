@@ -48,7 +48,7 @@ layui.use(['layer', 'table', 'element', 'laytpl', 'laydate'], function() {
                 $("input[name=processName]").val(HandlePageDataInfo.processName)
                     .attr("readonly", true);
                 // 审批表单
-                wfutil.formInit(HandlePageDataInfo.processGuid, HandlePageDataInfo.bizGuid, HandlePageDataInfo.stepInfo.editDomain, function() {
+                wfutil.formInitEx(HandlePageDataInfo.formContent, HandlePageDataInfo.stepInfo.editDomain, function() {
                     form.render(); //更新全部         
                     laydate.render({
                         elem: '#成立时间',

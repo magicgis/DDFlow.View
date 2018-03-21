@@ -281,6 +281,29 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
             // console.log(data.elem);
 
         });
+        //保存表单结构体
+        $(document).on("click", "button[name=process_formLayout]", function() {
+            var formLayout = $("#formContent").val();
+            var formGuid = processModelData.formGUID;
+            $.ajax({
+                url: $.getConfig().apis.process + "/ProcessModule/SaveFormLayout",
+                type: "post",
+                data: JSON.stringify({
+                    FormGuid: formGuid,
+                    FormLayout: formLayout
+                }),
+                success: function(data) {
+                    if (data.code == "0") {
+                        layer.msg("保存成功");
+                    } else {
+                        layer.msg(data.message);
+                    }
+                }
+            });
+            console.log(formLayout);
+            console.log(formGuid);
+            return false;
+        });
     }
     //加载步骤基本属性
     function ShowStepBase(stepInfo) {
