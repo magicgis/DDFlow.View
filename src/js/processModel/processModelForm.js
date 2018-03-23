@@ -74,7 +74,8 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
 
                         BandBizObject(processModelData.businessObjectGuid);
                         InitBizObjDamainList(processModelData.businessObjectGuid);
-                        InitProcessWatch(processModelData);
+                        InitProcessWatch(processModelData.watchMembers);
+                        InitProcessKind(processModelData.processKindGuid);
                         InitForm();
                     } else {
                         layer.msg(data.message);
@@ -84,10 +85,11 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
         } else {
             BandBizObject('');
             InitProcessWatch('');
+            InitProcessKind("");
         }
     }
     //初始化监控人
-    function InitProcessWatch(processModelData) {
+    function InitProcessWatch(watchMembers) {
         $.ajax({
             url: $.getConfig().apis.process + "/User/GetUsers",
             type: "get",
@@ -98,7 +100,28 @@ layui.use(['form', 'element', 'laytpl', 'treeselect'], function() {
                         elem: "#ProcessWatch",
                         data: data.data,
                         method: "setValue",
-                        item: processModelData.watchMembers
+                        item: watchMembers
+                    });
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+
+    }
+    //初始化流程分类
+    function InitProcessKind(processKindGuid) {
+        $.ajax({
+            url: $.getConfig().apis.process + "/CommonKind/GetKindTreeByModuleIdEx/ProcessModule",
+            type: "get",
+            data: {},
+            success: function(data) {
+                if (data.code == "0") {
+                    var kindTree = treeselect({
+                        elem: "#ProcessKindGuid",
+                        data: data.data.list,
+                        method: "setValue",
+                        item: processKindGuid
                     });
                 } else {
                     layer.msg(data.message);
