@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>我发起的流程</title>
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../css/login.css">
+    <link rel="stylesheet" href="../../plugins/jstree/themes/default/style.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/processCommon.css">
 </head>
-<body>
-    
+
+<body class="layui-body">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space8">
+            <div class="layui-col-md2">
+                <div class="tree-kind">
+                    <blockquote class="layui-elem-quote tree-title">流程分类</blockquote>
+                    <div id="tree_processkind"></div>
+                </div>
+            </div>
+            <div class="layui-col-md10">
+                <div class="tree-kind">
+                    <div class="table-search">
+                        <label class="layui-form-label">流程名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="txt_processName" placeholder="请输入流程名称" autocomplete="off" class="layui-input layui-input-sm">
+                            <button name="btn_search" class="layui-btn layui-btn-normal layui-btn-sm" style="width: 60px;">查询</button>
+                            <div class="layui-btn-group float-r">
+                                <button name="todo" data-status="0" class="layui-btn layui-btn-normal layui-btn-sm" selected>
+                                        审批中
+                                </button>
+                                <button name="done" data-status="1" class="layui-btn layui-btn-primary layui-btn-sm">
+                                        已完成
+                                </button>
+                                <button name="all" data-status="-100" class="layui-btn layui-btn-primary layui-btn-sm">
+                                        全部
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="processList" class="layui-table div_processList" lay-filter="process"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../../plugins/jQuery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../js/common/global.js"></script>
+<script type="text/javascript" src="../../js/common/config.js"></script>
+<script src="../../plugins/jstree/jstree.min.js"></script>
+<script type="text/javascript" src="../../js/processList/myProcess.js"></script>
+
 </html>
